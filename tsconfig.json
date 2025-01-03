@@ -39,6 +39,7 @@
     }
   },
   "include": [
+    "./src/types/types.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
