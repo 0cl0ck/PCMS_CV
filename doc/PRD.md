@@ -41,7 +41,6 @@ Payload CMS avec plugins :
 ### Base de données
 
 MongoDB (via @payloadcms/db-mongodb)
-Option pour Vercel Postgres
 
 ### Outils de développement
 
@@ -58,12 +57,12 @@ Fonctionnalités: Liste des produits, panier d'achat, processus de paiement avec
 
 ## Scope of Work
 
-### MVP (Produit Minimum Viable):
+### MVP (Produit Minimum Viable)
 
 Site de commerce électronique fonctionnel avec possibilité de paiement via VivaWallet.
 Ajout de produits au panier, ajustement du panier, et redirection vers VivaWallet pour le paiement.
 
-### Développements Futurs:
+### Développements Futurs
 
 Programme de fidélité
 Email Marketing
