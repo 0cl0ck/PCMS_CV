@@ -182,3 +182,4 @@ export const Products: CollectionConfig = {
     drafts: true,
   },
 }
+

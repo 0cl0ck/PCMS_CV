@@ -23,6 +23,7 @@ export default async function Page() {
       productType: true,
       variations: true,
       images: true,
+      slug: true,
     },
   })
 
