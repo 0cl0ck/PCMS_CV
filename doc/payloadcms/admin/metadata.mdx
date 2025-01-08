@@ -46,19 +46,20 @@ To customize Root Metadata, use the `admin.meta` key in your Payload Config:
 
 The following options are available for Root Metadata:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| **`title`** | `string` | The title of the Admin Panel. |
-| **`description`** | `string` | The description of the Admin Panel. |
+| Key                      | Type                                    | Description                                                                                                                                                                                                                                                               |
+| ------------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`title`**              | `string`                                | The title of the Admin Panel.                                                                                                                                                                                                                                             |
+| **`description`**        | `string`                                | The description of the Admin Panel.                                                                                                                                                                                                                                       |
 | **`defaultOGImageType`** | `dynamic` (default), `static`, or `off` | The type of default OG image to use. If set to `dynamic`, Payload will use Next.js image generation to create an image with the title of the page. If set to `static`, Payload will use the `defaultOGImage` URL. If set to `off`, Payload will not generate an OG image. |
-| **`icons`** | `IconConfig[]` | An array of icon objects. [More details](#icons) |
-| **`keywords`** | `string` | A comma-separated list of keywords to include in the metadata of the Admin Panel. |
-| **`openGraph`** | `OpenGraphConfig` | An object containing Open Graph metadata. [More details](#open-graph) |
-| **`titleSuffix`** | `string` | A suffix to append to the end of the title of every page. Defaults to "- Payload". |
+| **`icons`**              | `IconConfig[]`                          | An array of icon objects. [More details](#icons)                                                                                                                                                                                                                          |
+| **`keywords`**           | `string`                                | A comma-separated list of keywords to include in the metadata of the Admin Panel.                                                                                                                                                                                         |
+| **`openGraph`**          | `OpenGraphConfig`                       | An object containing Open Graph metadata. [More details](#open-graph)                                                                                                                                                                                                     |
+| **`titleSuffix`**        | `string`                                | A suffix to append to the end of the title of every page. Defaults to "- Payload".                                                                                                                                                                                        |
 
 <Banner type="success">
-  **Reminder:**
-  These are the _root-level_ options for the Admin Panel. You can also customize [Collection Metadata](./collections), [Global Metadata](./globals), and [Document Metadata](./documents) in their respective configs.
+  **Reminder:** These are the _root-level_ options for the Admin Panel. You can also customize
+  [Collection Metadata](./collections), [Global Metadata](./globals), and [Document
+  Metadata](./documents) in their respective configs.
 </Banner>
 
 ### Icons
@@ -95,15 +96,15 @@ To customize icons, use the `icons` key within the `admin.meta` object in your P
 
 The following options are available for Icons:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| **`rel`** | `string` | The HTML `rel` attribute of the icon. |
-| **`type`** | `string` | The MIME type of the icon. |
-| **`color`** | `string` | The color of the icon. |
-| **`fetchPriority`** | `string` | The [fetch priority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) of the icon. |
-| **`media`** | `string` | The [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) of the icon. |
-| **`sizes`** | `string` | The [sizes](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes) of the icon. |
-| **`url`** | `string` | The URL pointing the resource of the icon. |
+| Key                 | Type     | Description                                                                                                            |
+| ------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **`rel`**           | `string` | The HTML `rel` attribute of the icon.                                                                                  |
+| **`type`**          | `string` | The MIME type of the icon.                                                                                             |
+| **`color`**         | `string` | The color of the icon.                                                                                                 |
+| **`fetchPriority`** | `string` | The [fetch priority](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/fetchPriority) of the icon.     |
+| **`media`**         | `string` | The [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) of the icon. |
+| **`sizes`**         | `string` | The [sizes](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/sizes) of the icon.                      |
+| **`url`**           | `string` | The URL pointing the resource of the icon.                                                                             |
 
 ### Open Graph
 
@@ -137,12 +138,12 @@ To customize Open Graph metadata, use the `openGraph` key within the `admin.meta
 
 The following options are available for Open Graph Metadata:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| **`description`** | `string` | The description of the Admin Panel. |
-| **`images`** | `OGImageConfig` or `OGImageConfig[]` | An array of image objects. |
-| **`siteName`** | `string` | The name of the site. |
-| **`title`** | `string` | The title of the Admin Panel. |
+| Key               | Type                                 | Description                         |
+| ----------------- | ------------------------------------ | ----------------------------------- |
+| **`description`** | `string`                             | The description of the Admin Panel. |
+| **`images`**      | `OGImageConfig` or `OGImageConfig[]` | An array of image objects.          |
+| **`siteName`**    | `string`                             | The name of the site.               |
+| **`title`**       | `string`                             | The title of the Admin Panel.       |
 
 ## Collection Metadata
 
@@ -151,19 +152,19 @@ Collection Metadata is the metadata that is applied to all pages within any give
 To customize Collection Metadata, use the `admin.meta` key within your Collection Config:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const MyCollection: CollectionConfig = {
   // ...
   admin: {
     // highlight-start
     meta: {
-    // highlight-end
+      // highlight-end
       title: 'My Collection',
       description: 'The best collection in the world',
     },
   },
-}
+};
 ```
 
 The Collection Meta config has the same options as the [Root Metadata](#root-metadata) config.
@@ -175,19 +176,19 @@ Global Metadata is the metadata that is applied to all pages within any given Gl
 To customize Global Metadata, use the `admin.meta` key within your Global Config:
 
 ```ts
-import { GlobalConfig } from 'payload'
+import { GlobalConfig } from 'payload';
 
 export const MyGlobal: GlobalConfig = {
   // ...
   admin: {
     // highlight-start
     meta: {
-    // highlight-end
+      // highlight-end
       title: 'My Global',
       description: 'The best admin panel in the world',
     },
   },
-}
+};
 ```
 
 The Global Meta config has the same options as the [Root Metadata](#root-metadata) config.
@@ -214,3 +215,4 @@ To customize View Metadata, use the `meta` key within your View Config:
     },
   },
 }
+```

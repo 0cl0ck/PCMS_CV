@@ -37,7 +37,7 @@ If you are using your `payload-types.ts` file in other repos, though, it might b
 If you do disable the `declare` pattern, you'll need to manually add a `declare` statement to your code in order for Payload types to be recognized. Here's an example showing how to declare your types in your `payload.config.ts` file:
 
 ```ts
-import { Config } from './payload-types'
+import { Config } from './payload-types';
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
@@ -80,10 +80,10 @@ Payload generates your types based on a JSON schema. You can extend that JSON sc
             content: { type: 'string' },
           },
           required: ['title', 'content'],
-        }
-        return jsonSchema
+        };
+        return jsonSchema;
       },
-    ]
+    ];
   }
 }
 
@@ -103,7 +103,7 @@ This function takes the existing JSON schema as an argument and returns the modi
 For example, let's look at the following simple Payload Config:
 
 ```ts
-import type { Config } from 'payload'
+import type { Config } from 'payload';
 
 const config: Config = {
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -118,8 +118,8 @@ const config: Config = {
           name: 'name',
           type: 'text',
           required: true,
-        }
-      ]
+        },
+      ],
     },
     {
       slug: 'posts',
@@ -136,29 +136,29 @@ const config: Config = {
           type: 'relationship',
           relationTo: 'users',
         },
-      ]
-    }
-  ]
-}
+      ],
+    },
+  ],
+};
 ```
 
 By generating types, we'll end up with a file containing the following two TypeScript interfaces:
 
 ```ts
 export interface User {
-  id: string
-  name: string
-  email?: string
-  resetPasswordToken?: string
-  resetPasswordExpiration?: string
-  loginAttempts?: number
-  lockUntil?: string
+  id: string;
+  name: string;
+  email?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpiration?: string;
+  loginAttempts?: number;
+  lockUntil?: string;
 }
 
 export interface Post {
-  id: string
-  title?: string
-  author?: string | User
+  id: string;
+  title?: string;
+  author?: string | User;
 }
 ```
 
@@ -189,24 +189,25 @@ will generate:
 ```ts
 // a top level reusable interface!!
 export interface SharedMeta {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
 }
 
 // example usage inside collection interface
 export interface Collection1 {
   // ...other fields
-  meta?: SharedMeta
+  meta?: SharedMeta;
 }
 ```
 
 <Banner type="warning">
   **Naming Collisions**
 
-  Since these types are hoisted to the top level, you need to be aware that naming collisions can
-  occur. For example, if you have a collection with the name of `Meta` and you also create a
-  interface with the name `Meta` they will collide. It is recommended to scope your interfaces by
-  appending the field type to the end, i.e. `MetaGroup` or similar.
+Since these types are hoisted to the top level, you need to be aware that naming collisions can
+occur. For example, if you have a collection with the name of `Meta` and you also create a
+interface with the name `Meta` they will collide. It is recommended to scope your interfaces by
+appending the field type to the end, i.e. `MetaGroup` or similar.
+
 </Banner>
 
 ## Using your types
@@ -218,7 +219,8 @@ Now that your types have been generated, payloads local API will now be typed. I
 <Banner type="warning">
   **Important**
 
-  Payload needs to be able to find your config to generate your types.
+Payload needs to be able to find your config to generate your types.
+
 </Banner>
 
 Payload will automatically try and locate your config, but might not always be able to find it. For example, if you are working in a `/src` directory or similar, you need to tell Payload where to find your config manually by using an environment variable. If this applies to you, you can create an npm script to make generating your types easier.

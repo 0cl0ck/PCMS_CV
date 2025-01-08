@@ -16,7 +16,7 @@ The email adapter should be passed into the `email` property of the Payload Conf
 
 ### Default Configuration
 
-When email is not needed or desired, Payload will log a warning on startup notifying that email is not configured. A  warning message will also be logged on any attempt to send an email.
+When email is not needed or desired, Payload will log a warning on startup notifying that email is not configured. A warning message will also be logged on any attempt to send an email.
 
 ### Email Adapter
 
@@ -26,7 +26,6 @@ An email adapter will require at least the following fields:
 | --------------------------- | -------------------------------------------------------------------------------- |
 | **`defaultFromName`** \*    | The name part of the From field that will be seen on the delivered email         |
 | **`defaultFromAddress`** \* | The email address part of the From field that will be used when delivering email |
-
 
 ### Official Email Adapters
 
@@ -49,8 +48,8 @@ Simple Mail Transfer Protocol (SMTP) options can be passed in using the `transpo
 **Example email options using SMTP:**
 
 ```ts
-import { buildConfig } from 'payload'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { buildConfig } from 'payload';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 
 export default buildConfig({
   email: nodemailerAdapter({
@@ -66,15 +65,15 @@ export default buildConfig({
       },
     },
   }),
-})
+});
 ```
 
 **Example email options using nodemailer.createTransport:**
 
 ```ts
-import { buildConfig } from 'payload'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import nodemailer from 'nodemailer'
+import { buildConfig } from 'payload';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
+import nodemailer from 'nodemailer';
 
 export default buildConfig({
   email: nodemailerAdapter({
@@ -90,19 +89,17 @@ export default buildConfig({
       },
     }),
   }),
-})
+});
 ```
 
 **Custom Transport:**
 
 You also have the ability to bring your own nodemailer transport. This is an example of using the SendGrid nodemailer transport.
 
-
 ```ts
-import { buildConfig } from 'payload'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import nodemailerSendgrid from 'nodemailer-sendgrid'
-
+import { buildConfig } from 'payload';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
+import nodemailerSendgrid from 'nodemailer-sendgrid';
 
 export default buildConfig({
   email: nodemailerAdapter({
@@ -112,7 +109,7 @@ export default buildConfig({
       apiKey: process.env.SENDGRID_API_KEY,
     }),
   }),
-})
+});
 ```
 
 During development, if you pass nothing to `nodemailerAdapter`, it will use the [ethereal.email](https://ethereal.email) service.
@@ -120,11 +117,11 @@ During development, if you pass nothing to `nodemailerAdapter`, it will use the 
 This will log the ethereal.email details to console on startup.
 
 ```ts
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 
 export default buildConfig({
   email: nodemailerAdapter(),
-})
+});
 ```
 
 ## Resend Configuration
@@ -136,8 +133,8 @@ The Resend adapter requires an API key to be passed in the options. This can be 
 | apiKey | The API key for the Resend service. |
 
 ```ts
-import { buildConfig } from 'payload'
-import { resendAdapter } from '@payloadcms/email-resend'
+import { buildConfig } from 'payload';
+import { resendAdapter } from '@payloadcms/email-resend';
 
 export default buildConfig({
   email: resendAdapter({
@@ -145,7 +142,7 @@ export default buildConfig({
     defaultFromName: 'Payload CMS',
     apiKey: process.env.RESEND_API_KEY || '',
   }),
-})
+});
 ```
 
 ## Sending Mail
@@ -158,7 +155,7 @@ const email = await payload.sendEmail({
   to: 'test@example.com',
   subject: 'This is a test email',
   text: 'This is my message body',
-})
+});
 ```
 
 ## Using multiple mail providers

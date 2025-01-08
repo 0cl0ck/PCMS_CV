@@ -56,8 +56,8 @@ In the `plugins` array of your [Payload Config](https://payloadcms.com/docs/conf
 with [options](#options):
 
 ```ts
-import { buildConfig } from 'payload'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { buildConfig } from 'payload';
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs';
 
 const config = buildConfig({
   collections: [
@@ -82,9 +82,9 @@ const config = buildConfig({
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 ### Fields
@@ -122,7 +122,7 @@ You can also pass a function to dynamically set the `label` of your breadcrumb.
 nestedDocsPlugin({
   //...
   generateLabel: (_, doc) => doc.title, // NOTE: 'title' is a hypothetical field
-})
+});
 ```
 
 The function takes two arguments and returns a string:
@@ -143,7 +143,7 @@ that point, like `/about-us/company/our-team`.
 nestedDocsPlugin({
   //...
   generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''), // NOTE: 'slug' is a hypothetical field
-})
+});
 ```
 
 | Argument | Type     | Description                                  |
@@ -165,9 +165,10 @@ own `breadcrumbs` field to each collection manually. Set this property to the `n
 <Banner type="info">
   **Note:**
 
-  If you opt out of automatically being provided a `parent` or `breadcrumbs` field, you need to make
-  sure that both fields are placed at the top-level of your document. They cannot exist within any
-  nested data structures like a `group`, `array`, or `blocks`.
+If you opt out of automatically being provided a `parent` or `breadcrumbs` field, you need to make
+sure that both fields are placed at the top-level of your document. They cannot exist within any
+nested data structures like a `group`, `array`, or `blocks`.
+
 </Banner>
 
 ## Overrides
@@ -176,9 +177,9 @@ You can also extend the built-in `parent` and `breadcrumbs` fields per collectio
 and `createBreadcrumbField` methods. They will merge your customizations overtop the plugin's base field configurations.
 
 ```ts
-import type { CollectionConfig } from 'payload'
-import { createParentField } from '@payloadcms/plugin-nested-docs/fields'
-import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs/fields'
+import type { CollectionConfig } from 'payload';
+import { createParentField } from '@payloadcms/plugin-nested-docs/fields';
+import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs/fields';
 
 const examplePageConfig: CollectionConfig = {
   slug: 'pages',
@@ -211,14 +212,15 @@ const examplePageConfig: CollectionConfig = {
       },
     ),
   ],
-}
+};
 ```
 
 <Banner type="warning">
   **Note:**
 
-  If overriding the `name` of either `breadcrumbs` or `parent` fields, you must specify the
-  `breadcrumbsFieldSlug` or `parentFieldSlug` respectively.
+If overriding the `name` of either `breadcrumbs` or `parent` fields, you must specify the
+`breadcrumbsFieldSlug` or `parentFieldSlug` respectively.
+
 </Banner>
 
 ## Localization
@@ -232,7 +234,7 @@ the [Localization](https://payloadcms.com/docs/configuration/localization) docs.
 All types can be directly imported:
 
 ```ts
-import { PluginConfig, GenerateURL, GenerateLabel } from '@payloadcms/plugin-nested-docs/types'
+import { PluginConfig, GenerateURL, GenerateLabel } from '@payloadcms/plugin-nested-docs/types';
 ```
 
 ## Examples

@@ -13,14 +13,15 @@ With Localization, you can begin to serve personalized content to your users bas
 To configure Localization, use the `localization` key in your [Payload Config](./overview):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 export default buildConfig({
   // ...
-  localization: { // highlight-line
+  localization: {
+    // highlight-line
     // ...
   },
-})
+});
 ```
 
 ## Config Options
@@ -30,7 +31,7 @@ Add the `localization` property to your Payload Config to enable Localization pr
 To configure locales, use the `localization.locales` property in your [Payload Config](./overview):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 export default buildConfig({
   // ...
@@ -38,13 +39,13 @@ export default buildConfig({
     locales: ['en', 'es', 'de'], // required
     defaultLocale: 'en', // required
   },
-})
+});
 ```
 
 You can also define locales using [full configuration objects](#locale-object):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 export default buildConfig({
   collections: [
@@ -67,21 +68,20 @@ export default buildConfig({
     defaultLocale: 'en', // required
     fallback: true, // defaults to true
   },
-})
+});
 ```
 
 <Banner type="success">
-  **Tip:**
-  Localization works very well alongside [I18n](/docs/configuration/i18n).
+  **Tip:** Localization works very well alongside [I18n](/docs/configuration/i18n).
 </Banner>
 
 The following options are available:
 
-| Option         | Description                                                                                                                    |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| **`locales`**  | Array of all the languages that you would like to support. [More details](#locales)                                            |
-| **`defaultLocale`** | Required string that matches one of the locale codes from the array provided. By default, if no locale is specified, documents will be returned in this locale. |
-| **`fallback`** | Boolean enabling "fallback" locale functionality. If a document is requested in a locale, but a field does not have a localized value corresponding to the requested locale, then if this property is enabled, the document will automatically fall back to the fallback locale value. If this property is not enabled, the value will not be populated unless a fallback is explicitly provided in the request. True by default. |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`locales`**       | Array of all the languages that you would like to support. [More details](#locales)                                                                                                                                                                                                                                                                                                                                               |
+| **`defaultLocale`** | Required string that matches one of the locale codes from the array provided. By default, if no locale is specified, documents will be returned in this locale.                                                                                                                                                                                                                                                                   |
+| **`fallback`**      | Boolean enabling "fallback" locale functionality. If a document is requested in a locale, but a field does not have a localized value corresponding to the requested locale, then if this property is enabled, the document will automatically fall back to the fallback locale value. If this property is not enabled, the value will not be populated unless a fallback is explicitly provided in the request. True by default. |
 
 ### Locales
 
@@ -121,19 +121,17 @@ With the above configuration, the `title` field will now be saved in the databas
 All field types with a `name` property support the `localized` property—even the more complex field types like `array`s and `block`s.
 
 <Banner type="info">
-  **Note:**
-  Enabling Localization for field types that support nested fields will automatically create
-  localized "sets" of all fields contained within the field. For example, if you have a page layout
-  using a blocks field type, you have the choice of either localizing the full layout, by enabling
-  Localization on the top-level blocks field, or only certain fields within the layout.
+  **Note:** Enabling Localization for field types that support nested fields will automatically
+  create localized "sets" of all fields contained within the field. For example, if you have a page
+  layout using a blocks field type, you have the choice of either localizing the full layout, by
+  enabling Localization on the top-level blocks field, or only certain fields within the layout.
 </Banner>
 
 <Banner type="warning">
-  **Important:**
-  When converting an existing field to or from `localized: true` the data structure in the document
-  will change for this field and so existing data for this field will be lost. Before changing the
-  Localization setting on fields with existing data, you may need to consider a field migration
-  strategy.
+  **Important:** When converting an existing field to or from `localized: true` the data structure
+  in the document will change for this field and so existing data for this field will be lost.
+  Before changing the Localization setting on fields with existing data, you may need to consider a
+  field migration strategy.
 </Banner>
 
 ## Retrieving Localized Docs
@@ -201,12 +199,11 @@ const posts = await payload.find({
   collection: 'posts',
   locale: 'es',
   fallbackLocale: false,
-})
+});
 ```
 
 <Banner type="success">
-  **Tip:**
-  The REST and Local APIs can return all Localization data in one request by passing 'all' or '*' as
-  the **locale** parameter. The response will be structured so that field values come
-  back as the full objects keyed for each locale instead of the single, translated value.
+  **Tip:** The REST and Local APIs can return all Localization data in one request by passing 'all'
+  or '*' as the **locale** parameter. The response will be structured so that field values come back
+  as the full objects keyed for each locale instead of the single, translated value.
 </Banner>

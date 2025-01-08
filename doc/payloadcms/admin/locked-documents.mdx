@@ -20,7 +20,11 @@ When a user starts editing a document, Payload locks it for that user. If anothe
 
 The lock will automatically expire after a set period of inactivity, configurable using the `duration` property in the `lockDocuments` configuration, after which others can resume editing.
 
-<Banner type="info"> **Note:** If your application does not require document locking, you can disable this feature for any collection or global by setting the `lockDocuments` property to `false`. </Banner>
+<Banner type="info">
+  {' '}
+  **Note:** If your application does not require document locking, you can disable this feature for
+  any collection or global by setting the `lockDocuments` property to `false`.{' '}
+</Banner>
 
 ### Config Options
 
@@ -29,7 +33,7 @@ The `lockDocuments` property exists on both the Collection Config and the Global
 Here's an example configuration for document locking:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -43,7 +47,7 @@ export const Posts: CollectionConfig = {
   lockDocuments: {
     duration: 600, // Duration in seconds
   },
-}
+};
 ```
 
 #### Locking Options
@@ -73,7 +77,7 @@ const result = await payload.update({
     title: 'New title',
   },
   overrideLock: false, // Enforces the document lock, preventing updates if the document is locked
-})
+});
 ```
 
 This option is particularly useful in scenarios where administrative privileges or specific workflows require you to override the lock and ensure the operation is completed.

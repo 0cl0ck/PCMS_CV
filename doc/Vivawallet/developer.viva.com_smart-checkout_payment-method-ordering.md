@@ -29,7 +29,7 @@ Pay by Bank
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Viva Wallet  
@@ -42,19 +42,19 @@ Cash (Viva Spot)
 Bluecode  
 Pay on Delivery  
 BitPay  
-WeChat Pay  
+WeChat Pay
 
 Card  
 Paypal  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -62,7 +62,7 @@ Klarna
 Trustly  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -70,7 +70,7 @@ Klarna
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Portugal
 
@@ -94,7 +94,7 @@ WeChat Pay
 BitPay  
 Bluecode  
 Pay on Delivery  
-Trustly  
+Trustly
 
 Card  
 Paypal  
@@ -104,7 +104,7 @@ Trustly
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -114,7 +114,7 @@ Bancomat Pay
 WeChat Pay  
 Bluecode  
 BitPay  
-Pay on Delivery  
+Pay on Delivery
 
 Card  
 Paypal  
@@ -122,7 +122,7 @@ Viva Wallet
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Klarna  
@@ -133,14 +133,14 @@ Pay by Bank
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Hungary
 
@@ -158,7 +158,7 @@ Card
 Paypal  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -167,7 +167,7 @@ PayU
 Trustly  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -178,7 +178,7 @@ Trustly
 Pay on Delivery  
 WeChat Pay  
 BitPay  
-Satispay  
+Satispay
 
 Card  
 Mobile Pay  
@@ -187,7 +187,7 @@ Trustly
 Paypal  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Trustly  
 Pay by Bank  
@@ -198,7 +198,7 @@ Bluecode
 Pay on Delivery  
 WeChat Pay  
 BitPay  
-Klarna  
+Klarna
 
 Card  
 Mobile Pay  
@@ -207,7 +207,7 @@ Trustly
 Paypal  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Sweden
 
@@ -229,7 +229,7 @@ Paypal
 Klarna  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Paypal  
@@ -239,7 +239,7 @@ Satispay
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Bancontact QR  
 Card  
@@ -250,7 +250,7 @@ Pay by Bank
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 iDEAL  
 Card  
@@ -261,7 +261,7 @@ Trustly
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 Card  
 Payconiq  
@@ -271,7 +271,7 @@ Pay by Bank
 Bluecode  
 Pay on Delivery  
 WeChat Pay  
-BitPay  
+BitPay
 
 BLIK  
 P24  
@@ -282,7 +282,7 @@ Paypal
 Pay On Delivery  
 Trustly  
 WeChat Pay  
-BitPay  
+BitPay
 
 ### Get Support
 

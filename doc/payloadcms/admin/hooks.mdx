@@ -9,8 +9,10 @@ keywords: admin, components, custom, documentation, Content Management System, c
 Payload provides a variety of powerful [React Hooks](https://react.dev/reference/react-dom/hooks) that can be used within your own [Custom Components](./components), such as [Custom Fields](./fields). With them, you can interface with Payload itself to build just about any type of complex customization you can think of.
 
 <Banner type="warning">
-  **Reminder:**
-  All Custom Components are [React Server Components](https://react.dev/reference/rsc/server-components) by default. Hooks, on the other hand, are only available in client-side environments. To use hooks, [ensure your component is a client component](./components#client-components).
+  **Reminder:** All Custom Components are [React Server
+  Components](https://react.dev/reference/rsc/server-components) by default. Hooks, on the other
+  hand, are only available in client-side environments. To use hooks, [ensure your component is a
+  client component](./components#client-components).
 </Banner>
 
 ## useField
@@ -20,57 +22,57 @@ The `useField` hook is used internally within all field components. It manages s
 To do so, import the `useField` hook as follows:
 
 ```tsx
-'use client'
-import type { TextFieldClientComponent } from 'payload'
-import { useField } from '@payloadcms/ui'
+'use client';
+import type { TextFieldClientComponent } from 'payload';
+import { useField } from '@payloadcms/ui';
 
 export const CustomTextField: TextFieldClientComponent = ({ path }) => {
-  const { value, setValue } = useField({ path }) // highlight-line
+  const { value, setValue } = useField({ path }); // highlight-line
 
   return (
     <div>
-      <p>
-        {path}
-      </p>
+      <p>{path}</p>
       <input
-        onChange={(e) => { setValue(e.target.value) }}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
         value={value}
       />
     </div>
-  )
-}
+  );
+};
 ```
 
 The `useField` hook accepts the following arguments:
 
-| Property          | Description                                                                                                                                                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | If you do not provide a `path`, `name` will be used instead. This is the path to the field in the form data.                                                                                                                  |
+| Property          | Description                                                                                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `path`            | If you do not provide a `path`, `name` will be used instead. This is the path to the field in the form data.                                                                                     |
 | `validate`        | A validation function executed client-side _before_ submitting the form to the server. Different than [Field-level Validation](../fields/overview#validation) which runs strictly on the server. |
-| `disableFormData` | If `true`, the field will not be included in the form data when the form is submitted.                                                                                                                                         |
-| `hasRows` | If `true`, the field will be treated as a field with rows. This is useful for fields like `array` and `blocks`.                                                                                                                                         |
+| `disableFormData` | If `true`, the field will not be included in the form data when the form is submitted.                                                                                                           |
+| `hasRows`         | If `true`, the field will be treated as a field with rows. This is useful for fields like `array` and `blocks`.                                                                                  |
 
 The `useField` hook returns the following object:
 
 ```ts
 type FieldType<T> = {
-  errorMessage?: string
-  errorPaths?: string[]
-  filterOptions?: FilterOptionsResult
-  formInitializing: boolean
-  formProcessing: boolean
-  formSubmitted: boolean
-  initialValue?: T
-  path: string
-  permissions: FieldPermissions
-  readOnly?: boolean
-  rows?: Row[]
-  schemaPath: string
-  setValue: (val: unknown, disableModifyingForm?: boolean) => void
-  showError: boolean
-  valid?: boolean
-  value: T
-}
+  errorMessage?: string;
+  errorPaths?: string[];
+  filterOptions?: FilterOptionsResult;
+  formInitializing: boolean;
+  formProcessing: boolean;
+  formSubmitted: boolean;
+  initialValue?: T;
+  path: string;
+  permissions: FieldPermissions;
+  readOnly?: boolean;
+  rows?: Row[];
+  schemaPath: string;
+  setValue: (val: unknown, disableModifyingForm?: boolean) => void;
+  showError: boolean;
+  valid?: boolean;
+  value: T;
+};
 ```
 
 ## useFormFields
@@ -78,8 +80,8 @@ type FieldType<T> = {
 There are times when a custom field component needs to have access to data from other fields, and you have a few options to do so. The `useFormFields` hook is a powerful and highly performant way to retrieve a form's field state, as well as to retrieve the `dispatchFields` method, which can be helpful for setting other fields' form states from anywhere within a form.
 
 <Banner type="success">
-  **This hook is great for retrieving only certain fields from form state** because it
-  ensures that it will only cause a rerender when the items that you ask for change.
+  **This hook is great for retrieving only certain fields from form state** because it ensures that
+  it will only cause a rerender when the items that you ask for change.
 </Banner>
 
 Thanks to the awesome package [`use-context-selector`](https://github.com/dai-shi/use-context-selector), you can retrieve a specific field's state easily. This is ideal because you can ensure you have an up-to-date field state, and your component will only re-render when _that field's state_ changes.
@@ -87,20 +89,20 @@ Thanks to the awesome package [`use-context-selector`](https://github.com/dai-sh
 You can pass a Redux-like selector into the hook, which will ensure that you retrieve only the field that you want. The selector takes an argument with type of `[fields: Fields, dispatch: React.Dispatch<Action>]]`.
 
 ```tsx
-'use client'
-import { useFormFields } from '@payloadcms/ui'
+'use client';
+import { useFormFields } from '@payloadcms/ui';
 
 const MyComponent: React.FC = () => {
   // Get only the `amount` field state, and only cause a rerender when that field changes
-  const amount = useFormFields(([fields, dispatch]) => fields.amount)
+  const amount = useFormFields(([fields, dispatch]) => fields.amount);
 
   // Do the same thing as above, but to the `feePercentage` field
-  const feePercentage = useFormFields(([fields, dispatch]) => fields.feePercentage)
+  const feePercentage = useFormFields(([fields, dispatch]) => fields.feePercentage);
 
   if (typeof amount?.value !== 'undefined' && typeof feePercentage?.value !== 'undefined') {
-    return <span>The fee is ${(amount.value * feePercentage.value) / 100}</span>
+    return <span>The fee is ${(amount.value * feePercentage.value) / 100}</span>;
   }
-}
+};
 ```
 
 ## useAllFormFields
@@ -159,10 +161,11 @@ The `useForm` hook can be used to interact with the form itself, and sends back 
 <Banner type="warning">
   **Warning:**
 
-  This hook is optimized to avoid causing rerenders when fields change, and as such, its `fields`
-  property will be out of date. You should only leverage this hook if you need to perform actions
-  against the form in response to your users' actions. Do not rely on its returned "fields" as being
-  up-to-date. They will be removed from this hook's response in an upcoming version.
+This hook is optimized to avoid causing rerenders when fields change, and as such, its `fields`
+property will be out of date. You should only leverage this hook if you need to perform actions
+against the form in response to your users' actions. Do not rely on its returned "fields" as being
+up-to-date. They will be removed from this hook's response in an upcoming version.
+
 </Banner>
 
 The `useForm` hook returns an object with the following properties:
@@ -384,31 +387,29 @@ The `useForm` hook returns an object with the following properties:
     ]}
   />
 
-
 \`\`\`tsx
 import { useForm } from "payload/components/forms";
 
 export const CustomArrayManager = () => {
   const { addFieldRow } = useForm()
 
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        addFieldRow({
-          path: "arrayField",
-          rowIndex: 0,
-          data: {
-            textField: "text",
-            // blockType: "yourBlockSlug",
-            // ^ if managing a block array, you need to specify the block type
-          },
-        })
-      }}
-    >
-      Add Row
-    </button>
-  )
+return (
+<button
+type="button"
+onClick={() => {
+addFieldRow({
+path: "arrayField",
+rowIndex: 0,
+data: {
+textField: "text",
+// blockType: "yourBlockSlug",
+// ^ if managing a block array, you need to specify the block type
+},
+})
+}} >
+Add Row
+</button>
+)
 }
 \`\`\`
 
@@ -416,28 +417,28 @@ An example config to go along with the Custom Component
 
 \`\`\`tsx
 const ExampleCollection = {
-  slug: "example-collection",
-  fields: [
-    {
-      name: "arrayField",
-      type: "array",
-      fields: [
-        {
-          name: "textField",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "ui",
-      name: "customArrayManager",
-      admin: {
-        components: {
-          Field: '/path/to/CustomArrayManagerField',
-        },
-      },
-    },
-  ],
+slug: "example-collection",
+fields: [
+{
+name: "arrayField",
+type: "array",
+fields: [
+{
+name: "textField",
+type: "text",
+},
+],
+},
+{
+type: "ui",
+name: "customArrayManager",
+admin: {
+components: {
+Field: '/path/to/CustomArrayManagerField',
+},
+},
+},
+],
 }
 \`\`\`
 `
@@ -455,32 +456,29 @@ const ExampleCollection = {
         drawerDescription: 'A useful method to programmatically remove a row from an array or block field.',
         drawerSlug: 'removeFieldRow',
         drawerContent:  `
-  <TableWithDrawers
-    columns={[
-      'Prop',
-      'Description',
-    ]}
-    rows={[
-      [
-        {
-          value: "**\\\`path\\\`**",
-        },
-        {
-          value: "The path to the array or block field",
-        },
-      ],
-      [
-        {
-          value: "**\\\`rowIndex\\\`**",
-        },
-        {
-          value: "The index of the row to remove",
-        },
-      ],
-    ]}
-  />
 
-
+{' '}
+<TableWithDrawers
+  columns={['Prop', 'Description']}
+  rows={[
+    [
+      {
+        value: '**\\\`path\\\`**',
+      },
+      {
+        value: 'The path to the array or block field',
+      },
+    ],
+    [
+      {
+        value: '**\\\`rowIndex\\\`**',
+      },
+      {
+        value: 'The index of the row to remove',
+      },
+    ],
+  ]}
+/>
 
 \`\`\`tsx
 import { useForm } from "payload/components/forms";
@@ -488,19 +486,18 @@ import { useForm } from "payload/components/forms";
 export const CustomArrayManager = () => {
   const { removeFieldRow } = useForm()
 
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        removeFieldRow({
-          path: "arrayField",
-          rowIndex: 0,
-        })
-      }}
-    >
-      Remove Row
-    </button>
-  )
+return (
+<button
+type="button"
+onClick={() => {
+removeFieldRow({
+path: "arrayField",
+rowIndex: 0,
+})
+}} >
+Remove Row
+</button>
+)
 }
 \`\`\`
 
@@ -508,28 +505,28 @@ An example config to go along with the Custom Component
 
 \`\`\`tsx
 const ExampleCollection = {
-  slug: "example-collection",
-  fields: [
-    {
-      name: "arrayField",
-      type: "array",
-      fields: [
-        {
-          name: "textField",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "ui",
-      name: "customArrayManager",
-      admin: {
-        components: {
-          Field: '/path/to/CustomArrayManagerField',
-        },
-      },
-    },
-  ],
+slug: "example-collection",
+fields: [
+{
+name: "arrayField",
+type: "array",
+fields: [
+{
+name: "textField",
+type: "text",
+},
+],
+},
+{
+type: "ui",
+name: "customArrayManager",
+admin: {
+components: {
+Field: '/path/to/CustomArrayManagerField',
+},
+},
+},
+],
 }
 \`\`\`
 `
@@ -547,41 +544,37 @@ const ExampleCollection = {
         drawerDescription: 'A useful method to programmatically replace a row from an array or block field.',
         drawerSlug: 'replaceFieldRow',
         drawerContent:  `
-  <TableWithDrawers
-    columns={[
-      'Prop',
-      'Description',
-    ]}
-    rows={[
-      [
-        {
-          value: "**\\\`path\\\`**",
-        },
-        {
-          value: "The path to the array or block field",
-        },
-      ],
-      [
-        {
-          value: "**\\\`rowIndex\\\`**",
-        },
-        {
-          value: "The index of the row to replace",
-        },
-      ],
-      [
-        {
-         value: "**\\\`data\\\`**",
-        },
-        {
-          value: "The data to replace within the row",
-        },
-      ],
-    ]}
-  />
 
-
-
+{' '}
+<TableWithDrawers
+  columns={['Prop', 'Description']}
+  rows={[
+    [
+      {
+        value: '**\\\`path\\\`**',
+      },
+      {
+        value: 'The path to the array or block field',
+      },
+    ],
+    [
+      {
+        value: '**\\\`rowIndex\\\`**',
+      },
+      {
+        value: 'The index of the row to replace',
+      },
+    ],
+    [
+      {
+        value: '**\\\`data\\\`**',
+      },
+      {
+        value: 'The data to replace within the row',
+      },
+    ],
+  ]}
+/>
 
 \`\`\`tsx
 import { useForm } from "payload/components/forms";
@@ -589,24 +582,23 @@ import { useForm } from "payload/components/forms";
 export const CustomArrayManager = () => {
   const { replaceFieldRow } = useForm()
 
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        replaceFieldRow({
-          path: "arrayField",
-          rowIndex: 0,
-          data: {
-            textField: "updated text",
-            // blockType: "yourBlockSlug",
-            // ^ if managing a block array, you need to specify the block type
-          },
-        })
-      }}
-    >
-      Replace Row
-    </button>
-  )
+return (
+<button
+type="button"
+onClick={() => {
+replaceFieldRow({
+path: "arrayField",
+rowIndex: 0,
+data: {
+textField: "updated text",
+// blockType: "yourBlockSlug",
+// ^ if managing a block array, you need to specify the block type
+},
+})
+}} >
+Replace Row
+</button>
+)
 }
 \`\`\`
 
@@ -614,34 +606,34 @@ An example config to go along with the Custom Component
 
 \`\`\`tsx
 const ExampleCollection = {
-  slug: "example-collection",
-  fields: [
-    {
-      name: "arrayField",
-      type: "array",
-      fields: [
-        {
-          name: "textField",
-          type: "text",
-        },
-      ],
-    },
-    {
-      type: "ui",
-      name: "customArrayManager",
-      admin: {
-        components: {
-          Field: '/path/to/CustomArrayManagerField',
-        },
-      },
-    },
-  ],
+slug: "example-collection",
+fields: [
+{
+name: "arrayField",
+type: "array",
+fields: [
+{
+name: "textField",
+type: "text",
+},
+],
+},
+{
+type: "ui",
+name: "customArrayManager",
+admin: {
+components: {
+Field: '/path/to/CustomArrayManagerField',
+},
+},
+},
+],
 }
 \`\`\`
 `
-      }
-    ],
-  ]}
+}
+],
+]}
 />
 
 ## useCollapsible
@@ -658,13 +650,13 @@ The `useCollapsible` hook allows you to control parent collapsibles:
 **Example:**
 
 ```tsx
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
 
-import { useCollapsible } from '@payloadcms/ui'
+import { useCollapsible } from '@payloadcms/ui';
 
 const CustomComponent: React.FC = () => {
-  const { isCollapsed, toggle } = useCollapsible()
+  const { isCollapsed, toggle } = useCollapsible();
 
   return (
     <div>
@@ -673,8 +665,8 @@ const CustomComponent: React.FC = () => {
         Toggle
       </button>
     </div>
-  )
-}
+  );
+};
 ```
 
 ## useDocumentInfo
@@ -697,25 +689,25 @@ The `useDocumentInfo` hook provides lots of information about the document curre
 **Example:**
 
 ```tsx
-'use client'
-import { useDocumentInfo } from '@payloadcms/ui'
+'use client';
+import { useDocumentInfo } from '@payloadcms/ui';
 
 const LinkFromCategoryToPosts: React.FC = () => {
   // highlight-start
-  const { id } = useDocumentInfo()
+  const { id } = useDocumentInfo();
   // highlight-end
 
   // id will be undefined on the create form
   if (!id) {
-    return null
+    return null;
   }
 
   return (
     <a href={`/admin/collections/posts?where[or][0][and][0][category][in][0]=[${id}]`}>
       View posts
     </a>
-  )
-}
+  );
+};
 ```
 
 ## useLocale
@@ -723,21 +715,21 @@ const LinkFromCategoryToPosts: React.FC = () => {
 In any Custom Component you can get the selected locale object with the `useLocale` hook. `useLocale` gives you the full locale object, consisting of a `label`, `rtl`(right-to-left) property, and then `code`. Here is a simple example:
 
 ```tsx
-'use client'
-import { useLocale } from '@payloadcms/ui'
+'use client';
+import { useLocale } from '@payloadcms/ui';
 
 const Greeting: React.FC = () => {
   // highlight-start
-  const locale = useLocale()
+  const locale = useLocale();
   // highlight-end
 
   const trans = {
     en: 'Hello',
     es: 'Hola',
-  }
+  };
 
-  return <span> {trans[locale.code]} </span>
-}
+  return <span> {trans[locale.code]} </span>;
+};
 ```
 
 ## useAuth
@@ -755,17 +747,17 @@ Useful to retrieve info about the currently logged in user as well as methods fo
 | **`permissions`**        | The permissions of the current user                                                     |
 
 ```tsx
-'use client'
-import { useAuth } from '@payloadcms/ui'
-import type { User } from '../payload-types.ts'
+'use client';
+import { useAuth } from '@payloadcms/ui';
+import type { User } from '../payload-types.ts';
 
 const Greeting: React.FC = () => {
   // highlight-start
-  const { user } = useAuth<User>()
+  const { user } = useAuth<User>();
   // highlight-end
 
-  return <span>Hi, {user.email}!</span>
-}
+  return <span>Hi, {user.email}!</span>;
+};
 ```
 
 ## useConfig
@@ -773,16 +765,16 @@ const Greeting: React.FC = () => {
 Used to retrieve the Payload [Client Config](./components#accessing-the-payload-config).
 
 ```tsx
-'use client'
-import { useConfig } from '@payloadcms/ui'
+'use client';
+import { useConfig } from '@payloadcms/ui';
 
 const MyComponent: React.FC = () => {
   // highlight-start
-  const { config } = useConfig()
+  const { config } = useConfig();
   // highlight-end
 
-  return <span>{config.serverURL}</span>
-}
+  return <span>{config.serverURL}</span>;
+};
 ```
 
 ## useEditDepth
@@ -790,16 +782,16 @@ const MyComponent: React.FC = () => {
 Sends back how many editing levels "deep" the current component is. Edit depth is relevant while adding new documents / editing documents in modal windows and other cases.
 
 ```tsx
-'use client'
-import { useEditDepth } from '@payloadcms/ui'
+'use client';
+import { useEditDepth } from '@payloadcms/ui';
 
 const MyComponent: React.FC = () => {
   // highlight-start
-  const editDepth = useEditDepth()
+  const editDepth = useEditDepth();
   // highlight-end
 
-  return <span>My component is {editDepth} levels deep</span>
-}
+  return <span>My component is {editDepth} levels deep</span>;
+};
 ```
 
 ## usePreferences
@@ -811,12 +803,12 @@ Returns methods to set and get user preferences. More info can be found [here](h
 Returns the currently selected theme (`light`, `dark` or `auto`), a set function to update it and a boolean `autoMode`, used to determine if the theme value should be set automatically based on the user's device preferences.
 
 ```tsx
-'use client'
-import { useTheme } from '@payloadcms/ui'
+'use client';
+import { useTheme } from '@payloadcms/ui';
 
 const MyComponent: React.FC = () => {
   // highlight-start
-  const { autoMode, setTheme, theme } = useTheme()
+  const { autoMode, setTheme, theme } = useTheme();
   // highlight-end
 
   return (
@@ -831,8 +823,8 @@ const MyComponent: React.FC = () => {
         Toggle theme
       </button>
     </>
-  )
-}
+  );
+};
 ```
 
 ## useTableColumns
@@ -840,24 +832,24 @@ const MyComponent: React.FC = () => {
 Returns methods to manipulate table columns
 
 ```tsx
-'use client'
-import { useTableColumns } from '@payloadcms/ui'
+'use client';
+import { useTableColumns } from '@payloadcms/ui';
 
 const MyComponent: React.FC = () => {
   // highlight-start
-  const { setActiveColumns } = useTableColumns()
+  const { setActiveColumns } = useTableColumns();
 
   const resetColumns = () => {
-    setActiveColumns(['id', 'createdAt', 'updatedAt'])
-  }
+    setActiveColumns(['id', 'createdAt', 'updatedAt']);
+  };
   // highlight-end
 
   return (
     <button type="button" onClick={resetColumns}>
       Reset columns
     </button>
-  )
-}
+  );
+};
 ```
 
 ## useDocumentEvents
@@ -872,14 +864,14 @@ The `useDocumentEvents` hook provides a way of subscribing to cross-document eve
 **Example:**
 
 ```tsx
-'use client'
-import { useDocumentEvents } from '@payloadcms/ui'
+'use client';
+import { useDocumentEvents } from '@payloadcms/ui';
 
 const ListenForUpdates: React.FC = () => {
-  const { mostRecentUpdate } = useDocumentEvents()
+  const { mostRecentUpdate } = useDocumentEvents();
 
-  return <span>{JSON.stringify(mostRecentUpdate)}</span>
-}
+  return <span>{JSON.stringify(mostRecentUpdate)}</span>;
+};
 ```
 
 <Banner type="info">

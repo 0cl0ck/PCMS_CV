@@ -7,13 +7,18 @@ keywords: live preview, frontend, react, next.js, vue, nuxt.js, svelte, hook, us
 ---
 
 <Banner type="info">
-  Server-side Live Preview is only for front-end frameworks that support the concept of Server Components, i.e. [React Server Components](https://react.dev/reference/rsc/server-components). If your front-end application is built with a client-side framework like the [Next.js Pages Router](https://nextjs.org/docs/pages), [React Router](https://reactrouter.com), [Vue 3](https://vuejs.org), etc., see [client-side Live Preview](./client).
+  Server-side Live Preview is only for front-end frameworks that support the concept of Server
+  Components, i.e. [React Server Components](https://react.dev/reference/rsc/server-components). If
+  your front-end application is built with a client-side framework like the [Next.js Pages
+  Router](https://nextjs.org/docs/pages), [React Router](https://reactrouter.com), [Vue
+  3](https://vuejs.org), etc., see [client-side Live Preview](./client).
 </Banner>
 
 Server-side Live Preview works by making a roundtrip to the server every time your document is saved, i.e. draft save, autosave, or publish. While using Live Preview, the Admin Panel emits a new `window.postMessage` event which your front-end application can use to invoke this process. In Next.js, this means simply calling `router.refresh()` which will hydrate the HTML using new data straight from the [Local API](../local-api/overview).
 
 <Banner type="warning">
-  It is recommended that you enable [Autosave](../versions/autosave) alongside Live Preview to make the experience feel more responsive.
+  It is recommended that you enable [Autosave](../versions/autosave) alongside Live Preview to make
+  the experience feel more responsive.
 </Banner>
 
 If your front-end application is built with [React](#react), you can use the `RefreshRouteOnChange` function that Payload provides. In the future, all other major frameworks like Vue and Svelte will be officially supported. If you are using any of these frameworks today, you can still integrate with Live Preview yourself using the underlying tooling that Payload provides. See [building your own router refresh component](#building-your-own-router-refresh-component) for more information.
@@ -33,46 +38,46 @@ Then, render the `RefreshRouteOnSave` component anywhere in your `page.tsx`. Her
 `page.tsx`:
 
 ```tsx
-import { RefreshRouteOnSave } from './RefreshRouteOnSave.tsx'
-import { getPayload } from 'payload'
-import config from '../payload.config'
+import { RefreshRouteOnSave } from './RefreshRouteOnSave.tsx';
+import { getPayload } from 'payload';
+import config from '../payload.config';
 
 export default async function Page() {
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config });
 
   const page = await payload.findByID({
     collection: 'pages',
     id: '123',
-    draft: true
-  })
+    draft: true,
+  });
 
   return (
     <Fragment>
       <RefreshRouteOnSave />
       <h1>{page.title}</h1>
     </Fragment>
-  )
+  );
 }
 ```
 
 `RefreshRouteOnSave.tsx`:
 
 ```tsx
-'use client'
-import { RefreshRouteOnSave as PayloadLivePreview } from '@payloadcms/live-preview-react'
-import { useRouter } from 'next/navigation.js'
-import React from 'react'
+'use client';
+import { RefreshRouteOnSave as PayloadLivePreview } from '@payloadcms/live-preview-react';
+import { useRouter } from 'next/navigation.js';
+import React from 'react';
 
 export const RefreshRouteOnSave: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <PayloadLivePreview
       refresh={() => router.refresh()}
       serverURL={process.env.NEXT_PUBLIC_PAYLOAD_URL}
     />
-  )
-}
+  );
+};
 ```
 
 ## Building your own router refresh component
@@ -87,15 +92,15 @@ npm install @payloadcms/live-preview
 
 This package provides the following functions:
 
-| Path                  | Description                                                                                                                                |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **`ready`**           | Sends a `window.postMessage` event to the Admin Panel to indicate that the front-end is ready to receive messages.                         |
-| **`isDocumentEvent`** | Checks if a `MessageEvent` originates from the Admin Panel and is a document-level event, i.e. draft save, autosave, publish, etc.         |
+| Path                  | Description                                                                                                                        |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **`ready`**           | Sends a `window.postMessage` event to the Admin Panel to indicate that the front-end is ready to receive messages.                 |
+| **`isDocumentEvent`** | Checks if a `MessageEvent` originates from the Admin Panel and is a document-level event, i.e. draft save, autosave, publish, etc. |
 
 With these functions, you can build your own hook using your front-end framework of choice:
 
 ```tsx
-import { ready, isDocumentEvent } from '@payloadcms/live-preview'
+import { ready, isDocumentEvent } from '@payloadcms/live-preview';
 
 // To build your own component:
 // 1. Listen for document-level `window.postMessage` events sent from the Admin Panel
@@ -107,55 +112,55 @@ import { ready, isDocumentEvent } from '@payloadcms/live-preview'
 Here is an example of what the same `RefreshRouteOnSave` React component from above looks like under the hood:
 
 ```tsx
-'use client'
+'use client';
 
-import type React from 'react'
+import type React from 'react';
 
-import { isDocumentEvent, ready } from '@payloadcms/live-preview'
-import { useCallback, useEffect, useRef } from 'react'
+import { isDocumentEvent, ready } from '@payloadcms/live-preview';
+import { useCallback, useEffect, useRef } from 'react';
 
 export const RefreshRouteOnSave: React.FC<{
-  apiRoute?: string
-  depth?: number
-  refresh: () => void
-  serverURL: string
+  apiRoute?: string;
+  depth?: number;
+  refresh: () => void;
+  serverURL: string;
 }> = (props) => {
-  const { apiRoute, depth, refresh, serverURL } = props
-  const hasSentReadyMessage = useRef<boolean>(false)
+  const { apiRoute, depth, refresh, serverURL } = props;
+  const hasSentReadyMessage = useRef<boolean>(false);
 
   const onMessage = useCallback(
     (event: MessageEvent) => {
       if (isDocumentEvent(event, serverURL)) {
         if (typeof refresh === 'function') {
-          refresh()
+          refresh();
         }
       }
     },
     [refresh, serverURL],
-  )
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window.addEventListener('message', onMessage)
+      window.addEventListener('message', onMessage);
     }
 
     if (!hasSentReadyMessage.current) {
-      hasSentReadyMessage.current = true
+      hasSentReadyMessage.current = true;
 
       ready({
         serverURL,
-      })
+      });
     }
 
     return () => {
       if (typeof window !== 'undefined') {
-        window.removeEventListener('message', onMessage)
+        window.removeEventListener('message', onMessage);
       }
-    }
-  }, [serverURL, onMessage, depth, apiRoute])
+    };
+  }, [serverURL, onMessage, depth, apiRoute]);
 
-  return null
-}
+  return null;
+};
 ```
 
 ## Example

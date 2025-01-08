@@ -17,19 +17,18 @@ At the core, a strategy is a way to authenticate a user making a request. As of 
 
 A strategy is made up of the following:
 
-| Parameter                   | Description                                                               |
-| --------------------------- | ------------------------------------------------------------------------- |
-| **`name`** \*               | The name of your strategy                                                 |
-| **`authenticate`**&nbsp;\*  | A function that takes in the parameters below and returns a user or null. |
+| Parameter                  | Description                                                               |
+| -------------------------- | ------------------------------------------------------------------------- |
+| **`name`** \*              | The name of your strategy                                                 |
+| **`authenticate`**&nbsp;\* | A function that takes in the parameters below and returns a user or null. |
 
 The `authenticate` function is passed the following arguments:
 
-| Argument            | Description                                                                                       |
-| ------------------- | ------------------------------------------------------------------------------------------------- |
-| **`headers`** \*    | The headers on the incoming request. Useful for retrieving identifiable information on a request. |
-| **`payload`** \*    | The Payload class. Useful for authenticating the identifiable information against Payload.        |
-| **`isGraphQL`**     | Whether or not the request was made from a GraphQL endpoint. Default is `false`.                  |
-
+| Argument         | Description                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| **`headers`** \* | The headers on the incoming request. Useful for retrieving identifiable information on a request. |
+| **`payload`** \* | The Payload class. Useful for authenticating the identifiable information against Payload.        |
+| **`isGraphQL`**  | Whether or not the request was made from a GraphQL endpoint. Default is `false`.                  |
 
 ### Example Strategy
 
@@ -38,7 +37,7 @@ At its core a strategy simply takes information from the incoming request and re
 Your `authenticate` method should return an object containing a Payload user document and any optional headers that you'd like Payload to set for you when we return a response.
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -59,7 +58,7 @@ export const Users: CollectionConfig = {
                 equals: headers.get('secret'),
               },
             },
-          })
+          });
 
           return {
             // Send the user back to authenticate,
@@ -70,12 +69,12 @@ export const Users: CollectionConfig = {
             // that you'd like Payload to set here when
             // it returns the response
             responseHeaders: new Headers({
-              'some-header': 'my header value'
-            })
-          }
-        }
-      }
-    ]
+              'some-header': 'my header value',
+            }),
+          };
+        },
+      },
+    ],
     // highlight-end
   },
   fields: [
@@ -89,6 +88,6 @@ export const Users: CollectionConfig = {
       name: 'secret',
       type: 'text',
     },
-  ]
-}
+  ],
+};
 ```

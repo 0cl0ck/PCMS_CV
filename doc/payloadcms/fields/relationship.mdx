@@ -24,7 +24,7 @@ The Relationship field is used in a variety of ways, including:
 To add a Relationship Field, set the `type` to `relationship` in your [Field Config](./overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const MyRelationshipField: Field = {
   // ...
@@ -32,7 +32,7 @@ export const MyRelationshipField: Field = {
   type: 'relationship',
   relationTo: 'products',
   // highlight-end
-}
+};
 ```
 
 ## Config Options
@@ -66,8 +66,8 @@ export const MyRelationshipField: Field = {
 _\* An asterisk denotes that a property is required._
 
 <Banner type="success">
-  **Tip:**
-  The [Depth](../queries/depth) parameter can be used to automatically populate related documents that are returned by the API.
+  **Tip:** The [Depth](../queries/depth) parameter can be used to automatically populate related
+  documents that are returned by the API.
 </Banner>
 
 ## Admin Options
@@ -75,24 +75,25 @@ _\* An asterisk denotes that a property is required._
 The customize the appearance and behavior of the Relationship Field in the [Admin Panel](../admin/overview), you can use the `admin` option:
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const MyRelationshipField: Field = {
   // ...
-  admin: { // highlight-line
+  admin: {
+    // highlight-line
     // ...
   },
-}
+};
 ```
 
 The Relationship Field inherits all of the default options from the base [Field Admin Config](../admin/fields#admin-options), plus the following additional options:
 
-| Property                       | Description                                                                                                                              |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **`isSortable`**               | Set to `true` if you'd like this field to be sortable within the Admin UI using drag and drop (only works when `hasMany` is set to `true`). |
-| **`allowCreate`**              | Set to `false` if you'd like to disable the ability to create new documents from within the relationship field.                             |
-| **`allowEdit`**              | Set to `false` if you'd like to disable the ability to edit documents from within the relationship field.                             |
-| **`sortOptions`**              | Define a default sorting order for the options within a Relationship field's dropdown. [More](#sortOptions)                                |
+| Property          | Description                                                                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`isSortable`**  | Set to `true` if you'd like this field to be sortable within the Admin UI using drag and drop (only works when `hasMany` is set to `true`). |
+| **`allowCreate`** | Set to `false` if you'd like to disable the ability to create new documents from within the relationship field.                             |
+| **`allowEdit`**   | Set to `false` if you'd like to disable the ability to edit documents from within the relationship field.                                   |
+| **`sortOptions`** | Define a default sorting order for the options within a Relationship field's dropdown. [More](#sortOptions)                                 |
 
 ### Sort Options
 
@@ -161,7 +162,7 @@ called with an argument object with the following properties:
 ## Example
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const ExampleCollection: CollectionConfig = {
   slug: 'example-collection',
@@ -175,18 +176,18 @@ export const ExampleCollection: CollectionConfig = {
         if (relationTo === 'products') {
           return {
             stock: { greater_than: siblingData.quantity },
-          }
+          };
         }
 
         if (relationTo === 'services') {
           return {
             isAvailable: { equals: true },
-          }
+          };
         }
       },
     },
   ],
-}
+};
 ```
 
 You can learn more about writing queries [here](/docs/queries/overview).
@@ -194,10 +195,11 @@ You can learn more about writing queries [here](/docs/queries/overview).
 <Banner type="warning">
   **Note:**
 
-  When a relationship field has both **filterOptions** and a custom{' '}
-  **validate** function, the api will not validate **filterOptions**{' '}
-  unless you call the default relationship field validation function imported from{' '}
-  **payload/shared** in your validate function.
+When a relationship field has both **filterOptions** and a custom{' '}
+**validate** function, the api will not validate **filterOptions**{' '}
+unless you call the default relationship field validation function imported from{' '}
+**payload/shared** in your validate function.
+
 </Banner>
 
 ## Bi-directional relationships
@@ -384,6 +386,7 @@ Since we are referencing multiple collections, the field you are querying on may
 <Banner type="warning">
   **Note:**
 
-  You **cannot** query on a field within a polymorphic relationship as you would with a
-  non-polymorphic relationship.
+You **cannot** query on a field within a polymorphic relationship as you would with a
+non-polymorphic relationship.
+
 </Banner>

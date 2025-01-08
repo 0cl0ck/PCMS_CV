@@ -1,27 +1,27 @@
 // storage-adapter-import-placeholder
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
 
-import sharp from 'sharp' // sharp-import
-import path from 'path'
-import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
+import sharp from 'sharp'; // sharp-import
+import path from 'path';
+import { buildConfig } from 'payload';
+import { fileURLToPath } from 'url';
 
-import { Categories } from './collections/Categories'
-import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
-import { Users } from './collections/Users'
-import { Orders } from './collections/Orders'
-import { Products } from './collections/Products'
-import { ProductCategories } from './collections/ProductCategories'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
-import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
-import { getServerSideURL } from './utilities/getURL'
+import { Categories } from './collections/Categories';
+import { Media } from './collections/Media';
+import { Pages } from './collections/Pages';
+import { Posts } from './collections/Posts';
+import { Users } from './collections/Users';
+import { Orders } from './collections/Orders';
+import { Products } from './collections/Products';
+import { ProductCategories } from './collections/ProductCategories';
+import { Footer } from './Footer/config';
+import { Header } from './Header/config';
+import { plugins } from './plugins';
+import { defaultLexical } from '@/fields/defaultLexical';
+import { getServerSideURL } from './utilities/getURL';
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 export default buildConfig({
   admin: {
@@ -77,4 +77,4 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-})
+});

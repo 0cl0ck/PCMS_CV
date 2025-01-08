@@ -11,9 +11,10 @@ keywords:
 For example, your app might need to render a specific interface that Payload does not inherently support, such as a color picker. To do this, you could replace the default [Text Field](../fields/text) input with your own user-friendly component that formats the data into a valid color value.
 
 <Banner type="success">
-  **Tip:**
-  Don't see a built-in field type that you need? Build it! Using a combination of [Field Validations](../fields/overview#validation)
-  and [Custom Components](./components), you can override the entirety of how a component functions within the [Admin Panel](./overview) to effectively create your own field type.
+  **Tip:** Don't see a built-in field type that you need? Build it! Using a combination of [Field
+  Validations](../fields/overview#validation) and [Custom Components](./components), you can
+  override the entirety of how a component functions within the [Admin Panel](./overview) to
+  effectively create your own field type.
 </Banner>
 
 ## Admin Options
@@ -21,7 +22,7 @@ For example, your app might need to render a specific interface that Payload doe
 You can customize the appearance and behavior of fields within the [Admin Panel](./overview) through the `admin` property of any [Field Config](../fields/overview):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const CollectionConfig: CollectionConfig = {
   // ...
@@ -30,12 +31,13 @@ export const CollectionConfig: CollectionConfig = {
     {
       name: 'myField',
       type: 'text',
-      admin: { // highlight-line
+      admin: {
+        // highlight-line
         // ...
       },
-    }
-  ]
-}
+    },
+  ],
+};
 ```
 
 The following options are available:
@@ -62,14 +64,14 @@ Field Descriptions are used to provide additional information to the editor abou
 
 A description can be configured in three ways:
 
-  - As a string.
-  - As a function which returns a string. [More details](#description-functions).
-  - As a React component. [More details](#description).
+- As a string.
+- As a function which returns a string. [More details](#description-functions).
+- As a React component. [More details](#description).
 
 To add a Custom Description to a field, use the `admin.description` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { SanitizedCollectionConfig } from 'payload'
+import type { SanitizedCollectionConfig } from 'payload';
 
 export const MyCollectionConfig: SanitizedCollectionConfig = {
   // ...
@@ -79,16 +81,16 @@ export const MyCollectionConfig: SanitizedCollectionConfig = {
       name: 'myField',
       type: 'text',
       admin: {
-        description: 'Hello, world!' // highlight-line
+        description: 'Hello, world!', // highlight-line
       },
     },
-  ]
-}
+  ],
+};
 ```
 
 <Banner type="warning">
-  **Reminder:**
-  To replace the Field Description with a [Custom Component](./components), use the `admin.components.Description` property. [More details](#description).
+  **Reminder:** To replace the Field Description with a [Custom Component](./components), use the
+  `admin.components.Description` property. [More details](#description).
 </Banner>
 
 #### Description Functions
@@ -98,7 +100,7 @@ Custom Descriptions can also be defined as a function. Description Functions are
 To add a Description Function to a field, set the `admin.description` property to a _function_ in your [Field Config](../fields/overview):
 
 ```ts
-import type { SanitizedCollectionConfig } from 'payload'
+import type { SanitizedCollectionConfig } from 'payload';
 
 export const MyCollectionConfig: SanitizedCollectionConfig = {
   // ...
@@ -108,22 +110,22 @@ export const MyCollectionConfig: SanitizedCollectionConfig = {
       name: 'myField',
       type: 'text',
       admin: {
-        description: ({ t }) => `${t('Hello, world!')}` // highlight-line
+        description: ({ t }) => `${t('Hello, world!')}`, // highlight-line
       },
     },
-  ]
-}
+  ],
+};
 ```
 
 All Description Functions receive the following arguments:
 
-| Argument       | Description                                                      |
-| -------------- | ---------------------------------------------------------------- |
-| **`t`**        | The `t` function used to internationalize the Admin Panel. [More details](../configuration/i18n) |
+| Argument | Description                                                                                      |
+| -------- | ------------------------------------------------------------------------------------------------ |
+| **`t`**  | The `t` function used to internationalize the Admin Panel. [More details](../configuration/i18n) |
 
 <Banner type="info">
-  **Note:**
-  If you need to subscribe to live updates within your form, use a Description Component instead. [More details](#description).
+  **Note:** If you need to subscribe to live updates within your form, use a Description Component
+  instead. [More details](#description).
 </Banner>
 
 ## Conditional Logic
@@ -153,15 +155,15 @@ The `condition` function should return a boolean that will control if the field 
         // highlight-start
         condition: (data, siblingData, { user }) => {
           if (data.enableGreeting) {
-            return true
+            return true;
           } else {
-            return false
+            return false;
           }
         },
         // highlight-end
       },
     },
-  ]
+  ];
 }
 ```
 
@@ -176,7 +178,7 @@ Within the [Admin Panel](./overview), fields are represented in three distinct p
 To swap in Field Components with your own, use the `admin.components` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const CollectionConfig: CollectionConfig = {
   // ...
@@ -185,27 +187,28 @@ export const CollectionConfig: CollectionConfig = {
     {
       // ...
       admin: {
-        components: { // highlight-line
+        components: {
+          // highlight-line
           // ...
         },
       },
-    }
-  ]
-}
+    },
+  ],
+};
 ```
 
 The following options are available:
 
-| Component    | Description                                                                                                                 |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
-| **`Field`**  | The form field rendered of the Edit View. [More details](#field).                                                |
-| **`Cell`**   | The table cell rendered of the List View. [More details](#cell).              |
-| **`Filter`** | The filter component rendered in the List View. [More details](#filter). |
-| **`Label`**       | Override the default Label of the Field Component. [More details](#label).                                    |
-| **`Error`**       | Override the default Error of the Field Component. [More details](#error).                                    |
-| **`Description`** | Override the default Description of the Field Component. [More details](#description).                      |
-| **`beforeInput`** | An array of elements that will be added before the input of the Field Component. [More details](#afterinput-and-beforeinput).|
-| **`afterInput`**  | An array of elements that will be added after the input of the Field Component. [More details](#afterinput-and-beforeinput). |
+| Component         | Description                                                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **`Field`**       | The form field rendered of the Edit View. [More details](#field).                                                             |
+| **`Cell`**        | The table cell rendered of the List View. [More details](#cell).                                                              |
+| **`Filter`**      | The filter component rendered in the List View. [More details](#filter).                                                      |
+| **`Label`**       | Override the default Label of the Field Component. [More details](#label).                                                    |
+| **`Error`**       | Override the default Error of the Field Component. [More details](#error).                                                    |
+| **`Description`** | Override the default Description of the Field Component. [More details](#description).                                        |
+| **`beforeInput`** | An array of elements that will be added before the input of the Field Component. [More details](#afterinput-and-beforeinput). |
+| **`afterInput`**  | An array of elements that will be added after the input of the Field Component. [More details](#afterinput-and-beforeinput).  |
 
 ### Field
 
@@ -214,7 +217,7 @@ The Field Component is the actual form field rendered in the Edit View. This is 
 To swap in your own Field Component, use the `admin.components.Field` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const CollectionConfig: CollectionConfig = {
   // ...
@@ -227,46 +230,49 @@ export const CollectionConfig: CollectionConfig = {
           Field: '/path/to/MyFieldComponent', // highlight-line
         },
       },
-    }
-  ]
-}
+    },
+  ],
+};
 ```
 
 _For details on how to build Custom Components, see [Building Custom Components](./components#building-custom-components)._
 
 <Banner type="warning">
-  Instead of replacing the entire Field Component, you can alternately replace or slot-in only specific parts by using the [`Label`](#label), [`Error`](#error), [`beforeInput`](#afterinput-and-beforinput), and [`afterInput`](#afterinput-and-beforinput) properties.
+  Instead of replacing the entire Field Component, you can alternately replace or slot-in only
+  specific parts by using the [`Label`](#label), [`Error`](#error),
+  [`beforeInput`](#afterinput-and-beforinput), and [`afterInput`](#afterinput-and-beforinput)
+  properties.
 </Banner>
 
 #### Default Props
 
 All Field Components receive the following props by default:
 
-| Property         | Description                                                                                                                                                                                                                      |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`docPreferences`** | An object that contains the [Preferences](./preferences) for the document.
-| **`field`** | In Client Components, this is the sanitized Client Field Config. In Server Components, this is the original Field Config. Server Components will also receive the sanitized field config through the`clientField` prop (see below). |
-| **`locale`**     | The locale of the field. [More details](../configuration/localization).                                                                                                                                                                   |
-| **`readOnly`**   | A boolean value that represents if the field is read-only or not.                                                                                                                                                                  |
-| **`user`**       | The currently authenticated user. [More details](../authentication/overview). |
-| **`validate`**   | A function that can be used to validate the field.                                                                                                                                                                                 |
-| **`path`**       | A string representing the direct, dynamic path to the field at runtime, i.e. `myGroup.myArray.0.myField`. |
-| **`schemaPath`** | A string representing the direct, static path to the [Field Config](../fields/overview), i.e. `posts.myGroup.myArray.myField`. |
-| **`indexPath`**  | A hyphen-notated string representing the path to the field _within the nearest named ancestor field_, i.e. `0-0` |
+| Property             | Description                                                                                                                                                                                                                         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`docPreferences`** | An object that contains the [Preferences](./preferences) for the document.                                                                                                                                                          |
+| **`field`**          | In Client Components, this is the sanitized Client Field Config. In Server Components, this is the original Field Config. Server Components will also receive the sanitized field config through the`clientField` prop (see below). |
+| **`locale`**         | The locale of the field. [More details](../configuration/localization).                                                                                                                                                             |
+| **`readOnly`**       | A boolean value that represents if the field is read-only or not.                                                                                                                                                                   |
+| **`user`**           | The currently authenticated user. [More details](../authentication/overview).                                                                                                                                                       |
+| **`validate`**       | A function that can be used to validate the field.                                                                                                                                                                                  |
+| **`path`**           | A string representing the direct, dynamic path to the field at runtime, i.e. `myGroup.myArray.0.myField`.                                                                                                                           |
+| **`schemaPath`**     | A string representing the direct, static path to the [Field Config](../fields/overview), i.e. `posts.myGroup.myArray.myField`.                                                                                                      |
+| **`indexPath`**      | A hyphen-notated string representing the path to the field _within the nearest named ancestor field_, i.e. `0-0`                                                                                                                    |
 
 In addition to the above props, all Server Components will also receive the following props:
 
-| Property         | Description                                                                                                                                                                                                                      |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`clientField`** | The serializable Client Field Config. |
-| **`field`** | The Field Config. [More details](../fields/overview). |
-| **`data`**       | The current document being edited.                                                                                                                                                                                                   |
-| **`i18n`**       | The [i18n](../configuration/i18n) object.
-| **`payload`**    | The [Payload](../local-api/overview) class.                                                           |
-| **`permissions`** | The field permissions based on the currently authenticated user.                                                                                                                                                                                                   |
-| **`siblingData`** | The data of the field's siblings.                                                                                                                                                                                                   |
-| **`user`**       | The currently authenticated user. [More details](../authentication/overview). |
-| **`value`**      | The value of the field at render-time.                                                                                                                                                                                                   |
+| Property          | Description                                                                   |
+| ----------------- | ----------------------------------------------------------------------------- |
+| **`clientField`** | The serializable Client Field Config.                                         |
+| **`field`**       | The Field Config. [More details](../fields/overview).                         |
+| **`data`**        | The current document being edited.                                            |
+| **`i18n`**        | The [i18n](../configuration/i18n) object.                                     |
+| **`payload`**     | The [Payload](../local-api/overview) class.                                   |
+| **`permissions`** | The field permissions based on the currently authenticated user.              |
+| **`siblingData`** | The data of the field's siblings.                                             |
+| **`user`**        | The currently authenticated user. [More details](../authentication/overview). |
+| **`value`**       | The value of the field at render-time.                                        |
 
 #### Sending and receiving values from the form
 
@@ -275,23 +281,20 @@ When swapping out the `Field` component, you are responsible for sending and rec
 To do so, import the [`useField`](./hooks#usefield) hook from `@payloadcms/ui` and use it to manage the field's value:
 
 ```tsx
-'use client'
-import { useField } from '@payloadcms/ui'
+'use client';
+import { useField } from '@payloadcms/ui';
 
 export const CustomTextField: React.FC = () => {
-  const { value, setValue } = useField() // highlight-line
+  const { value, setValue } = useField(); // highlight-line
 
-  return (
-    <input
-      onChange={(e) => setValue(e.target.value)}
-      value={value}
-    />
-  )
-}
+  return <input onChange={(e) => setValue(e.target.value)} value={value} />;
+};
 ```
 
 <Banner type="success">
-  For a complete list of all available React hooks, see the [Payload React Hooks](./hooks) documentation. For additional help, see [Building Custom Components](./components#building-custom-components).
+  For a complete list of all available React hooks, see the [Payload React Hooks](./hooks)
+  documentation. For additional help, see [Building Custom
+  Components](./components#building-custom-components).
 </Banner>
 
 #### TypeScript
@@ -305,7 +308,7 @@ import type {
   TextFieldClientProps,
   TextFieldServerProps,
   // ...and so on for each Field Type
-} from 'payload'
+} from 'payload';
 ```
 
 ### Cell
@@ -315,7 +318,7 @@ The Cell Component is rendered in the table of the List View. It represents the 
 To swap in your own Cell Component, use the `admin.components.Cell` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const myField: Field = {
   name: 'myField',
@@ -325,15 +328,15 @@ export const myField: Field = {
       Cell: '/path/to/MyCustomCellComponent', // highlight-line
     },
   },
-}
+};
 ```
 
 All Cell Components receive the same [Default Field Component Props](#field), plus the following:
 
-| Property         | Description                                                       |
-| ---------------- | ----------------------------------------------------------------- |
-| **`link`** | A boolean representing whether this cell should be wrapped in a link. |
-| **`onClick`** | A function that is called when the cell is clicked. |
+| Property      | Description                                                           |
+| ------------- | --------------------------------------------------------------------- |
+| **`link`**    | A boolean representing whether this cell should be wrapped in a link. |
+| **`onClick`** | A function that is called when the cell is clicked.                   |
 
 For details on how to build Custom Components themselves, see [Building Custom Components](./components#building-custom-components).
 
@@ -344,7 +347,7 @@ The Filter Component is the actual input element rendered within the "Filter By"
 To swap in your own Filter Component, use the `admin.components.Filter` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const myField: Field = {
   name: 'myField',
@@ -354,7 +357,7 @@ export const myField: Field = {
       Filter: '/path/to/MyCustomFilterComponent', // highlight-line
     },
   },
-}
+};
 ```
 
 All Custom Filter Components receive the same [Default Field Component Props](#field).
@@ -368,7 +371,7 @@ The Label Component is rendered anywhere a field needs to be represented by a la
 To swap in your own Label Component, use the `admin.components.Label` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const myField: Field = {
   name: 'myField',
@@ -378,7 +381,7 @@ export const myField: Field = {
       Label: '/path/to/MyCustomLabelComponent', // highlight-line
     },
   },
-}
+};
 ```
 
 All Custom Label Components receive the same [Default Field Component Props](#field).
@@ -394,7 +397,7 @@ import type {
   TextFieldLabelServerComponent,
   TextFieldLabelClientComponent,
   // ...and so on for each Field Type
-} from 'payload'
+} from 'payload';
 ```
 
 ### Description
@@ -404,7 +407,7 @@ Alternatively to the [Description Property](#the-description-property), you can 
 To add a Description Component to a field, use the `admin.components.Description` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { SanitizedCollectionConfig } from 'payload'
+import type { SanitizedCollectionConfig } from 'payload';
 
 export const MyCollectionConfig: SanitizedCollectionConfig = {
   // ...
@@ -416,11 +419,11 @@ export const MyCollectionConfig: SanitizedCollectionConfig = {
       admin: {
         components: {
           Description: '/path/to/MyCustomDescriptionComponent', // highlight-line
-        }
-      }
-    }
-  ]
-}
+        },
+      },
+    },
+  ],
+};
 ```
 
 All Custom Description Components receive the same [Default Field Component Props](#field).
@@ -436,7 +439,7 @@ import type {
   TextFieldDescriptionServerComponent,
   TextFieldDescriptionClientComponent,
   // And so on for each Field Type
-} from 'payload'
+} from 'payload';
 ```
 
 ### Error
@@ -446,7 +449,7 @@ The Error Component is rendered when a field fails validation. It is typically d
 To swap in your own Error Component, use the `admin.components.Error` property in your [Field Config](../fields/overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const myField: Field = {
   name: 'myField',
@@ -456,7 +459,7 @@ export const myField: Field = {
       Error: '/path/to/MyCustomErrorComponent', // highlight-line
     },
   },
-}
+};
 ```
 
 All Error Components receive the [Default Field Component Props](#field).
@@ -472,7 +475,7 @@ import type {
   TextFieldErrorServerComponent,
   TextFieldErrorClientComponent,
   // And so on for each Field Type
-} from 'payload'
+} from 'payload';
 ```
 
 ### afterInput and beforeInput
@@ -482,7 +485,7 @@ With these properties you can add multiple components _before_ and _after_ the i
 To add components before and after the input element, use the `admin.components.beforeInput` and `admin.components.afterInput` properties in your [Field Config](../fields/overview):
 
 ```ts
-import type { SanitizedCollectionConfig } from 'payload'
+import type { SanitizedCollectionConfig } from 'payload';
 
 export const MyCollectionConfig: SanitizedCollectionConfig = {
   // ...
@@ -497,11 +500,11 @@ export const MyCollectionConfig: SanitizedCollectionConfig = {
           beforeInput: ['/path/to/MyCustomComponent'],
           afterInput: ['/path/to/MyOtherCustomComponent'],
           // highlight-end
-        }
-      }
-    }
-  ]
-}
+        },
+      },
+    },
+  ],
+};
 ```
 
 All `afterInput` and `beforeInput` Components receive the same [Default Field Component Props](#field).

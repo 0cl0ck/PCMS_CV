@@ -101,9 +101,9 @@ A function that takes in the default fields via an object and expects an array o
       {
         name: 'customField',
         type: 'text',
-      }
-    ]
-  })
+      },
+    ],
+  });
 }
 ```
 
@@ -131,31 +131,31 @@ A function that allows you to return any meta title, including from document's c
   // ...
   seoPlugin({
     generateTitle: ({ doc }) => `Website.com — ${doc?.title}`,
-  })
+  });
 }
 ```
 
 All "generate" functions receive the following arguments:
 
-| Argument | Description |
-| --- | --- |
-| **`collectionConfig`** | The configuration of the collection. |
-| **`collectionSlug`** | The slug of the collection. |
-| **`doc`** | The data of the current document. |
-| **`docPermissions`** | The permissions of the document. |
-| **`globalConfig`** | The configuration of the global. |
-| **`globalSlug`** | The slug of the global. |
-| **`hasPublishPermission`** | Whether the user has permission to publish the document. |
-| **`hasSavePermission`** | Whether the user has permission to save the document. |
-| **`id`** | The ID of the document. |
-| **`initialData`** | The initial data of the document. |
-| **`initialState`** | The initial state of the document. |
-| **`locale`** | The locale of the document. |
-| **`preferencesKey`**  | The preferences key of the document. |
-| **`publishedDoc`** | The published document. |
-| **`req`** | The Payload request object containing `user`, `payload`, `i18n`, etc. |
-| **`title`** | The title of the document. |
-| **`versionsCount`** | The number of versions of the document. |
+| Argument                   | Description                                                           |
+| -------------------------- | --------------------------------------------------------------------- |
+| **`collectionConfig`**     | The configuration of the collection.                                  |
+| **`collectionSlug`**       | The slug of the collection.                                           |
+| **`doc`**                  | The data of the current document.                                     |
+| **`docPermissions`**       | The permissions of the document.                                      |
+| **`globalConfig`**         | The configuration of the global.                                      |
+| **`globalSlug`**           | The slug of the global.                                               |
+| **`hasPublishPermission`** | Whether the user has permission to publish the document.              |
+| **`hasSavePermission`**    | Whether the user has permission to save the document.                 |
+| **`id`**                   | The ID of the document.                                               |
+| **`initialData`**          | The initial data of the document.                                     |
+| **`initialState`**         | The initial state of the document.                                    |
+| **`locale`**               | The locale of the document.                                           |
+| **`preferencesKey`**       | The preferences key of the document.                                  |
+| **`publishedDoc`**         | The published document.                                               |
+| **`req`**                  | The Payload request object containing `user`, `payload`, `i18n`, etc. |
+| **`title`**                | The title of the document.                                            |
+| **`versionsCount`**        | The number of versions of the document.                               |
 
 ##### `generateDescription`
 
@@ -167,7 +167,7 @@ A function that allows you to return any meta description, including from docume
   // ...
   seoPlugin({
     generateDescription: ({ doc }) => doc?.excerpt,
-  })
+  });
 }
 ```
 
@@ -183,7 +183,7 @@ A function that allows you to return any meta image, including from document's c
   // ...
   seoPlugin({
     generateImage: ({ doc }) => doc?.featuredImage,
-  })
+  });
 }
 ```
 
@@ -198,9 +198,8 @@ A function called by the search preview component to display the actual URL of y
 {
   // ...
   seoPlugin({
-    generateURL: ({ doc, collectionSlug }) =>
-      `https://yoursite.com/${collectionSlug}/${doc?.slug}`,
-  })
+    generateURL: ({ doc, collectionSlug }) => `https://yoursite.com/${collectionSlug}/${doc?.slug}`,
+  });
 }
 ```
 
@@ -216,7 +215,7 @@ Rename the meta group interface name that is generated for TypeScript and GraphQ
   // ...
   seoPlugin({
     interfaceName: 'customInterfaceNameSEO',
-  })
+  });
 }
 ```
 
@@ -225,12 +224,19 @@ Rename the meta group interface name that is generated for TypeScript and GraphQ
 There is the option to directly import any of the fields from the plugin so that you can include them anywhere as needed.
 
 <Banner type="info">
-  You will still need to configure the plugin in the Payload Config in order to configure the generation functions.
-  Since these fields are imported and used directly, they don't have access to the plugin config so they may need additional arguments to work the same way.
+  You will still need to configure the plugin in the Payload Config in order to configure the
+  generation functions. Since these fields are imported and used directly, they don't have access to
+  the plugin config so they may need additional arguments to work the same way.
 </Banner>
 
 ```ts
-import { MetaDescriptionField, MetaImageField, MetaTitleField, OverviewField, PreviewField } from '@payloadcms/plugin-seo/fields'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields';
 
 // Used as fields
 MetaImageField({
@@ -239,17 +245,17 @@ MetaImageField({
 
   // if the `generateImage` function is configured
   hasGenerateFn: true,
-})
+});
 
 MetaDescriptionField({
   // if the `generateDescription` function is configured
   hasGenerateFn: true,
-})
+});
 
 MetaTitleField({
   // if the `generateTitle` function is configured
   hasGenerateFn: true,
-})
+});
 
 PreviewField({
   // if the `generateUrl` function is configured
@@ -258,18 +264,20 @@ PreviewField({
   // field paths to match the target field for data
   titlePath: 'meta.title',
   descriptionPath: 'meta.description',
-})
+});
 
 OverviewField({
   // field paths to match the target field for data
   titlePath: 'meta.title',
   descriptionPath: 'meta.description',
   imagePath: 'meta.image',
-})
+});
 ```
 
 <Banner type="info">
-Tip: You can override the length rules by changing the minLength and maxLength props on the fields. In the case of the OverviewField you can use `titleOverrides` and `descriptionOverrides` to override the length rules.
+  Tip: You can override the length rules by changing the minLength and maxLength props on the
+  fields. In the case of the OverviewField you can use `titleOverrides` and `descriptionOverrides`
+  to override the length rules.
 </Banner>
 
 ## TypeScript
@@ -293,8 +301,8 @@ import type { Page } from './payload-types.ts';
 import type { GenerateTitle } from '@payloadcms/plugin-seo/types';
 
 const generateTitle: GenerateTitle<Page> = async ({ doc, locale }) => {
-  return `Website.com — ${doc?.title}`
-}
+  return `Website.com — ${doc?.title}`;
+};
 ```
 
 ## Examples

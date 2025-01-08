@@ -13,7 +13,7 @@ Live Preview works by rendering an iframe on the page that loads your front-end 
 To add Live Preview, use the `admin.livePreview` property in your [Payload Config](../configuration/overview):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 const config = buildConfig({
   // ...
@@ -22,15 +22,17 @@ const config = buildConfig({
     // highlight-start
     livePreview: {
       url: 'http://localhost:3000',
-      collections: ['pages']
+      collections: ['pages'],
     },
     // highlight-end
-  }
-})
+  },
+});
 ```
+
 <Banner type="warning">
-  **Reminder:**
-  Alternatively, you can define the `admin.livePreview` property on individual [Collection Admin Configs](../admin/collections) and [Global Admin Configs](../admin/globals). Settings defined here will be merged into the top-level as overrides.
+  **Reminder:** Alternatively, you can define the `admin.livePreview` property on individual
+  [Collection Admin Configs](../admin/collections) and [Global Admin Configs](../admin/globals).
+  Settings defined here will be merged into the top-level as overrides.
 </Banner>
 
 {/* IMAGE OF LIVE PREVIEW HERE */}
@@ -57,7 +59,7 @@ The `url` property resolves to a string that points to your front-end applicatio
 To set the URL, use the `admin.livePreview.url` property in your [Payload Config](../configuration/overview):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 const config = buildConfig({
   // ...
@@ -67,8 +69,8 @@ const config = buildConfig({
       url: 'http://localhost:3000', // highlight-line
       collections: ['pages'],
     },
-  }
-})
+  },
+});
 ```
 
 #### Dynamic URLs
@@ -102,18 +104,18 @@ const config = buildConfig({
 
 The following arguments are provided to the `url` function:
 
-| Path               | Description                                                                                                       |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **`data`**         | The data of the Document being edited. This includes changes that have not yet been saved.                        |
-| **`locale`**       | The locale currently being edited (if applicable). [More details](../configuration/localization).                 |
-| **`collectionConfig`** | The Collection Admin Config of the Document being edited. [More details](../admin/collections).                 |
-| **`globalConfig`** | The Global Admin Config of the Document being edited. [More details](../admin/globals).                          |
-| **`req`**          | The Payload Request object.  |
+| Path                   | Description                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------- |
+| **`data`**             | The data of the Document being edited. This includes changes that have not yet been saved.        |
+| **`locale`**           | The locale currently being edited (if applicable). [More details](../configuration/localization). |
+| **`collectionConfig`** | The Collection Admin Config of the Document being edited. [More details](../admin/collections).   |
+| **`globalConfig`**     | The Global Admin Config of the Document being edited. [More details](../admin/globals).           |
+| **`req`**              | The Payload Request object.                                                                       |
 
 If your application requires a fully qualified URL, such as within deploying to Vercel Preview Deployments, you can use the `req` property to build this URL:
 
 ```ts
-url: (doc, { req }) => `${req.protocol}//${req.host}/${doc.slug}` // highlight-line
+url: (doc, { req }) => `${req.protocol}//${req.host}/${doc.slug}`; // highlight-line
 ```
 
 ### Breakpoints
@@ -123,7 +125,7 @@ The breakpoints property is an array of objects which are used as “device size
 To set breakpoints, use the `admin.livePreview.breakpoints` property in your [Payload Config](../configuration/overview):
 
 ```ts
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 const config = buildConfig({
   // ...
@@ -142,8 +144,8 @@ const config = buildConfig({
       ],
       // highlight-end
     },
-  }
-})
+  },
+});
 ```
 
 The following options are available for each breakpoint:

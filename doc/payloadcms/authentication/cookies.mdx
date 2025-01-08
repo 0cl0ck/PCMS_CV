@@ -9,8 +9,9 @@ keywords: authentication, config, configuration, documentation, Content Manageme
 Payload offers the ability to [Authenticate](./overview) via HTTP-only cookies. These can be read from the responses of `login`, `logout`, `refresh`, and `me` auth operations.
 
 <Banner type="success">
-  **Tip:**
-  You can access the logged-in user from within [Access Control](../access-control/overview) and [Hooks](../hooks/overview) through the `req.user` argument. [More details](./token-data).
+  **Tip:** You can access the logged-in user from within [Access
+  Control](../access-control/overview) and [Hooks](../hooks/overview) through the `req.user`
+  argument. [More details](./token-data).
 </Banner>
 
 ### Automatic browser inclusion
@@ -26,18 +27,17 @@ Fetch example, including credentials:
 ```ts
 const response = await fetch('http://localhost:3000/api/pages', {
   credentials: 'include',
-})
+});
 
-const pages = await response.json()
+const pages = await response.json();
 ```
 
 For more about including cookies in requests from your app to your Payload API, [read the MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Sending_a_request_with_credentials_included).
 
 <Banner type="success">
-  **Tip:**
-  To make sure you have a Payload cookie set properly in your browser after logging in, you can use
-  the browsers Developer Tools > Application > Cookies > [your-domain-here]. The Developer tools
-  will still show HTTP-only cookies.
+  **Tip:** To make sure you have a Payload cookie set properly in your browser after logging in, you
+  can use the browsers Developer Tools > Application > Cookies > [your-domain-here]. The Developer
+  tools will still show HTTP-only cookies.
 </Banner>
 
 ### CSRF Attacks
@@ -53,8 +53,8 @@ So, if a user of `https://payload-finances.com` is logged in and is browsing aro
 // makes an authenticated request as on your behalf
 
 const maliciousRequest = await fetch(`https://payload-finances.com/api/me`, {
-  credentials: 'include'
-}).then(res => await res.json())
+  credentials: 'include',
+}).then((res) => await res.json());
 ```
 
 In this scenario, if your cookie was still valid, malicious-intent.com would be able to make requests like the one above on your behalf. This is a CSRF attack.
@@ -66,7 +66,7 @@ Define domains that your trust and are willing to accept Payload HTTP-only cooki
 ```ts
 // payload.config.ts
 
-import { buildConfig } from 'payload'
+import { buildConfig } from 'payload';
 
 const config = buildConfig({
   serverURL: 'https://my-payload-instance.com',
@@ -81,9 +81,9 @@ const config = buildConfig({
   collections: [
     // collections here
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 #### Cross domain authentication
@@ -124,8 +124,8 @@ Configuration example:
 
 If you're configuring [cors](../production/preventing-abuse#cross-origin-resource-sharing-cors) in your Payload config, you won't be able to use a wildcard anymore, you'll need to specify the list of allowed domains.
 
-
 <Banner type="success">
-  **Good to know:**
-  Setting up `secure: true` will not work if you're developing on `http://localhost` or any non-https domain. For local development you should conditionally set this to `false` based on the environment.
+  **Good to know:** Setting up `secure: true` will not work if you're developing on
+  `http://localhost` or any non-https domain. For local development you should conditionally set
+  this to `false` based on the environment.
 </Banner>

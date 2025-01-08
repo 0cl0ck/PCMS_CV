@@ -2,18 +2,18 @@
 
 ##### Answers to some of our most **Frequently Asked Questions** about Smart Checkout.
 
--   [When should I use recurring payments rather than one-off payments?](#when-should-i-use-recurring-payments-rather-than-one-off-payments)
--   [When should I use a pre-authorization rather than a direct charge?](#when-should-i-use-a-pre-authorization-rather-than-a-direct-charge)
--   [Can I offer payments with card installments to my customers?](#can-i-offer-payments-with-card-installments-to-my-customers)
--   [Can the amount I charge my customer include a tip?](#can-the-amount-i-charge-my-customer-include-a-tip)
--   [What should I do if I sell to international shoppers?](#what-should-i-do-if-i-sell-to-international-shoppers)
--   [What local payment methods can I offer to my customers?](#what-local-payment-methods-can-i-offer-to-my-customers)
--   [Can I indicate my preferred payment method?](#can-i-indicate-my-preferred-payment-method)
--   [How do I ensure a high conversion rate?](#how-do-i-ensure-a-high-conversion-rate)
--   [Can I send a payment request link through email?](#can-i-send-a-payment-request-link-through-email)
--   [Can I allow customers to enter their desired amount to pay?](#can-i-allow-customers-to-enter-their-desired-amount-to-pay)
--   [How much effort does it take to do the integration?](#how-much-effort-does-it-take-to-do-the-integration)
--   [Get Support](#get-support)
+- [When should I use recurring payments rather than one-off payments?](#when-should-i-use-recurring-payments-rather-than-one-off-payments)
+- [When should I use a pre-authorization rather than a direct charge?](#when-should-i-use-a-pre-authorization-rather-than-a-direct-charge)
+- [Can I offer payments with card installments to my customers?](#can-i-offer-payments-with-card-installments-to-my-customers)
+- [Can the amount I charge my customer include a tip?](#can-the-amount-i-charge-my-customer-include-a-tip)
+- [What should I do if I sell to international shoppers?](#what-should-i-do-if-i-sell-to-international-shoppers)
+- [What local payment methods can I offer to my customers?](#what-local-payment-methods-can-i-offer-to-my-customers)
+- [Can I indicate my preferred payment method?](#can-i-indicate-my-preferred-payment-method)
+- [How do I ensure a high conversion rate?](#how-do-i-ensure-a-high-conversion-rate)
+- [Can I send a payment request link through email?](#can-i-send-a-payment-request-link-through-email)
+- [Can I allow customers to enter their desired amount to pay?](#can-i-allow-customers-to-enter-their-desired-amount-to-pay)
+- [How much effort does it take to do the integration?](#how-much-effort-does-it-take-to-do-the-integration)
+- [Get Support](#get-support)
 
 ### When should I use recurring payments rather than one-off payments?
 
@@ -43,8 +43,8 @@ Pre-authorizations are not available with [recurring payments](/tutorials-for-pa
 
 You can offer your customers the option of paying with card installments (automatically splitting the total purchase amount into smaller equal payments) as long as the following criteria are met:
 
--   You registered your Viva account in Greece
--   The customer’s card supports installments
+- You registered your Viva account in Greece
+- The customer’s card supports installments
 
 **Please note**: If offering installments, the value provided by the merchant is _not_ the number of installments the customer will select, and it is _not_ mandatory for the customer to select installments at all. The process is as follows:
 
@@ -86,11 +86,11 @@ You have the option to specify the payment method that will be already selected 
 
 A high conversion rate depends on a happy user journey by doing the following:
 
--   Customer name and email address in the Smart Checkout payment page should be automatically prefilled to make the customer’s life easier. See `fullName` and `email` parameters.
--   The payment description should be completed with details of the order so that the customer understands what they are paying for. See `customerTrns` parameter.
--   Set the desired language for the Smart Checkout payment page (see relevant question above).
--   You should add your company logo (128 x 128 pixels – 500KB).
--   Offer all the popular payment methods (see relevant question above).
+- Customer name and email address in the Smart Checkout payment page should be automatically prefilled to make the customer’s life easier. See `fullName` and `email` parameters.
+- The payment description should be completed with details of the order so that the customer understands what they are paying for. See `customerTrns` parameter.
+- Set the desired language for the Smart Checkout payment page (see relevant question above).
+- You should add your company logo (128 x 128 pixels – 500KB).
+- Offer all the popular payment methods (see relevant question above).
 
 **Find out about the payment order parameters: [Create payment order](/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post).**
 
@@ -100,8 +100,8 @@ A high conversion rate depends on a happy user journey by doing the following:
 
 Yes, of course. Merchants using payment links can create flexible payment options using Smart Checkout. By setting the parameter `paymentNotification` value to true, you can automatically send a payment link to customer’s email and allow them to make payments. When the customer clicks to the link, they are redirected to a secure payment page where they can select one of available payment methods and complete the payment.
 
--   Customers don’t need to download an additional app in order to make their payment.
--   You receive a notification when the payment has been completed
+- Customers don’t need to download an additional app in order to make their payment.
+- You receive a notification when the payment has been completed
 
 **Find out about `paymentNotification` and other parameters: [Create payment order](/tutorials-for-payments/create-a-payment-order).**
 

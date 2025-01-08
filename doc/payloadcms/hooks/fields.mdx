@@ -15,10 +15,11 @@ import type { Field } from 'payload';
 
 export const FieldWithHooks: Field = {
   // ...
-  hooks: { // highlight-line
+  hooks: {
+    // highlight-line
     // ...
   },
-}
+};
 ```
 
 ## Config Options
@@ -26,8 +27,10 @@ export const FieldWithHooks: Field = {
 All Field Hooks accept an array of synchronous or asynchronous functions. These functions can optionally modify the return value of the field before the operation continues. All Field Hooks are formatted to accept the same arguments, although some arguments may be `undefined` based the specific hook type.
 
 <Banner type="warning">
-  **Important:**
-  Due to GraphQL's typed nature, changing the type of data that you return from a field will produce errors in the [GraphQL API](../graphql/overview). If you need to change the shape or type of data, consider [Collection Hooks](./collections) or [Global Hooks](./hooks) instead.
+  **Important:** Due to GraphQL's typed nature, changing the type of data that you return from a
+  field will produce errors in the [GraphQL API](../graphql/overview). If you need to change the
+  shape or type of data, consider [Collection Hooks](./collections) or [Global Hooks](./hooks)
+  instead.
 </Banner>
 
 To add hooks to a Field, use the `hooks` property in your [Field Config](../fields/overview):
@@ -52,30 +55,31 @@ const FieldWithHooks: Field = {
 
 The following arguments are provided to all Field Hooks:
 
-| Option                   | Description                                                                                                                                                                                                           |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`collection`**         | The [Collection](../configuration/collections) in which this Hook is running against. If the field belongs to a Global, this will be `null`.                                                                                                                       |
-| **`context`**            | Custom context passed between Hooks. [More details](./context).                                                                                                                              |
-| **`data`**               | In the `afterRead` hook this is the full Document. In the `create` and `update` operations, this is the incoming data passed through the operation.                                                                                 |
-| **`field`**              | The [Field](../fields/overview) which the Hook is running against.                                                                                                                                                                          |
-| **`findMany`**           | Boolean to denote if this hook is running against finding one, or finding many within the `afterRead` hook.                                                                                                           |
-| **`global`**             | The [Global](../configuration/globals) in which this Hook is running against. If the field belongs to a Collection, this will be `null`.                                                                                                                       |
-| **`operation`**          | The name of the operation that this hook is running within. Useful within `beforeValidate`, `beforeChange`, and `afterChange` hooks to differentiate between `create` and `update` operations. |
-| **`originalDoc`**        | In the `update` operation, this is the Document before changes were applied. In the `afterChange` hook, this is the resulting Document.                                                                                        |
-| **`overrideAccess`**        | A boolean to denote if the current operation is overriding [Access Control](../access-control/overview).                                                                                                                                                                          |
-| **`path`**             | The path to the [Field](../fields/overview) in the schema.                                                                                                                                                                          |
-| **`previousDoc`**        | In the `afterChange` Hook, this is the Document before changes were applied.                                                                                                                                                |
-| **`previousSiblingDoc`** | The sibling data of the Document before changes being applied, only in `beforeChange` and `afterChange` hook.                                                                                                         |
-| **`previousValue`**      | The previous value of the field, before changes, only in `beforeChange` and `afterChange` hooks.                                                                                                                      |
-| **`req`**                | The [Web Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) object. This is mocked for [Local API](../local-api/overview) operations.                                                                                                                                                  |
-| **`schemaPath`**         | The path of the [Field](../fields/overview) in the schema.                                                                                                                                                                                  |
-| **`siblingData`**        | The data of sibling fields adjacent to the field that the Hook is running against.        |
-| **`siblingDocWithLocales`**      | The sibling data of the Document with all [Locales](../configuration/localization).        |
-| **`value`**              | The value of the [Field](../fields/overview).                                                                                                                                                                                               |
+| Option                      | Description                                                                                                                                                                                    |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`collection`**            | The [Collection](../configuration/collections) in which this Hook is running against. If the field belongs to a Global, this will be `null`.                                                   |
+| **`context`**               | Custom context passed between Hooks. [More details](./context).                                                                                                                                |
+| **`data`**                  | In the `afterRead` hook this is the full Document. In the `create` and `update` operations, this is the incoming data passed through the operation.                                            |
+| **`field`**                 | The [Field](../fields/overview) which the Hook is running against.                                                                                                                             |
+| **`findMany`**              | Boolean to denote if this hook is running against finding one, or finding many within the `afterRead` hook.                                                                                    |
+| **`global`**                | The [Global](../configuration/globals) in which this Hook is running against. If the field belongs to a Collection, this will be `null`.                                                       |
+| **`operation`**             | The name of the operation that this hook is running within. Useful within `beforeValidate`, `beforeChange`, and `afterChange` hooks to differentiate between `create` and `update` operations. |
+| **`originalDoc`**           | In the `update` operation, this is the Document before changes were applied. In the `afterChange` hook, this is the resulting Document.                                                        |
+| **`overrideAccess`**        | A boolean to denote if the current operation is overriding [Access Control](../access-control/overview).                                                                                       |
+| **`path`**                  | The path to the [Field](../fields/overview) in the schema.                                                                                                                                     |
+| **`previousDoc`**           | In the `afterChange` Hook, this is the Document before changes were applied.                                                                                                                   |
+| **`previousSiblingDoc`**    | The sibling data of the Document before changes being applied, only in `beforeChange` and `afterChange` hook.                                                                                  |
+| **`previousValue`**         | The previous value of the field, before changes, only in `beforeChange` and `afterChange` hooks.                                                                                               |
+| **`req`**                   | The [Web Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) object. This is mocked for [Local API](../local-api/overview) operations.                                          |
+| **`schemaPath`**            | The path of the [Field](../fields/overview) in the schema.                                                                                                                                     |
+| **`siblingData`**           | The data of sibling fields adjacent to the field that the Hook is running against.                                                                                                             |
+| **`siblingDocWithLocales`** | The sibling data of the Document with all [Locales](../configuration/localization).                                                                                                            |
+| **`value`**                 | The value of the [Field](../fields/overview).                                                                                                                                                  |
 
 <Banner type="success">
-  **Tip:**
-  It's a good idea to conditionally scope your logic based on which operation is executing. For example, if you are writing a `beforeChange` hook, you may want to perform different logic based on if the current `operation` is `create` or `update`.
+  **Tip:** It's a good idea to conditionally scope your logic based on which operation is executing.
+  For example, if you are writing a `beforeChange` hook, you may want to perform different logic
+  based on if the current `operation` is `create` or `update`.
 </Banner>
 
 ### beforeValidate
@@ -83,7 +87,7 @@ The following arguments are provided to all Field Hooks:
 Runs before the `update` operation. This hook allows you to pre-process or format field data before it undergoes validation.
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 const usernameField: Field = {
   name: 'username',
@@ -92,11 +96,11 @@ const usernameField: Field = {
     beforeValidate: [
       ({ value }) => {
         // Trim whitespace and convert to lowercase
-        return value.trim().toLowerCase()
+        return value.trim().toLowerCase();
       },
     ],
   },
-}
+};
 ```
 
 In this example, the `beforeValidate` hook is used to process the `username` field. The hook takes the incoming value of
@@ -110,7 +114,7 @@ you can be confident that the field data that will be saved to the document is v
 validations.
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 const emailField: Field = {
   name: 'email',
@@ -121,11 +125,11 @@ const emailField: Field = {
         if (operation === 'create') {
           // Perform additional validation or transformation for 'create' operation
         }
-        return value
+        return value;
       },
     ],
   },
-}
+};
 ```
 
 In the `emailField`, the `beforeChange` hook checks the `operation` type. If the operation is `create`, it performs
@@ -138,7 +142,7 @@ The `afterChange` hook is executed after a field's value has been changed and sa
 for post-processing or triggering side effects based on the new value of the field.
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 const membershipStatusField: Field = {
   name: 'membershipStatus',
@@ -155,13 +159,13 @@ const membershipStatusField: Field = {
           // Log or perform an action when the membership status changes
           console.log(
             `User ID ${req.user.id} changed their membership status from ${previousValue} to ${value}.`,
-          )
+          );
           // Here, you can implement actions that could track conversions from one tier to another
         }
       },
     ],
   },
-}
+};
 ```
 
 In this example, the `afterChange` hook is used with a `membershipStatusField`, which allows users to select their
@@ -175,7 +179,7 @@ The `afterRead` hook is invoked after a field value is read from the database. T
 transforming the field data for output.
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 const dateField: Field = {
   name: 'createdAt',
@@ -184,11 +188,11 @@ const dateField: Field = {
     afterRead: [
       ({ value }) => {
         // Format date for display
-        return new Date(value).toLocaleDateString()
+        return new Date(value).toLocaleDateString();
       },
     ],
   },
-}
+};
 ```
 
 Here, the `afterRead` hook for the `dateField` is used to format the date into a more readable format
@@ -206,18 +210,20 @@ By Default, unique and required text fields Payload will append "- Copy" to the 
 Here is an example of a number field with a hook that increments the number to avoid unique constraint errors when duplicating a document:
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 const numberField: Field = {
   name: 'number',
   type: 'number',
   hooks: {
     // increment existing value by 1
-    beforeDuplicate: [({ value }) => {
-      return (value ?? 0) + 1
-    }],
-  }
-}
+    beforeDuplicate: [
+      ({ value }) => {
+        return (value ?? 0) + 1;
+      },
+    ],
+  },
+};
 ```
 
 ## TypeScript
@@ -225,14 +231,14 @@ const numberField: Field = {
 Payload exports a type for field hooks which can be accessed and used as follows:
 
 ```ts
-import type { FieldHook } from 'payload'
+import type { FieldHook } from 'payload';
 
 // Field hook type is a generic that takes three arguments:
 // 1: The document type
 // 2: The value type
 // 3: The sibling data type
 
-type ExampleFieldHook = FieldHook<ExampleDocumentType, string, SiblingDataType>
+type ExampleFieldHook = FieldHook<ExampleDocumentType, string, SiblingDataType>;
 
 const exampleFieldHook: ExampleFieldHook = (args) => {
   const {
@@ -242,10 +248,10 @@ const exampleFieldHook: ExampleFieldHook = (args) => {
     originalDoc, // Typed as ExampleDocumentType
     operation,
     req,
-  } = args
+  } = args;
 
   // Do something here...
 
-  return value // should return a string as typed above, undefined, or null
-}
+  return value; // should return a string as typed above, undefined, or null
+};
 ```

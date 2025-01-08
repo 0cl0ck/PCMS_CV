@@ -37,7 +37,7 @@ You can execute jobs by making a fetch request to the `/api/payload-jobs/run` en
 await fetch('/api/payload-jobs/run?limit=100&queue=nightly', {
   method: 'GET',
   headers: {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   },
 });
 ```
@@ -76,7 +76,7 @@ export default buildConfig({
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
         // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true
+        if (req.user) return true;
 
         // If there is no logged in user, then check
         // for the Vercel Cron secret to be present as an
@@ -86,8 +86,8 @@ export default buildConfig({
       },
     },
     // Other job configurations...
-  }
-})
+  },
+});
 ```
 
 This works because Vercel automatically makes the `CRON_SECRET` environment variable available to the endpoint as the `Authorization` header when triggered by the Vercel Cron, ensuring that the jobs can be run securely.
@@ -101,21 +101,21 @@ If you want to process jobs programmatically from your server-side code, you can
 **Run all jobs:**
 
 ```ts
-const results = await payload.jobs.run()
+const results = await payload.jobs.run();
 
 // You can customize the queue name and limit by passing them as arguments:
-await payload.jobs.run({ queue: 'nightly', limit: 100 })
+await payload.jobs.run({ queue: 'nightly', limit: 100 });
 
 // You can provide a where clause to filter the jobs that should be run:
-await payload.jobs.run({ where: { 'input.message': { equals: 'secret' } } })
+await payload.jobs.run({ where: { 'input.message': { equals: 'secret' } } });
 ```
 
 **Run a single job:**
 
 ```ts
 const results = await payload.jobs.runByID({
-  id: myJobID
-})
+  id: myJobID,
+});
 ```
 
 #### Bin script

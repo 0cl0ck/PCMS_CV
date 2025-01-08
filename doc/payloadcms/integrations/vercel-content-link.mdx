@@ -68,7 +68,7 @@ Now in your Next.js app, include the `?encodeSourceMaps=true` parameter in any o
 if (isDraftMode || process.env.VERCEL_ENV === 'preview') {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/pages?where[slug][equals]=${slug}&encodeSourceMaps=true`,
-  )
+  );
 }
 ```
 
@@ -87,8 +87,8 @@ To see Content Link on your site, you first need to visit any preview deployment
 The plugin does not encode `date` fields by default, but for some cases like text that uses negative CSS letter-spacing, it may be necessary to split the encoded data out from the rendered text. This way you can safely use the cleaned data as expected.
 
 ```ts
-import { vercelStegaSplit } from '@vercel/stega'
-const { cleaned, encoded } = vercelStegaSplit(text)
+import { vercelStegaSplit } from '@vercel/stega';
+const { cleaned, encoded } = vercelStegaSplit(text);
 ```
 
 ### Blocks and array fields

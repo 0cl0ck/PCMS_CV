@@ -2,22 +2,22 @@
 
 ##### An overview of the key **functionality & options** offered by Smart Checkout.
 
--   [Styling & design](#styling-design)
--   [Checkout language](#checkout-language)
--   [Save payment cards for future use](#save-payment-cards-for-future-use)
-    -   [Customer-side card tokenization](#customer-side-card-tokenization)
-    -   [Mastercard Click to Pay](#mastercard-click-to-pay)
--   [Decline recovery](#decline-recovery)
--   [Field validation](#field-validation)
--   [Form auto-complete](#form-auto-complete)
--   [Automatic card logo display](#automatic-card-logo-display)
--   [3DS challenge flow](#3ds-challenge-flow)
--   [Dynamic Descriptor](#dynamic-descriptor)
--   [Payment order expiry](#payment-order-expiry)
--   [Pre-authorizations](#pre-authorizations)
--   [Pay by card installments](#pay-by-card-installments)
--   [Recurring payments](#recurring-payments)
--   [Get Support](#get-support)
+- [Styling & design](#styling-design)
+- [Checkout language](#checkout-language)
+- [Save payment cards for future use](#save-payment-cards-for-future-use)
+  - [Customer-side card tokenization](#customer-side-card-tokenization)
+  - [Mastercard Click to Pay](#mastercard-click-to-pay)
+- [Decline recovery](#decline-recovery)
+- [Field validation](#field-validation)
+- [Form auto-complete](#form-auto-complete)
+- [Automatic card logo display](#automatic-card-logo-display)
+- [3DS challenge flow](#3ds-challenge-flow)
+- [Dynamic Descriptor](#dynamic-descriptor)
+- [Payment order expiry](#payment-order-expiry)
+- [Pre-authorizations](#pre-authorizations)
+- [Pay by card installments](#pay-by-card-installments)
+- [Recurring payments](#recurring-payments)
+- [Get Support](#get-support)
 
 ### Styling & design
 
@@ -52,16 +52,16 @@ The merchant is not involved in this process; in fact, you will not even be awar
 
 There are two ways to save payment cards:
 
--   [Customer-side card tokenization](#customer-side-card-tokenization)
--   [Mastercard Click to Pay](#mastercard-click-to-pay)
+- [Customer-side card tokenization](#customer-side-card-tokenization)
+- [Mastercard Click to Pay](#mastercard-click-to-pay)
 
 #### Customer-side card tokenization
 
 This allows the customer to save any payment card, directly within their browser in the form of a cookie.
 
--   [Saving a card](#saving-a-card): the customer will be offered the option to save a card and assign a friendly name
--   [Paying with a saved card](#paying-with-a-saved-card): the customer can select a saved card to pay; they will be required to provide the CVV to use it (to ensure SCA)
--   [Editing or deleting a saved card](#editing-or-deleting-a-saved-card): the customer can delete a saved card, or change the friendly name assigned to the saved card
+- [Saving a card](#saving-a-card): the customer will be offered the option to save a card and assign a friendly name
+- [Paying with a saved card](#paying-with-a-saved-card): the customer can select a saved card to pay; they will be required to provide the CVV to use it (to ensure SCA)
+- [Editing or deleting a saved card](#editing-or-deleting-a-saved-card): the customer can delete a saved card, or change the friendly name assigned to the saved card
 
 ##### Saving a card
 
@@ -83,8 +83,8 @@ If desired, the customer can click on the edit (pencil) icon to edit or delete a
 
 From here, the customer can either:
 
--   **`(1)`** rename the saved card before clicking the tick button to save it
--   **`(2)`** delete the saved card
+- **`(1)`** rename the saved card before clicking the tick button to save it
+- **`(2)`** delete the saved card
 
 ![Smart Checkout - editing a saved card](/images/sc-new-editsavedcard-2.png?width=300px)
 
@@ -99,9 +99,9 @@ Mastercard’s ‘Click to Pay’ functionality allows customers to save an elig
 **\-** This functionality is currently only available in _Belgium_, with more countries to be supported soon  
 **\-** _No_ activation is required - this functionality is available by default
 
--   [New users](#new-users)
--   [Returning users (without a cookie)](#returning-users-without-a-cookie)
--   [Returning users (with a cookie)](#returning-users-with-a-cookie)
+- [New users](#new-users)
+- [Returning users (without a cookie)](#returning-users-without-a-cookie)
+- [Returning users (with a cookie)](#returning-users-with-a-cookie)
 
 ##### New users
 
@@ -137,7 +137,7 @@ By performing decline recovery, the conversion rate improves, with a significant
 
 This feature is automatically enabled for all merchants, and thus merchants do not need to do anything, on their online store or to their integration with us, to take advantage of this new conversion-improving feature.
 
- Your browser does not support the video tag.
+Your browser does not support the video tag.
 
 ### Field validation
 
@@ -149,18 +149,18 @@ There are two categories of validation available on Smart Checkout, **Inline** a
 
 This type of validation occurs instantly as the customer moves between fields, but only if text has been entered.
 
--   **Email address** — has to be a valid email address
--   **Card number** — has to be a valid card number
--   **Expiration date** — past dates are not allowed
--   **CVV** — is required for all cards except for _Bancontact_ cards. If the customer has provided an _AMEX_ card, the CVV has to be four digits long, otherwise it has to be three digits long
--   **Amount** (if editable by the customer, i.e. for [**Quick Pay**](/payment-tools/quick-pay)) — has to be a valid amount, greater than zero
--   **Cardholder name** — has to be more than one character long
+- **Email address** — has to be a valid email address
+- **Card number** — has to be a valid card number
+- **Expiration date** — past dates are not allowed
+- **CVV** — is required for all cards except for _Bancontact_ cards. If the customer has provided an _AMEX_ card, the CVV has to be four digits long, otherwise it has to be three digits long
+- **Amount** (if editable by the customer, i.e. for [**Quick Pay**](/payment-tools/quick-pay)) — has to be a valid amount, greater than zero
+- **Cardholder name** — has to be more than one character long
 
 ##### On Submit validation
 
 This type of validation occurs once the customer has clicked on the button to make the payment.
 
--   **All mandatory fields** must be filled (cannot remain blank)
+- **All mandatory fields** must be filled (cannot remain blank)
 
 ### Form auto-complete
 
@@ -188,7 +188,7 @@ Pre-authorization (_pre-auth_) transactions with a debit card or credit card hol
 
 A pre-authorization is enabled if the following condition is met:
 
--   The `isPreAuth` request body parameter within the [create payment order](/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post) API call is set to `true`
+- The `isPreAuth` request body parameter within the [create payment order](/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post) API call is set to `true`
 
 **More information on handling pre-authorizations (including creating, capturing and cancelling) can be found on our [tutorial page](/tutorials-for-payments/handle-pre-authorizations/).**
 
@@ -198,16 +198,15 @@ Pre-authorizations are not available with [recurring payments](/tutorials-for-pa
 
 The option to pay by card installments is enabled if the following three conditions are met:
 
--   The `maxInstallments` request body parameter within the [Create payment order](/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post) API call is set to greater than `1` and up to `36`
--   The merchant account is Greek and set up in Greece. Accounts originating in other countries do not support this
--   The customer’s card supports installments
+- The `maxInstallments` request body parameter within the [Create payment order](/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post) API call is set to greater than `1` and up to `36`
+- The merchant account is Greek and set up in Greece. Accounts originating in other countries do not support this
+- The customer’s card supports installments
 
 **Please note**: If offering installments, the value provided by the merchant is _not_ the number of installments the customer will select, and it is _not_ mandatory for the customer to select installments at all. The process is as follows:
 
 1.  The merchant indicates the **maximum** number of installments they wish to offer to the customer
 2.  It is then **up to the customer** whether they pay with or without installments
-3.  If the customer decides to pay with installments, they are able to select the **number** of installments (_up to the maximum specified by the merchant_)  
-    
+3.  If the customer decides to pay with installments, they are able to select the **number** of installments (_up to the maximum specified by the merchant_)
 
 #### Forcing installments
 

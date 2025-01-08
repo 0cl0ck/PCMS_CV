@@ -18,7 +18,7 @@ The Radio Field allows for the selection of one value from a predefined set of p
 To add a Radio Field, set the `type` to `radio` in your [Field Config](./overview):
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const MyRadioField: Field = {
   // ...
@@ -26,9 +26,9 @@ export const MyRadioField: Field = {
   type: 'radio',
   options: [
     // ...
-  ]
+  ],
   // highlight-end
-}
+};
 ```
 
 ## Config Options
@@ -58,10 +58,11 @@ _\* An asterisk denotes that a property is required._
 <Banner type="warning">
   **Important:**
 
-  Option values should be strings that do not contain hyphens or special characters due to GraphQL
-  enumeration naming constraints. Underscores are allowed. If you determine you need your option
-  values to be non-strings or contain special characters, they will be formatted accordingly before
-  being used as a GraphQL enum.
+Option values should be strings that do not contain hyphens or special characters due to GraphQL
+enumeration naming constraints. Underscores are allowed. If you determine you need your option
+values to be non-strings or contain special characters, they will be formatted accordingly before
+being used as a GraphQL enum.
+
 </Banner>
 
 ## Admin Options
@@ -69,28 +70,29 @@ _\* An asterisk denotes that a property is required._
 The customize the appearance and behavior of the Radio Field in the [Admin Panel](../admin/overview), you can use the `admin` option:
 
 ```ts
-import type { Field } from 'payload'
+import type { Field } from 'payload';
 
 export const MyRadioField: Field = {
   // ...
-  admin: { // highlight-line
+  admin: {
+    // highlight-line
     // ...
   },
-}
+};
 ```
 
 The Radio Field inherits all of the default options from the base [Field Admin Config](../admin/fields#admin-options), plus the following additional options:
 
-| Property                       | Description                                                                                                                            |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **`layout`**                   | Allows for the radio group to be styled as a horizontally or vertically distributed list. The default value is `horizontal`.          |
+| Property     | Description                                                                                                                  |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **`layout`** | Allows for the radio group to be styled as a horizontally or vertically distributed list. The default value is `horizontal`. |
 
 ## Example
 
 `collections/ExampleCollection.ts`
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const ExampleCollection: CollectionConfig = {
   slug: 'example-collection',
@@ -115,5 +117,5 @@ export const ExampleCollection: CollectionConfig = {
       },
     },
   ],
-}
+};
 ```

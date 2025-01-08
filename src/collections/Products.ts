@@ -1,7 +1,7 @@
-import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { authenticated } from '../access/authenticated'
-import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
+import type { CollectionConfig } from 'payload';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { authenticated } from '../access/authenticated';
+import { authenticatedOrPublished } from '../access/authenticatedOrPublished';
 
 import {
   MetaDescriptionField,
@@ -9,8 +9,8 @@ import {
   MetaTitleField,
   OverviewField,
   PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/fields/slug'
+} from '@payloadcms/plugin-seo/fields';
+import { slugField } from '@/fields/slug';
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -181,5 +181,4 @@ export const Products: CollectionConfig = {
   versions: {
     drafts: true,
   },
-}
-
+};

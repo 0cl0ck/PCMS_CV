@@ -13,13 +13,15 @@ By default, Payload will use transactions for all data changing operations, as l
 <Banner type="info">
   **Note:**
 
-  MongoDB requires a connection to a replicaset in order to make use of transactions.
+MongoDB requires a connection to a replicaset in order to make use of transactions.
+
 </Banner>
 
 <Banner type="info">
   **Note:**
 
-  Transactions in SQLite are disabled by default. You need to pass `transactionOptions: {}` to enable them.
+Transactions in SQLite are disabled by default. You need to pass `transactionOptions: {}` to enable them.
+
 </Banner>
 
 The initial request made to Payload will begin a new transaction and attach it to the `req.transactionID`. If you have a `hook` that interacts with the database, you can opt in to using the same transaction by passing the `req` in the arguments. For example:
@@ -34,8 +36,8 @@ const afterChange: CollectionAfterChangeHook = async ({ req }) => {
     data: {
       some: 'data',
     },
-  })
-}
+  });
+};
 ```
 
 ## Async Hooks with Transactions
@@ -52,7 +54,7 @@ const afterChange: CollectionAfterChangeHook = async ({ req }) => {
     data: {
       some: 'other data',
     },
-  })
+  });
 
   // Should this call fail, it will not rollback other changes
   // because the req (and its transactionID) is not passed through
@@ -61,8 +63,8 @@ const afterChange: CollectionAfterChangeHook = async ({ req }) => {
     data: {
       some: 'other data',
     },
-  })
-}
+  });
+};
 ```
 
 ## Direct Transaction Access
@@ -79,14 +81,14 @@ Payload uses the `req` object to pass the transaction ID through to the database
 Example:
 
 ```ts
-import payload from 'payload'
-import config from './payload.config'
+import payload from 'payload';
+import config from './payload.config';
 
 const standalonePayloadScript = async () => {
   // initialize Payload
-  await payload.init({ config })
+  await payload.init({ config });
 
-  const transactionID = await payload.db.beginTransaction()
+  const transactionID = await payload.db.beginTransaction();
 
   try {
     // Make an update using the local API
@@ -96,10 +98,10 @@ const standalonePayloadScript = async () => {
         some: 'data',
       },
       where: {
-        slug: { equals: 'my-slug' }
+        slug: { equals: 'my-slug' },
       },
       req: { transactionID },
-    })
+    });
 
     /*
       You can make additional db changes or run other functions
@@ -107,14 +109,14 @@ const standalonePayloadScript = async () => {
      */
 
     // Commit the transaction
-    await payload.db.commitTransaction(transactionID)
+    await payload.db.commitTransaction(transactionID);
   } catch (error) {
     // Rollback the transaction
-    await payload.db.rollbackTransaction(transactionID)
+    await payload.db.rollbackTransaction(transactionID);
   }
-}
+};
 
-standalonePayloadScript()
+standalonePayloadScript();
 ```
 
 ## Disabling Transactions
@@ -130,8 +132,8 @@ await payload.update({
     some: 'data',
   },
   where: {
-    slug: { equals: 'my-slug' }
+    slug: { equals: 'my-slug' },
   },
   disableTransaction: true,
-})
+});
 ```

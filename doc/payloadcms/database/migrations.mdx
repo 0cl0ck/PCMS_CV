@@ -36,7 +36,7 @@ all changes that you attempt to make within the migration, and the `down` should
 Here is an example migration file:
 
 ```ts
-import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/your-db-adapter'
+import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/your-db-adapter';
 
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   // Perform changes to your database here.
@@ -62,30 +62,34 @@ transaction gets aborted. This way no change is made to the database if the migr
 Additionally, you can bypass Payload's layer entirely and perform operations directly on your underlying database within the active transaction:
 
 ### MongoDB:
+
 ```ts
-import { type MigrateUpArgs } from '@payloadcms/db-mongodb'
+import { type MigrateUpArgs } from '@payloadcms/db-mongodb';
 
 export async function up({ session, payload, req }: MigrateUpArgs): Promise<void> {
-  const posts = await payload.db.collections.posts.collection.find({ session }).toArray()
+  const posts = await payload.db.collections.posts.collection.find({ session }).toArray();
 }
 ```
 
 ### Postgres:
+
 ```ts
-import { type MigrateUpArgs, sql } from '@payloadcms/db-postgres'
+import { type MigrateUpArgs, sql } from '@payloadcms/db-postgres';
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  const { rows: posts } = await db.execute(sql`SELECT * from posts`)
+  const { rows: posts } = await db.execute(sql`SELECT * from posts`);
 }
 ```
 
 ### SQLite:
+
 In SQLite, transactions are disabled by default. [More](./transactions).
+
 ```ts
-import { type MigrateUpArgs, sql } from '@payloadcms/db-sqlite'
+import { type MigrateUpArgs, sql } from '@payloadcms/db-sqlite';
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  const { rows: posts } = await db.run(sql`SELECT * from posts`)
+  const { rows: posts } = await db.run(sql`SELECT * from posts`);
 }
 ```
 
@@ -213,7 +217,9 @@ But once you're ready, you can run `pnpm payload migrate:create`, which will per
 We won't immediately run this migration for you, however.
 
 <Banner type="success">
-  Tip: migrations created by Payload are relatively programmatic in nature, so there should not be any surprises, but before you check in the created migration it's a good idea to always double-check the contents of the migration files.
+  Tip: migrations created by Payload are relatively programmatic in nature, so there should not be
+  any surprises, but before you check in the created migration it's a good idea to always
+  double-check the contents of the migration files.
 </Banner>
 
 **3 - set up your build process to run migrations**
@@ -259,20 +265,22 @@ In order to run migrations at runtime, on initialization, you can pass your migr
 ```ts
 // Import your migrations from the `index.ts` file
 // that Payload generates for you
-import { migrations } from './migrations'
-import { buildConfig } from 'payload'
+import { migrations } from './migrations';
+import { buildConfig } from 'payload';
 
 export default buildConfig({
   // your config here
   db: postgresAdapter({
     //  your adapter config here
-    prodMigrations: migrations
-  })
-})
+    prodMigrations: migrations,
+  }),
+});
 ```
 
 Passing your migrations as shown above will tell Payload, in production only, to execute any migrations that need to be run prior to completing the initialization of Payload. This is ideal for long-running services where Payload will only be initialized at startup.
 
 <Banner type="warning">
-  Warning - if Payload is instructed to run migrations in production, this may slow down serverless cold starts on platforms such as Vercel. Generally, this option should only be used for long-running servers / containers.
+  Warning - if Payload is instructed to run migrations in production, this may slow down serverless
+  cold starts on platforms such as Vercel. Generally, this option should only be used for
+  long-running servers / containers.
 </Banner>

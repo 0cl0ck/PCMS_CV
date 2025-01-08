@@ -15,15 +15,16 @@ While both Slate and Lexical save the editor state in JSON, the structure of the
 Just import the `migrateSlateToLexical` function we provide, pass it the `payload` object and run it. Depending on the amount of collections, this might take a while.
 
 IMPORTANT: This will overwrite all slate data. We recommend doing the following first:
+
 1. Take a backup of your entire database. If anything goes wrong and you do not have a backup, you are on your own and will not receive any support.
 2. Make every richText field a lexical editor. This script will only convert lexical richText fields with old Slate data
 3. Add the SlateToLexicalFeature (as seen below) first, and test it out by loading up the Admin Panel, to see if the migrator works as expected. You might have to build some custom converters for some fields first in order to convert custom Slate nodes. The SlateToLexicalFeature is where the converters are stored. Only fields with this feature added will be migrated.
 4. If this works as expected, add the `disableHooks: true` prop everywhere you're initializing `SlateToLexicalFeature`. Example: `SlateToLexicalFeature({ disableHooks: true })`. Once you did that, you're ready to run the migration script.
 
 ```ts
-import { migrateSlateToLexical } from '@payloadcms/richtext-lexical/migrate'
+import { migrateSlateToLexical } from '@payloadcms/richtext-lexical/migrate';
 
-await migrateSlateToLexical({ payload })
+await migrateSlateToLexical({ payload });
 ```
 
 ### Migration via SlateToLexicalFeature
@@ -33,10 +34,10 @@ One way to handle this is to just give your lexical editor the ability to read t
 Simply add the `SlateToLexicalFeature` to your editor:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
-import { SlateToLexicalFeature } from '@payloadcms/richtext-lexical/migrate'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { SlateToLexicalFeature } from '@payloadcms/richtext-lexical/migrate';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -49,7 +50,7 @@ const Pages: CollectionConfig = {
       }),
     },
   ],
-}
+};
 ```
 
 and done! Now, every time this lexical editor is initialized, it converts the slate date to lexical on-the-fly. If the data is already in lexical format, it will just pass it through.
@@ -66,8 +67,8 @@ The easy way to solve this: Edit the richText field and save the document! This 
 If you have custom Slate nodes, create a custom converter for them. Here's the Upload converter as an example:
 
 ```ts
-import type { SerializedUploadNode } from '../uploadNode'
-import type { SlateNodeConverter } from '@payloadcms/richtext-lexical/migrate'
+import type { SerializedUploadNode } from '../uploadNode';
+import type { SlateNodeConverter } from '@payloadcms/richtext-lexical/migrate';
 
 export const SlateUploadConverter: SlateNodeConverter = {
   converter({ slateNode }) {
@@ -82,10 +83,10 @@ export const SlateUploadConverter: SlateNodeConverter = {
         id: slateNode.value?.id || '',
       },
       version: 1,
-    } as const as SerializedUploadNode
+    } as const as SerializedUploadNode;
   },
   nodeTypes: ['upload'],
-}
+};
 ```
 
 It's pretty simple: You get a Slate node as input, and you return the lexical node. The `nodeTypes` array is used to determine which Slate nodes this converter can handle.
@@ -95,15 +96,12 @@ When using a migration script, you can add your custom converters to the `conver
 When using the `SlateToLexicalFeature`, you can add your custom converters to the `converters` property of the `SlateToLexicalFeature` props:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
-import {  lexicalEditor } from '@payloadcms/richtext-lexical'
-import {
-  SlateToLexicalFeature,
-  defaultSlateConverters,
-} from '@payloadcms/richtext-lexical'
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { SlateToLexicalFeature, defaultSlateConverters } from '@payloadcms/richtext-lexical';
 
-import { YourCustomConverter } from '../converters/YourCustomConverter'
+import { YourCustomConverter } from '../converters/YourCustomConverter';
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -121,7 +119,7 @@ const Pages: CollectionConfig = {
       }),
     },
   ],
-}
+};
 ```
 
 ## Migrating from payload-plugin-lexical
@@ -141,7 +139,7 @@ To solve this, we export an `upgradeLexicalData` function which goes through eve
 IMPORTANT: Take a backup of your entire database. If anything goes wrong and you do not have a backup, you are on your own and will not receive any support.
 
 ```ts
-import { upgradeLexicalData } from '@payloadcms/richtext-lexical'
+import { upgradeLexicalData } from '@payloadcms/richtext-lexical';
 
-await upgradeLexicalData({ payload })
+await upgradeLexicalData({ payload });
 ```

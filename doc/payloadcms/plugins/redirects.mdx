@@ -40,8 +40,8 @@ Install the plugin using any JavaScript package manager like [pnpm](https://pnpm
 In the `plugins` array of your [Payload Config](https://payloadcms.com/docs/configuration/overview), call the plugin with [options](#options):
 
 ```ts
-import { buildConfig } from 'payload'
-import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { buildConfig } from 'payload';
+import { redirectsPlugin } from '@payloadcms/plugin-redirects';
 
 const config = buildConfig({
   collections: [
@@ -55,19 +55,19 @@ const config = buildConfig({
       collections: ['pages'],
     }),
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 ### Options
 
-| Option        | Type       | Description                                                                                     |
-| ------------- | ---------- | ----------------------------------------------------------------------------------------------- |
-| `collections` | `string[]` | An array of collection slugs to populate in the `to` field of each redirect.                    |
-| `overrides`   | `object`   | A partial collection config that allows you to override anything on the `redirects` collection. |
-| `redirectTypes`   | `string[]`   | Provide an array of redirects if you want to provide options for the type of redirects to be supported. |
-| `redirectTypeFieldOverride`   | `Field`   | A partial Field config that allows you to override the Redirect Type field if enabled above. |
+| Option                      | Type       | Description                                                                                             |
+| --------------------------- | ---------- | ------------------------------------------------------------------------------------------------------- |
+| `collections`               | `string[]` | An array of collection slugs to populate in the `to` field of each redirect.                            |
+| `overrides`                 | `object`   | A partial collection config that allows you to override anything on the `redirects` collection.         |
+| `redirectTypes`             | `string[]` | Provide an array of redirects if you want to provide options for the type of redirects to be supported. |
+| `redirectTypeFieldOverride` | `Field`    | A partial Field config that allows you to override the Redirect Type field if enabled above.            |
 
 Note that the fields in overrides take a function that receives the default fields and returns an array of fields. This allows you to add fields to the collection.
 
@@ -82,14 +82,14 @@ redirectsPlugin({
           type: 'text',
           name: 'customField',
         },
-      ]
+      ];
     },
   },
   redirectTypes: ['301', '302'],
   redirectTypeFieldOverride: {
     label: 'Redirect Type (Overridden)',
   },
-})
+});
 ```
 
 ## TypeScript
@@ -97,7 +97,7 @@ redirectsPlugin({
 All types can be directly imported:
 
 ```ts
-import { PluginConfig } from '@payloadcms/plugin-redirects/types'
+import { PluginConfig } from '@payloadcms/plugin-redirects/types';
 ```
 
 ## Examples

@@ -8,9 +8,9 @@ keywords: lexical, rich text, editor, headless cms
 
 <Banner type="warning">
 
-  The Payload editor is based on Lexical, Meta's rich text editor. The previous default editor was 
-  based on Slate and is still supported. You can read [its documentation](/docs/rich-text/slate), 
-  or the optional [migration guide](/docs/rich-text/migration) to migrate from Slate to Lexical (recommended).
+The Payload editor is based on Lexical, Meta's rich text editor. The previous default editor was
+based on Slate and is still supported. You can read [its documentation](/docs/rich-text/slate),
+or the optional [migration guide](/docs/rich-text/migration) to migrate from Slate to Lexical (recommended).
 
 </Banner>
 
@@ -34,8 +34,8 @@ npm install @payloadcms/richtext-lexical
 Once you have it installed, you can pass it to your top-level Payload Config as follows:
 
 ```ts
-import { buildConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { buildConfig } from 'payload';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
 
 export default buildConfig({
   collections: [
@@ -43,14 +43,14 @@ export default buildConfig({
   ],
   // Pass the Lexical editor to the root config
   editor: lexicalEditor({}),
-})
+});
 ```
 
 You can also override Lexical settings on a field-by-field basis as follows:
 
 ```ts
-import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import type { CollectionConfig } from 'payload';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -62,7 +62,7 @@ export const Pages: CollectionConfig = {
       editor: lexicalEditor({}),
     },
   ],
-}
+};
 ```
 
 ## Extending the lexical editor with Features
@@ -85,9 +85,9 @@ import {
   LinkFeature,
   UploadFeature,
   lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import { Banner } from '../blocks/Banner'
-import { CallToAction } from '../blocks/CallToAction'
+} from '@payloadcms/richtext-lexical';
+import { Banner } from '../blocks/Banner';
+import { CallToAction } from '../blocks/CallToAction';
 
 {
   editor: lexicalEditor({
@@ -132,25 +132,23 @@ import { CallToAction } from '../blocks/CallToAction'
         blocks: [Banner, CallToAction],
       }),
     ],
-  })
+  });
 }
 ```
 
 `features` can be both an array of features, or a function returning an array of features. The function provides the following props:
 
-
 | Prop                  | Description                                                                                                                                                                                                                                            |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **`defaultFeatures`** | This opinionated array contains all "recommended" default features. You can see which features are included in the default features in the table below.                                                                                                |
 | **`rootFeatures`**    | This array contains all features that are enabled in the root richText editor (the one defined in the payload.config.ts). If this field is the root richText editor, or if the root richText editor is not a lexical editor, this array will be empty. |
-
 
 ## Features overview
 
 Here's an overview of all the included features:
 
 | Feature Name                    | Included by default | Description                                                                                                                                                                            |
-|---------------------------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`BoldTextFeature`**           | Yes                 | Handles the bold text format                                                                                                                                                           |
 | **`ItalicTextFeature`**         | Yes                 | Handles the italic text format                                                                                                                                                         |
 | **`UnderlineTextFeature`**      | Yes                 | Handles the underline text format                                                                                                                                                      |
@@ -203,7 +201,7 @@ import type {
   SerializedUploadNode,
   TypedEditorState,
   SerializedHeadingNode,
-} from '@payloadcms/richtext-lexical'
+} from '@payloadcms/richtext-lexical';
 
 const editorState: TypedEditorState<
   | SerializedAutoLinkNode
@@ -247,15 +245,13 @@ const editorState: TypedEditorState<
       },
     ],
   },
-}
+};
 ```
 
 Alternatively, you can use the `DefaultTypedEditorState` type, which includes all types for all nodes included in the `defaultFeatures`:
 
 ```ts
-import type {
-  DefaultTypedEditorState
-} from '@payloadcms/richtext-lexical'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical';
 
 const editorState: DefaultTypedEditorState = {
   root: {
@@ -286,7 +282,7 @@ const editorState: DefaultTypedEditorState = {
       },
     ],
   },
-}
+};
 ```
 
 Just like `TypedEditorState`, the `DefaultTypedEditorState` also accepts an optional node type union as a generic. Here, this would **add** the specified node types to the default ones. Example: `DefaultTypedEditorState<SerializedBlockNode | YourCustomSerializedNode>`.

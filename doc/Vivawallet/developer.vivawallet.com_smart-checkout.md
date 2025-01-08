@@ -2,25 +2,25 @@
 
 ##### Smart Checkout is a **hosted payment page** which gets **smarter over time**. It is fast to integrate, offers increased conversion, and is continually self-updated.
 
--   [Overview](#overview)
-    -   [Features](#features)
-    -   [User experience](#user-experience)
-        -   [Screenshots](#screenshots)
-        -   [Videos](#videos)
-    -   [Supported payment methods](#supported-payment-methods)
--   [Integration guide](#integration-guide)
--   [Functionality & options](#functionality-options)
--   [Frequently Asked Questions](#frequently-asked-questions)
--   [Demo payment pages](#demo-payment-pages)
--   [Get Support](#get-support)
+- [Overview](#overview)
+  - [Features](#features)
+  - [User experience](#user-experience)
+    - [Screenshots](#screenshots)
+    - [Videos](#videos)
+  - [Supported payment methods](#supported-payment-methods)
+- [Integration guide](#integration-guide)
+- [Functionality & options](#functionality-options)
+- [Frequently Asked Questions](#frequently-asked-questions)
+- [Demo payment pages](#demo-payment-pages)
+- [Get Support](#get-support)
 
 ### Overview
 
 Smart Checkout is a turn-key solution for merchants to integrate with Viva to accept payments via an online store. It involves minimal effort on your side and offers the widest variety of payment options and overall features. When your customer is ready to make a payment, you direct them to a payment page hosted by Viva, where the customer provides their payment details and makes the payment. When the payment is completed, they are redirected back to a success (thank you) page of your choice.
 
-**Please see our video overview of Smart Checkout’s main features and benefits:**  
-  
- Your browser does not support the video tag.  
+**Please see our video overview of Smart Checkout’s main features and benefits:**
+
+Your browser does not support the video tag.
 
 Smart Checkout exhibits **high performance**: the customers of our merchant clients that use Smart Checkout proceed to pay on an average rate of **87.6% across Europe** (that number is even higher in certain countries, like the UK, where it sits at 91.1%). That number climbs even higher, to **97.2% for customers that have saved their card on Smart Checkout**.
 
@@ -30,25 +30,25 @@ Smart Checkout **future-proofs your payments** as it is constantly self-updated,
 
 Smart Checkout offers the widest variety of **overall features:**
 
--   **Simple integration**: minimal effort required to integrate, with all features enabled out of the box without additional coding from you
--   **Increased conversion**: dynamically orders payment methods based on the location of the customer, prioritising the most popular local options, thereby increasing conversion rates
--   **Customer preferences**: remembers past payment behavior and preferences of the customer across merchants and countries
--   **Saved cards (customer-side)**: customers can pay using cards they have saved during past purchases, even from other merchants; thus, saved cards are available even to first-time customers. The customer does not need to create an account to save a card or re-use saved cards. New merchants take advantage of the pool of already saved cards across the Viva ecosystem
--   **Card tokenization (merchant-side)**: the merchant can save the card tokens of their customers in the merchant backend, and then use the saved card tokens when the merchant will redirect their customers to Smart Checkout again in the future. The saved card tokens provided by the merchant will then be presented to the customer on Smart Checkout to use and pay with
--   **Decline recovery:** based on the customer’s past payment behavior, we prompt the customer to re-try a declined payment
--   **Recurring payments**: charge the customer automatically, for a fixed or variable amount, on a regular or non-regular schedule
--   **Dynamic descriptor**: Employ dynamic descriptior for payments, so the buyers can recognize transactions clearly on both bank statements and 3DS verification pages.
-    -   **Dynamic Currency Conversion**: [This service](/smart-checkout/smart-checkout-dynamic-currency-conversion/) lets your international customers see prices in their own home currency right at the checkout.
--   **Pre-authorizations**: the merchant can reserve funds now and conclude the payment later (i.e. ‘authorize’ now and ‘capture’ later)
--   **Payment method customization**: switch payment methods on/off at any time, specify order of appearance of payment methods, and specify preferred payment method
--   **Mobile-optimized**: offer an optimized browsing experience on any device (mobile, tablet, laptop, or desktop)
--   **Local languages & currencies**: current support for 17 languages (English, German, French, Italian, Spanish, Polish, Romanian, Dutch, Greek, Czech, Portuguese, Swedish, Hungarian, Bulgarian, Danish, Finnish, and Croatian), and 9 currencies (BGN (Bulgarian lev), CZK (Czech koruna), DKK (Danish krone), EUR (Euro), GBP (Pound sterling),HUF (Hungarian forint), PLN (Polish złoty), RON (Romanian leu) & SEK (Swedish krona))
--   **Cross-border payments**: Supported for all payment methods; you can accept payments from international customers for all payment methods, provided you indicate the country of the customer (use the countryCode parameter of the Create payment order API call)
--   **Cross-currency payments**: Merchants can provide product prices in [different currencies](/smart-checkout/smart-checkout-multicurrency/) than the currency of the country to which they are registered
--   **Branding**: allow customization of the look and feel of your checkout page through a graphical user interface
--   **Compliance & security**: full PCI & SCA/[3DS](https://www.emvco.com/processes-forms/product-approval/authentication/3ds/) support utilizing SCA exemptions, along with advanced fraud protection using Machine Learning algorithms
--   **Constantly self-updated**: regular self-updates with no coding required from you, to; a) offer new payment methods, b) offer new conversion-improving features, and c) comply with all the latest regulatory and security requirements
--   **Card Verification**: the ability to create zero-amount payment orders for the purposes of verifying a customer’s card without needing to take any payment
+- **Simple integration**: minimal effort required to integrate, with all features enabled out of the box without additional coding from you
+- **Increased conversion**: dynamically orders payment methods based on the location of the customer, prioritising the most popular local options, thereby increasing conversion rates
+- **Customer preferences**: remembers past payment behavior and preferences of the customer across merchants and countries
+- **Saved cards (customer-side)**: customers can pay using cards they have saved during past purchases, even from other merchants; thus, saved cards are available even to first-time customers. The customer does not need to create an account to save a card or re-use saved cards. New merchants take advantage of the pool of already saved cards across the Viva ecosystem
+- **Card tokenization (merchant-side)**: the merchant can save the card tokens of their customers in the merchant backend, and then use the saved card tokens when the merchant will redirect their customers to Smart Checkout again in the future. The saved card tokens provided by the merchant will then be presented to the customer on Smart Checkout to use and pay with
+- **Decline recovery:** based on the customer’s past payment behavior, we prompt the customer to re-try a declined payment
+- **Recurring payments**: charge the customer automatically, for a fixed or variable amount, on a regular or non-regular schedule
+- **Dynamic descriptor**: Employ dynamic descriptior for payments, so the buyers can recognize transactions clearly on both bank statements and 3DS verification pages.
+  - **Dynamic Currency Conversion**: [This service](/smart-checkout/smart-checkout-dynamic-currency-conversion/) lets your international customers see prices in their own home currency right at the checkout.
+- **Pre-authorizations**: the merchant can reserve funds now and conclude the payment later (i.e. ‘authorize’ now and ‘capture’ later)
+- **Payment method customization**: switch payment methods on/off at any time, specify order of appearance of payment methods, and specify preferred payment method
+- **Mobile-optimized**: offer an optimized browsing experience on any device (mobile, tablet, laptop, or desktop)
+- **Local languages & currencies**: current support for 17 languages (English, German, French, Italian, Spanish, Polish, Romanian, Dutch, Greek, Czech, Portuguese, Swedish, Hungarian, Bulgarian, Danish, Finnish, and Croatian), and 9 currencies (BGN (Bulgarian lev), CZK (Czech koruna), DKK (Danish krone), EUR (Euro), GBP (Pound sterling),HUF (Hungarian forint), PLN (Polish złoty), RON (Romanian leu) & SEK (Swedish krona))
+- **Cross-border payments**: Supported for all payment methods; you can accept payments from international customers for all payment methods, provided you indicate the country of the customer (use the countryCode parameter of the Create payment order API call)
+- **Cross-currency payments**: Merchants can provide product prices in [different currencies](/smart-checkout/smart-checkout-multicurrency/) than the currency of the country to which they are registered
+- **Branding**: allow customization of the look and feel of your checkout page through a graphical user interface
+- **Compliance & security**: full PCI & SCA/[3DS](https://www.emvco.com/processes-forms/product-approval/authentication/3ds/) support utilizing SCA exemptions, along with advanced fraud protection using Machine Learning algorithms
+- **Constantly self-updated**: regular self-updates with no coding required from you, to; a) offer new payment methods, b) offer new conversion-improving features, and c) comply with all the latest regulatory and security requirements
+- **Card Verification**: the ability to create zero-amount payment orders for the purposes of verifying a customer’s card without needing to take any payment
 
 **Smart Checkout is preferable to an API-based checkout** (i.e. a checkout you need to build yourself for your online store by integrating with APIs offered by several different payment providers in order to offer all payment methods) for multiple reasons:
 
@@ -59,29 +59,23 @@ Smart Checkout offers the widest variety of **overall features:**
     d. Performs decline recovery to further improve conversion **+1.6% to conversion rate**  
     e. Multiple payment methods, e.g. Apple Pay, PayPal, Klarna, via a single integration  
     f. Enhanced user experience, boosting conversion rates and customer satisfaction  
-    g. Support for 17 local languages  
-    
+    g. Support for 17 local languages
 2.  It requires **no effort to always have updated**, as Viva deals on an ongoing basis with enhancements to:  
     a. Offer new features that further enhance customer experience and conversion rates  
     b. Provide additional payment methods as they are introduced and grow in popularity  
-    c. Continuously comply with ever-changing regulatory requirements  
-    
+    c. Continuously comply with ever-changing regulatory requirements
 3.  It offers **unique features that an API-based checkout cannot offer across merchants & countries**:  
     a. Customers can use cards they have saved during past purchases from other merchants **+6% to conversion rate**  
     b. Customers are presented payment methods most likely to convert based on past overall behavior (considering all purchases from all merchants across countries) (coming soon)
-    
 4.  It offers **payment methods not available via an API-based checkout**, such as PayPal (wallet), Klarna, and others
-    
 5.  Nowadays, **55% of consumers in Europe pay with a method other than card**, and this continues to grow
-    
 6.  It offers **out-of-the-box PCI-DSS & SCA/3DS compliance** as Viva (not the merchant) manages sensitive customer data and adherence to industry security standards
-    
 
 #### User experience
 
 ##### Screenshots
 
-With our Smart Checkout solution, customers are redirected to the Viva Smart Checkout payment page to make a payment. The below image shows how a Smart Checkout payment page displays to your customers:  
+With our Smart Checkout solution, customers are redirected to the Viva Smart Checkout payment page to make a payment. The below image shows how a Smart Checkout payment page displays to your customers:
 
 ![Smart Checkout](/images/sc-new-general.png?width=600px&height=auto&classes=border)
 
@@ -89,16 +83,16 @@ With our Smart Checkout solution, customers are redirected to the Viva Smart Che
 
 The below video shows some features of **Smart Checkout** payment page:
 
- Your browser does not support the video tag.
+Your browser does not support the video tag.
 
 #### Supported payment methods
 
 Smart Checkout supports a wide variety of payment methods, including:
 
--   [**Cards**](/payment-methods/#cards) (Visa, Mastercard, American Express, Maestro, Bancontact, JCB, Discover & Diners Club)
--   [**Digital wallets**](/payment-methods/#digital-wallets) (Apple Pay, Google Pay, Samsung Pay, PayPal, PayPal Pay Later, Viva Wallet & MobilePay Online)
--   [**Local payment methods**](/payment-methods/#local-payment-methods) (BANCOMAT Pay, Bancontact QR, BitPay, BLIK, Bluecode, EPS, iDEAL, IRIS, Klarna, MULTIBANCO, MB WAY, P24, Payconiq, PayU, Satispay, Swish, tbi bank, Trustly & WeChat Pay)
--   [**Direct Debit & other payment methods**](/payment-methods/#direct-debit-other) (Pay By Bank, Cash (Viva Spot) & e-banking (ΔΙΑΣ/DIAS))
+- [**Cards**](/payment-methods/#cards) (Visa, Mastercard, American Express, Maestro, Bancontact, JCB, Discover & Diners Club)
+- [**Digital wallets**](/payment-methods/#digital-wallets) (Apple Pay, Google Pay, Samsung Pay, PayPal, PayPal Pay Later, Viva Wallet & MobilePay Online)
+- [**Local payment methods**](/payment-methods/#local-payment-methods) (BANCOMAT Pay, Bancontact QR, BitPay, BLIK, Bluecode, EPS, iDEAL, IRIS, Klarna, MULTIBANCO, MB WAY, P24, Payconiq, PayU, Satispay, Swish, tbi bank, Trustly & WeChat Pay)
+- [**Direct Debit & other payment methods**](/payment-methods/#direct-debit-other) (Pay By Bank, Cash (Viva Spot) & e-banking (ΔΙΑΣ/DIAS))
 
 ![Visa](/images/new-payment-methods-logos/visa_updated_1.svg?width=50px&height=auto)
 
@@ -195,8 +189,6 @@ Here are our [**frequently asked questions (_FAQs_)**](/smart-checkout/smart-che
 Please find, below, demo pages for each available country. You can use these as illustrations of how the Smart Checkout payment page looks and functions.
 
 You can use our [test payment cards](https://developer.viva.com/integration-reference/test-cards-and-environments/#test-cards) in order to test making payments.
-
-   
 
 Country
 

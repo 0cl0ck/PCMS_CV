@@ -11,8 +11,8 @@ Documents in Payload can be easily sorted by a specific [Field](../fields/overvi
 Because sorting is handled by the database, the field cannot be a [Virtual Field](https://payloadcms.com/blog/learn-how-virtual-fields-can-help-solve-common-cms-challenges). It must be stored in the database to be searchable.
 
 <Banner type="success">
-  **Tip:**
-  For performance reasons, it is recommended to enable `index: true` for the fields that will be sorted upon. [More details](../fields/overview).
+  **Tip:** For performance reasons, it is recommended to enable `index: true` for the fields that
+  will be sorted upon. [More details](../fields/overview).
 </Banner>
 
 ## Local API
@@ -20,31 +20,31 @@ Because sorting is handled by the database, the field cannot be a [Virtual Field
 To sort Documents in the [Local API](../local-api/overview), you can use the `sort` option in your query:
 
 ```ts
-import type { Payload } from 'payload'
+import type { Payload } from 'payload';
 
 const getPosts = async (payload: Payload) => {
   const posts = await payload.find({
     collection: 'posts',
     sort: '-createdAt', // highlight-line
-  })
+  });
 
-  return posts
-}
+  return posts;
+};
 ```
 
 To sort by multiple fields, you can use the `sort` option with fields in an array:
 
 ```ts
-import type { Payload } from 'payload'
+import type { Payload } from 'payload';
 
 const getPosts = async (payload: Payload) => {
   const posts = await payload.find({
     collection: 'posts',
     sort: ['priority', '-createdAt'], // highlight-line
-  })
+  });
 
-  return posts
-}
+  return posts;
+};
 ```
 
 ## REST API
@@ -54,7 +54,7 @@ To sort in the [REST API](../rest-api/overview), you can use the `sort` paramete
 ```ts
 fetch('https://localhost:3000/api/posts?sort=-createdAt') // highlight-line
   .then((response) => response.json())
-  .then((data) => console.log(data))
+  .then((data) => console.log(data));
 ```
 
 To sort by multiple fields, you can use the `sort` parameter with fields separated by comma:
@@ -62,7 +62,7 @@ To sort by multiple fields, you can use the `sort` parameter with fields separat
 ```ts
 fetch('https://localhost:3000/api/posts?sort=priority,-createdAt') // highlight-line
   .then((response) => response.json())
-  .then((data) => console.log(data))
+  .then((data) => console.log(data));
 ```
 
 ## GraphQL API

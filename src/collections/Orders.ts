@@ -1,4 +1,4 @@
-import type { CollectionConfig, CollectionSlug } from 'payload'
+import type { CollectionConfig, CollectionSlug } from 'payload';
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -73,6 +73,6 @@ export const Orders: CollectionConfig = {
       defaultValue: 'pending',
     },
   ],
-}
+};
 
-export default Orders
+export default Orders;

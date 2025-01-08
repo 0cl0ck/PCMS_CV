@@ -48,8 +48,8 @@ Install the plugin using any JavaScript package manager like [pnpm](https://pnpm
 In the `plugins` array of your [Payload Config](https://payloadcms.com/docs/configuration/overview), call the plugin with [options](#options):
 
 ```js
-import { buildConfig } from 'payload'
-import { searchPlugin } from '@payloadcms/plugin-search'
+import { buildConfig } from 'payload';
+import { searchPlugin } from '@payloadcms/plugin-search';
 
 const config = buildConfig({
   collections: [
@@ -71,9 +71,9 @@ const config = buildConfig({
       },
     }),
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 ### Options
@@ -173,5 +173,5 @@ Collection reindexing allows you to recreate search documents from your search-e
 All types can be directly imported:
 
 ```ts
-import type { SearchConfig, BeforeSync } from '@payloadcms/plugin-search/types'
+import type { SearchConfig, BeforeSync } from '@payloadcms/plugin-search/types';
 ```

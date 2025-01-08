@@ -59,7 +59,9 @@ You can update settings from your Project’s Settings tab. Changes to your buil
 From the Environment Variables page of the Settings tab, you can add, update and delete variables for use in your project. Like build settings, these changes will trigger a redeployment of your project.
 
 <Banner>
-  Note: For security reasons, any variables you wish to provide to the [Admin Panel](../admin/overview) must be prefixed with `NEXT_PUBLIC_`. [More details](../configuration/environment-vars).
+  Note: For security reasons, any variables you wish to provide to the [Admin
+  Panel](../admin/overview) must be prefixed with `NEXT_PUBLIC_`. [More
+  details](../configuration/environment-vars).
 </Banner>
 
 ## Custom Domains
@@ -79,7 +81,7 @@ You will also need to configure your Payload project to use your specified domai
 export default buildConfig({
   serverURL: 'https://example.com',
   // the rest of your config,
-})
+});
 ```
 
 ## Email
@@ -101,13 +103,13 @@ Projects generated from a template will come pre-configured with the official Cl
 `pnpm add @payloadcms/payload-cloud`
 
 ```js
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
-import { buildConfig } from 'payload'
+import { payloadCloudPlugin } from '@payloadcms/payload-cloud';
+import { buildConfig } from 'payload';
 
 export default buildConfig({
   plugins: [payloadCloudPlugin()],
   // rest of config
-})
+});
 ```
 
 <Banner type="warning">
@@ -128,5 +130,5 @@ If you wish to opt-out of any Payload cloud features, the plugin also accepts op
 payloadCloud({
   storage: false, // Disable file storage
   email: false, // Disable email delivery
-})
+});
 ```

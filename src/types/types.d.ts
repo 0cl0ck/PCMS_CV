@@ -1,4 +1,4 @@
-import 'payload'
+import 'payload';
 
 declare module 'payload' {
   export type CollectionSlug =
@@ -10,5 +10,5 @@ declare module 'payload' {
     | 'form-submissions'
     | 'search'
     | 'users'
-    | 'products'
+    | 'products';
 }

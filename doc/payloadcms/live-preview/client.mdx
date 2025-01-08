@@ -7,7 +7,9 @@ keywords: live preview, frontend, react, next.js, vue, nuxt.js, svelte, hook, us
 ---
 
 <Banner type="info">
-  If your front-end application supports Server Components like the [Next.js App Router](https://nextjs.org/docs/app), etc., we suggest setting up [server-side Live Preview](./server) instead.
+  If your front-end application supports Server Components like the [Next.js App
+  Router](https://nextjs.org/docs/app), etc., we suggest setting up [server-side Live
+  Preview](./server) instead.
 </Banner>
 
 While using Live Preview, the [Admin Panel](../admin/overview) emits a new `window.postMessage` event every time your document has changed. Your front-end application can listen for these events and re-render accordingly.
@@ -41,7 +43,9 @@ And return the following values:
 </Banner>
 
 <Banner type="info">
-  It is important that the `depth` argument matches exactly with the depth of your initial page request. The depth property is used to populated relationships and uploads beyond their IDs. See [Depth](../queries/depth) for more information.
+  It is important that the `depth` argument matches exactly with the depth of your initial page
+  request. The depth property is used to populated relationships and uploads beyond their IDs. See
+  [Depth](../queries/depth) for more information.
 </Banner>
 
 ## Frameworks
@@ -66,31 +70,32 @@ npm install @payloadcms/live-preview-react
 Then, use the `useLivePreview` hook in your React component:
 
 ```tsx
-'use client'
-import { useLivePreview } from '@payloadcms/live-preview-react'
-import { Page as PageType } from '@/payload-types'
+'use client';
+import { useLivePreview } from '@payloadcms/live-preview-react';
+import { Page as PageType } from '@/payload-types';
 
 // Fetch the page in a server component, pass it to the client component, then thread it through the hook
 // The hook will take over from there and keep the preview in sync with the changes you make
 // The `data` property will contain the live data of the document
 export const PageClient: React.FC<{
   page: {
-    title: string
-  }
+    title: string;
+  };
 }> = ({ page: initialPage }) => {
   const { data } = useLivePreview<PageType>({
     initialData: initialPage,
     serverURL: PAYLOAD_SERVER_URL,
     depth: 2,
-  })
+  });
 
-  return <h1>{data.title}</h1>
-}
+  return <h1>{data.title}</h1>;
+};
 ```
 
 <Banner type="warning">
-  **Reminder:**
-  If you are using [React Server Components](https://react.dev/reference/rsc/server-components), we strongly suggest setting up [server-side Live Preview](./server) instead.
+  **Reminder:** If you are using [React Server
+  Components](https://react.dev/reference/rsc/server-components), we strongly suggest setting up
+  [server-side Live Preview](./server) instead.
 </Banner>
 
 ### Vue
@@ -140,12 +145,12 @@ npm install @payloadcms/live-preview
 
 This package provides the following functions:
 
-| Path                     | Description                                                                                                                |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| **`subscribe`**          | Subscribes to the Admin Panel's `window.postMessage` events and calls the provided callback function.                      |
-| **`unsubscribe`**        | Unsubscribes from the Admin Panel's `window.postMessage` events.                                                           |
-| **`ready`**              | Sends a `window.postMessage` event to the Admin Panel to indicate that the front-end is ready to receive messages.         |
-| **`isLivePreviewEvent`** | Checks if a `MessageEvent` originates from the Admin Panel and is a Live Preview event, i.e. debounced form state.         |
+| Path                     | Description                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| **`subscribe`**          | Subscribes to the Admin Panel's `window.postMessage` events and calls the provided callback function.              |
+| **`unsubscribe`**        | Unsubscribes from the Admin Panel's `window.postMessage` events.                                                   |
+| **`ready`**              | Sends a `window.postMessage` event to the Admin Panel to indicate that the front-end is ready to receive messages. |
+| **`isLivePreviewEvent`** | Checks if a `MessageEvent` originates from the Admin Panel and is a Live Preview event, i.e. debounced form state. |
 
 The `subscribe` function takes the following args:
 
@@ -159,7 +164,7 @@ The `subscribe` function takes the following args:
 With these functions, you can build your own hook using your front-end framework of choice:
 
 ```tsx
-import { subscribe, unsubscribe } from '@payloadcms/live-preview'
+import { subscribe, unsubscribe } from '@payloadcms/live-preview';
 
 // To build your own hook, subscribe to Live Preview events using the `subscribe` function
 // It handles everything from:
@@ -176,28 +181,28 @@ import { subscribe, unsubscribe } from '@payloadcms/live-preview'
 Here is an example of what the same `useLivePreview` React hook from above looks like under the hood:
 
 ```tsx
-import { subscribe, unsubscribe, ready } from '@payloadcms/live-preview'
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { subscribe, unsubscribe, ready } from '@payloadcms/live-preview';
+import { useCallback, useEffect, useState, useRef } from 'react';
 
 export const useLivePreview = <T extends any>(props: {
-  depth?: number
-  initialData: T
-  serverURL: string
+  depth?: number;
+  initialData: T;
+  serverURL: string;
 }): {
-  data: T
-  isLoading: boolean
+  data: T;
+  isLoading: boolean;
 } => {
-  const { depth = 0, initialData, serverURL } = props
-  const [data, setData] = useState<T>(initialData)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const hasSentReadyMessage = useRef<boolean>(false)
+  const { depth = 0, initialData, serverURL } = props;
+  const [data, setData] = useState<T>(initialData);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const hasSentReadyMessage = useRef<boolean>(false);
 
   const onChange = useCallback((mergedData) => {
     // When a change is made, the `onChange` callback will be called with the merged data
     // Set this merged data into state so that React will re-render the UI
-    setData(mergedData)
-    setIsLoading(false)
-  }, [])
+    setData(mergedData);
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     // Listen for `window.postMessage` events from the Admin Panel
@@ -207,29 +212,29 @@ export const useLivePreview = <T extends any>(props: {
       depth,
       initialData,
       serverURL,
-    })
+    });
 
     // Once subscribed, send a `ready` message back up to the Admin Panel
     // This will indicate that the front-end is ready to receive messages
     if (!hasSentReadyMessage.current) {
-      hasSentReadyMessage.current = true
+      hasSentReadyMessage.current = true;
 
       ready({
         serverURL,
-      })
+      });
     }
 
     // When the component unmounts, unsubscribe from the `window.postMessage` events
     return () => {
-      unsubscribe(subscription)
-    }
-  }, [serverURL, onChange, depth, initialData])
+      unsubscribe(subscription);
+    };
+  }, [serverURL, onChange, depth, initialData]);
 
   return {
     data,
     isLoading,
-  }
-}
+  };
+};
 ```
 
 <Banner type="info">
@@ -285,7 +290,7 @@ const { docs } = await payload.find({
       equals: 'home',
     },
   },
-})
+});
 ```
 
 ```tsx
@@ -294,7 +299,7 @@ const { data } = useLivePreview<PageType>({
   initialData: initialPage,
   serverURL: PAYLOAD_SERVER_URL,
   depth: 1, // Ensure this matches the depth of your initial request
-})
+});
 ```
 
 #### Iframe refuses to connect

@@ -15,7 +15,8 @@ This plugin allows you to integrate [Sentry](https://sentry.io/) seamlessly with
 Sentry is a powerful error tracking and performance monitoring tool that helps developers identify, diagnose, and resolve issues in their applications.
 
 <Banner type="success">
-  Sentry does smart stuff with error data to make bugs easier to find and fix. - [sentry.io](https://sentry.io/)
+  Sentry does smart stuff with error data to make bugs easier to find and fix. -
+  [sentry.io](https://sentry.io/)
 </Banner>
 
 This multi-faceted software offers a range of features that will help you manage errors with greater ease and ultimately ensure your application is running smoothly:
@@ -31,7 +32,12 @@ This multi-faceted software offers a range of features that will help you manage
 - **Integrations**: Connects with various tools and services for enhanced workflow and issue management
 
 <Banner type="info">
-  This plugin is completely open-source and the [source code can be found here](https://github.com/payloadcms/payload/tree/main/packages/plugin-sentry). If you need help, check out our [Community Help](https://payloadcms.com/community-help). If you think you've found a bug, please [open a new issue](https://github.com/payloadcms/payload/issues/new?assignees=&labels=plugin%3A%20seo&template=bug_report.md&title=plugin-sentry%3A) with as much detail as possible.
+  This plugin is completely open-source and the [source code can be found
+  here](https://github.com/payloadcms/payload/tree/main/packages/plugin-sentry). If you need help,
+  check out our [Community Help](https://payloadcms.com/community-help). If you think you've found a
+  bug, please [open a new
+  issue](https://github.com/payloadcms/payload/issues/new?assignees=&labels=plugin%3A%20seo&template=bug_report.md&title=plugin-sentry%3A)
+  with as much detail as possible.
 </Banner>
 
 ## Installation
@@ -43,12 +49,15 @@ Install the plugin using any JavaScript package manager like [pnpm](https://pnpm
 ```
 
 ## Sentry for Next.js setup
+
 This plugin requires to complete the [Sentry + Next.js setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/) before.
 
 You can use either the [automatic setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/#install) with the installation wizard:
+
 ```sh
 npx @sentry/wizard@latest -i nextjs
 ```
+
 Or the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/)
 
 ## Basic Usage
@@ -56,11 +65,11 @@ Or the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/
 In the `plugins` array of your [Payload Config](https://payloadcms.com/docs/configuration/overview), call the plugin and pass in your Sentry DSN as an option.
 
 ```ts
-import { buildConfig } from 'payload'
-import { sentryPlugin } from '@payloadcms/plugin-sentry'
-import { Pages, Media } from './collections'
+import { buildConfig } from 'payload';
+import { sentryPlugin } from '@payloadcms/plugin-sentry';
+import { Pages, Media } from './collections';
 
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs';
 
 const config = buildConfig({
   collections: [Pages, Media],
@@ -69,9 +78,9 @@ const config = buildConfig({
       Sentry,
     }),
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 ## Options
@@ -101,12 +110,12 @@ export default config
 Configure any of these options by passing them to the plugin:
 
 ```ts
-import { buildConfig } from 'payload'
-import { sentryPlugin } from '@payloadcms/plugin-sentry'
+import { buildConfig } from 'payload';
+import { sentryPlugin } from '@payloadcms/plugin-sentry';
 
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs';
 
-import { Pages, Media } from './collections'
+import { Pages, Media } from './collections';
 
 const config = buildConfig({
   collections: [Pages, Media],
@@ -120,16 +129,16 @@ const config = buildConfig({
             tags: {
               locale: req.locale,
             },
-          }
+          };
         },
         debug: true,
       },
       Sentry,
     }),
   ],
-})
+});
 
-export default config
+export default config;
 ```
 
 ## TypeScript
@@ -137,5 +146,5 @@ export default config
 All types can be directly imported:
 
 ```ts
-import { PluginOptions } from '@payloadcms/plugin-sentry'
+import { PluginOptions } from '@payloadcms/plugin-sentry';
 ```

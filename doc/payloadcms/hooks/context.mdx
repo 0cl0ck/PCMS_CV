@@ -28,7 +28,7 @@ To pass data between hooks, you can assign values to context in an earlier hook 
 For example:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 const Customer: CollectionConfig = {
   slug: 'customers',
@@ -36,19 +36,19 @@ const Customer: CollectionConfig = {
     beforeChange: [
       async ({ context, data }) => {
         // assign the customerData to context for use later
-        context.customerData = await fetchCustomerData(data.customerID)
+        context.customerData = await fetchCustomerData(data.customerID);
         return {
           ...data,
           // some data we use here
           name: context.customerData.name,
-        }
+        };
       },
     ],
     afterChange: [
       async ({ context, doc, req }) => {
         // use context.customerData without needing to fetch it again
         if (context.customerData.contacted === false) {
-          createTodo('Call Customer', context.customerData)
+          createTodo('Call Customer', context.customerData);
         }
       },
     ],
@@ -56,7 +56,7 @@ const Customer: CollectionConfig = {
   fields: [
     /* ... */
   ],
-}
+};
 ```
 
 ### Preventing Infinite Loops
@@ -66,7 +66,7 @@ Let's say you have an `afterChange` hook, and you want to do a calculation insid
 Bad example:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 const Customer: CollectionConfig = {
   slug: 'customers',
@@ -80,14 +80,14 @@ const Customer: CollectionConfig = {
           data: {
             ...(await fetchCustomerData(data.customerID)),
           },
-        })
+        });
       },
     ],
   },
   fields: [
     /* ... */
   ],
-}
+};
 ```
 
 Instead of the above, we need to tell the `afterChange` hook to not run again if it performs the update (and thus not update itself again). We can solve that with context.
@@ -95,7 +95,7 @@ Instead of the above, we need to tell the `afterChange` hook to not run again if
 Fixed example:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 const MyCollection: CollectionConfig = {
   slug: 'slug',
@@ -104,7 +104,7 @@ const MyCollection: CollectionConfig = {
       async ({ context, doc }) => {
         // return if flag was previously set
         if (context.triggerAfterChange === false) {
-          return
+          return;
         }
         await payload.update({
           collection: contextHooksSlug,
@@ -116,14 +116,14 @@ const MyCollection: CollectionConfig = {
             // set a flag to prevent from running again
             triggerAfterChange: false,
           },
-        })
+        });
       },
     ],
   },
   fields: [
     /* ... */
   ],
-}
+};
 ```
 
 ## TypeScript
@@ -133,12 +133,12 @@ The default TypeScript interface for `context` is `{ [key: string]: unknown }`. 
 This is known as "type augmentation", a TypeScript feature which allows us to add types to existing types. Simply put this in any `.ts` or `.d.ts` file:
 
 ```ts
-import { RequestContext as OriginalRequestContext } from 'payload'
+import { RequestContext as OriginalRequestContext } from 'payload';
 
 declare module 'payload' {
   // Create a new interface that merges your additional fields with the original one
   export interface RequestContext extends OriginalRequestContext {
-    myObject?: string
+    myObject?: string;
     // ...
   }
 }

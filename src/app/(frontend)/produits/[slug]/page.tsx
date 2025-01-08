@@ -1,32 +1,32 @@
 // import type { Metadata } from 'next/types'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import React from 'react'
+import { getPayload } from 'payload';
+import configPromise from '@payload-config';
+import React from 'react';
 // import { RichText } from '@payloadcms/richtext-lexical/react'
-import Image from 'next/image'
+import Image from 'next/image';
 
 interface ProductProps {
   params: Promise<{
-    slug: string
-  }>
+    slug: string;
+  }>;
 }
 
 interface Variation {
-  name: string
-  price: number
-  id: string
+  name: string;
+  price: number;
+  id: string;
 }
 
 export default async function Page({ params }: ProductProps) {
   // Attendez explicitement params pour extraire slug
-  const { slug } = await params
+  const { slug } = await params;
 
   if (!slug) {
-    return <div>Produit non trouvé</div>
+    return <div>Produit non trouvé</div>;
   }
 
   // Chargez l'instance Payload
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise });
 
   // Requête pour récupérer les données du produit
   const productData = await payload.find({
@@ -37,12 +37,12 @@ export default async function Page({ params }: ProductProps) {
       },
     },
     limit: 1,
-  })
+  });
 
-  const product = productData.docs[0]
+  const product = productData.docs[0];
 
   if (!product) {
-    return <div>Produit non trouvé</div>
+    return <div>Produit non trouvé</div>;
   }
 
   // Affichage du produit
@@ -60,6 +60,7 @@ export default async function Page({ params }: ProductProps) {
               className="mb-4 w-full max-w-md"
               width={500}
               height={500}
+              priority
             />
           )}
         {product.variations ? (
@@ -76,5 +77,5 @@ export default async function Page({ params }: ProductProps) {
         <button className="px-4 py-2 bg-blue-500 text-white rounded">Ajouter au panier</button>
       </div>
     </div>
-  )
+  );
 }

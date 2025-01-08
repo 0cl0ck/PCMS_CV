@@ -1,5 +1,5 @@
-import { slugField } from '@/fields/slug'
-import type { CollectionConfig } from 'payload'
+import { slugField } from '@/fields/slug';
+import type { CollectionConfig } from 'payload';
 
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
@@ -42,4 +42,4 @@ export const ProductCategories: CollectionConfig = {
     },
     ...slugField(),
   ],
-}
+};

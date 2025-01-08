@@ -17,8 +17,8 @@ Currently, Payload officially supports the following Database Adapters:
 To configure a Database Adapter, use the `db` property in your [Payload Config](../configuration/overview):
 
 ```ts
-import { buildConfig } from 'payload'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { buildConfig } from 'payload';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
 
 export default buildConfig({
   // ...
@@ -27,12 +27,13 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   // highlight-end
-})
+});
 ```
 
 <Banner type="warning">
-  **Reminder:**
-  The Database Adapter is an external dependency and must be installed in your project separately from Payload. You can find the installation instructions for each Database Adapter in their respective documentation.
+  **Reminder:** The Database Adapter is an external dependency and must be installed in your project
+  separately from Payload. You can find the installation instructions for each Database Adapter in
+  their respective documentation.
 </Banner>
 
 ## Selecting a Database

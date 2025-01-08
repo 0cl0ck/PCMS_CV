@@ -34,8 +34,8 @@ Both `graphQL.queries` and `graphQL.mutations` functions should return an object
 `payload.config.js`:
 
 ```ts
-import { buildConfig } from 'payload'
-import myCustomQueryResolver from './graphQL/resolvers/myCustomQueryResolver'
+import { buildConfig } from 'payload';
+import myCustomQueryResolver from './graphQL/resolvers/myCustomQueryResolver';
 
 export default buildConfig({
   graphQL: {
@@ -61,11 +61,11 @@ export default buildConfig({
           },
           resolve: myCustomQueryResolver,
         },
-      }
+      };
     },
     // highlight-end
   },
-})
+});
 ```
 
 ## Resolver function
@@ -77,7 +77,7 @@ Your function will receive four arguments you can make use of:
 Example
 
 ```ts
-;async (obj, args, context, info) => {}
+async (obj, args, context, info) => {};
 ```
 
 **`obj`**
@@ -103,7 +103,7 @@ We've exposed a few types and utilities to help you extend the API further. Payl
 **`GraphQLJSON`** & **`GraphQLJSONObject`**
 
 ```ts
-import { GraphQLJSON, GraphQLJSONObject } from '@payloadcms/graphql/types'
+import { GraphQLJSON, GraphQLJSONObject } from '@payloadcms/graphql/types';
 ```
 
 **`GraphQL`**
@@ -111,13 +111,13 @@ import { GraphQLJSON, GraphQLJSONObject } from '@payloadcms/graphql/types'
 You can directly import the GraphQL package used by Payload, most useful for typing.
 
 ```ts
-import { GraphQL } from '@payloadcms/graphql/types'
+import { GraphQL } from '@payloadcms/graphql/types';
 ```
 
 <Banner type="warning">
-  For queries, mutations and handlers make sure you use the `GraphQL` and `payload` instances provided via arguments.
+  For queries, mutations and handlers make sure you use the `GraphQL` and `payload` instances
+  provided via arguments.
 </Banner>
-
 
 **`buildPaginatedListType`**
 
@@ -127,7 +127,7 @@ It takes in two arguments, the first for the name of this new schema type and th
 Example
 
 ```ts
-import { buildPaginatedListType } from '@payloadcms/graphql/types'
+import { buildPaginatedListType } from '@payloadcms/graphql/types';
 
 export const getMyPosts = (GraphQL, payload) => {
   return {
@@ -135,8 +135,8 @@ export const getMyPosts = (GraphQL, payload) => {
     resolve: Resolver,
     // The name of your new type has to be unique
     type: buildPaginatedListType('AuthorPosts', payload.collections['posts'].graphQL?.type),
-  }
-}
+  };
+};
 ```
 
 **`payload.collections.slug.graphQL`**

@@ -11,14 +11,15 @@ The behavior of [Collections](../configuration/collections) within the [Admin Pa
 To configure Admin Options for Collections, use the `admin` property in your Collection Config:
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const MyCollection: CollectionConfig = {
   // ...
-  admin: { // highlight-line
+  admin: {
+    // highlight-line
     // ...
   },
-}
+};
 ```
 
 ## Admin Options
@@ -51,36 +52,37 @@ Collections can set their own [Custom Components](./components) which only apply
 To override Collection Components, use the `admin.components` property in your [Collection Config](../configuration/collections):
 
 ```ts
-import type { SanitizedCollectionConfig } from 'payload'
+import type { SanitizedCollectionConfig } from 'payload';
 
 export const MyCollection: SanitizedCollectionConfig = {
   // ...
   admin: {
-    components: { // highlight-line
+    components: {
+      // highlight-line
       // ...
     },
   },
-}
+};
 ```
 
 The following options are available:
 
-| Path                       | Description                                                                                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **`beforeList`**           | An array of components to inject _before_ the built-in List View                                                          |
-| **`beforeListTable`**      | An array of components to inject _before_ the built-in List View's table                                                  |
-| **`afterList`**            | An array of components to inject _after_ the built-in List View                                                           |
-| **`afterListTable`**       | An array of components to inject _after_ the built-in List View's table
-| **`Description`**          | A component to render below the Collection label in the List View. An alternative to the `admin.description` property. |
-| **`edit.SaveButton`**      | Replace the default Save Button with a Custom Component. [Drafts](../versions/drafts) must be disabled.                                     |
+| Path                       | Description                                                                                                                                |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`beforeList`**           | An array of components to inject _before_ the built-in List View                                                                           |
+| **`beforeListTable`**      | An array of components to inject _before_ the built-in List View's table                                                                   |
+| **`afterList`**            | An array of components to inject _after_ the built-in List View                                                                            |
+| **`afterListTable`**       | An array of components to inject _after_ the built-in List View's table                                                                    |
+| **`Description`**          | A component to render below the Collection label in the List View. An alternative to the `admin.description` property.                     |
+| **`edit.SaveButton`**      | Replace the default Save Button with a Custom Component. [Drafts](../versions/drafts) must be disabled.                                    |
 | **`edit.SaveDraftButton`** | Replace the default Save Draft Button with a Custom Component. [Drafts](../versions/drafts) must be enabled and autosave must be disabled. |
 | **`edit.PublishButton`**   | Replace the default Publish Button with a Custom Component. [Drafts](../versions/drafts) must be enabled.                                  |
-| **`edit.PreviewButton`**   | Replace the default Preview Button with a Custom Component. [Preview](#preview) must be enabled.                                         |
-| **`views`**                | Override or create new views within the Admin Panel. [More details](./views).                                     |
+| **`edit.PreviewButton`**   | Replace the default Preview Button with a Custom Component. [Preview](#preview) must be enabled.                                           |
+| **`views`**                | Override or create new views within the Admin Panel. [More details](./views).                                                              |
 
 <Banner type="success">
-  **Note:**
-  For details on how to build Custom Components, see [Building Custom Components](./components#building-custom-components).
+  **Note:** For details on how to build Custom Components, see [Building Custom
+  Components](./components#building-custom-components).
 </Banner>
 
 ### Preview
@@ -90,7 +92,7 @@ It is possible to display a Preview Button within the Edit View of the Admin Pan
 To configure the Preview Button, set the `admin.preview` property to a function in your [Collection Config](../configuration/collections):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const Posts: CollectionConfig = {
   // ...
@@ -98,34 +100,35 @@ export const Posts: CollectionConfig = {
     // highlight-start
     preview: (doc, { locale }) => {
       if (doc?.slug) {
-        return `/${doc.slug}?locale=${locale}`
+        return `/${doc.slug}?locale=${locale}`;
       }
 
-      return null
+      return null;
     },
     // highlight-end
   },
-}
+};
 ```
 
 The `preview` property resolves to a string that points to your front-end application with additional URL parameters. This can be an absolute URL or a relative path.
 
 The preview function receives two arguments:
 
-| Argument | Description |
-| --- | --- |
-| **`doc`** | The Document being edited. |
+| Argument  | Description                                                                                                      |
+| --------- | ---------------------------------------------------------------------------------------------------------------- |
+| **`doc`** | The Document being edited.                                                                                       |
 | **`ctx`** | An object containing `locale`, `token`, and `req` properties. The `token` is the currently logged-in user's JWT. |
 
 If your application requires a fully qualified URL, such as within deploying to Vercel Preview Deployments, you can use the `req` property to build this URL:
 
 ```ts
-preview: (doc, { req }) => `${req.protocol}//${req.host}/${doc.slug}` // highlight-line
+preview: (doc, { req }) => `${req.protocol}//${req.host}/${doc.slug}`; // highlight-line
 ```
 
 <Banner type="success">
-  **Note:**
-  For fully working example of this, check of the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/main/examples/draft-preview) in the [Examples Directory](https://github.com/payloadcms/payload/tree/main/examples).
+  **Note:** For fully working example of this, check of the official [Draft Preview
+  Example](https://github.com/payloadcms/payload/tree/main/examples/draft-preview) in the [Examples
+  Directory](https://github.com/payloadcms/payload/tree/main/examples).
 </Banner>
 
 ### Pagination
@@ -135,7 +138,7 @@ All Collections receive their own List View which displays a paginated list of d
 To configure pagination options, use the `admin.pagination` property in your [Collection Config](../configuration/collections):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const Posts: CollectionConfig = {
   // ...
@@ -147,7 +150,7 @@ export const Posts: CollectionConfig = {
     },
     // highlight-end
   },
-}
+};
 ```
 
 The following options are available:
@@ -164,7 +167,7 @@ In the List View, there is a "search" box that allows you to quickly find a docu
 To define which fields should be searched, use the `admin.listSearchableFields` property in your [Collection Config](../configuration/collections):
 
 ```ts
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload';
 
 export const Posts: CollectionConfig = {
   // ...
@@ -173,10 +176,10 @@ export const Posts: CollectionConfig = {
     listSearchableFields: ['title', 'slug'],
     // highlight-end
   },
-}
+};
 ```
 
 <Banner type="warning">
-  **Tip:**
-  If you are adding `listSearchableFields`, make sure you index each of these fields so your admin queries can remain performant.
+  **Tip:** If you are adding `listSearchableFields`, make sure you index each of these fields so
+  your admin queries can remain performant.
 </Banner>

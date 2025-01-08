@@ -1,39 +1,35 @@
-import React from 'react'
-import Link from 'next/link'
-import { Media } from '@/components/Media'
+import React from 'react';
+import Link from 'next/link';
+import { Media } from '@/components/Media';
+import type { Media as MediaType } from '@/payload-types';
 
 interface Variation {
-  name: string
-  price: number
-  id: string
-}
-
-interface MediaResource {
-  url: string
-  id: string
-  updatedAt: string
-  createdAt: string
+  name: string;
+  price: number;
+  id?: string | null;
+  stock?: number | null;
 }
 
 interface Product {
-  name: string
-  price: number
-  productType: 'simple' | 'variable' // Type du produit (exemple)
-  variations?: Variation[] // Optionnel pour les produits simples
-  images?: MediaResource[] // Optionnel si pas d'images
-  slug: string
+  name: string;
+  price?: number | null;
+  productType: 'simple' | 'variable';
+  variations?: Variation[] | null;
+  images?: (MediaType | string)[];
+  slug?: string | null;
+  id: string;
 }
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const { name, price, productType, variations, images, slug } = product
+  const { name, price, productType, variations, images, slug } = product;
 
   if (!slug) {
-    console.error('Le produit ne possède pas de slug:', product)
-    return null // N'affiche rien si le produit n'a pas de slug
+    console.error('Le produit ne possède pas de slug:', product);
+    return null; // N'affiche rien si le produit n'a pas de slug
   }
 
   const minPrice =
-    productType === 'variable' && variations ? Math.min(...variations.map((v) => v.price)) : price
+    productType === 'variable' && variations ? Math.min(...variations.map((v) => v.price)) : price;
 
   return (
     <Link href={`/produits/${slug}`}>
@@ -51,9 +47,13 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
           <h3 className="text-lg font-semibold">{name}</h3>
         </div>
         <div className="mt-2 text-sm text-gray-700">
-          {productType === 'variable' ? <p>À partir de {minPrice} €</p> : <p>{price} €</p>}
+          {productType === 'variable' ? (
+            <p>À partir de {minPrice || 'Non défini'} €</p>
+          ) : (
+            <p>{price ?? 'Prix non défini'} €</p>
+          )}
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
