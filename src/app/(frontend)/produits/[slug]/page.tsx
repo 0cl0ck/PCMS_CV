@@ -1,7 +1,6 @@
 // import type { Metadata } from 'next/types'
-import { getPayload } from 'payload';
 import configPromise from '@payload-config';
-import React from 'react';
+import { getPayload } from 'payload';
 // import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image';
 
