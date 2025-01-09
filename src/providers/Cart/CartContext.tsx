@@ -42,30 +42,49 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Product, variation: Variation | null, quantity: number) => {
     setCart((prevCart) => {
-      const existingProductIndex = prevCart.findIndex(
-        (item) => item.product.id === product.id && item.variation?.id === variation?.id,
-      );
+      // Créer une copie du panier actuel
+      const newCart = [...prevCart];
 
-      if (existingProductIndex !== -1) {
-        const updatedCart = [...prevCart];
-        updatedCart[existingProductIndex].quantity += quantity;
-        return updatedCart;
-      }
+      // Chercher si le produit existe déjà
+      const existingItemIndex = newCart.findIndex((item) => {
+        if (variation) {
+          return item.product.id === product.id && item.variation?.id === variation.id;
+        }
+        return item.product.id === product.id && !item.variation;
+      });
 
-      // Conversion des images en type `Media[]`
+      // Conversion des images
       const images: Media[] = product.images.map((img) => {
         if (typeof img === 'string') {
           return {
-            id: `temp-${Math.random()}`, // Génération temporaire d'un ID
+            id: `temp-${Math.random()}`,
             url: img,
             updatedAt: new Date().toISOString(),
             createdAt: new Date().toISOString(),
           } as Media;
         }
-        return img;
+        return img as Media;
       });
 
-      return [...prevCart, { product, variation, quantity, images }];
+      // Si le produit existe, mettre à jour la quantité
+      if (existingItemIndex !== -1) {
+        newCart[existingItemIndex] = {
+          ...newCart[existingItemIndex],
+          quantity: newCart[existingItemIndex].quantity + quantity,
+        };
+        return newCart;
+      }
+
+      // Sinon, ajouter le nouveau produit
+      return [
+        ...newCart,
+        {
+          product,
+          variation,
+          quantity,
+          images,
+        },
+      ];
     });
   };
 

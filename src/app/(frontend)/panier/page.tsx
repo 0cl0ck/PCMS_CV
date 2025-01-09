@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageMedia } from '@/components/Media/ImageMedia';
+import { Media } from '@/components/Media';
 import { Button } from '@/components/ui/button';
 import { CartContext, CartItem } from '@/providers/Cart/CartContext';
 import React, { useContext } from 'react';
@@ -55,15 +55,12 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, on
   return (
     <div className="flex items-center mb-4">
       <div className="w-1/4">
-        {item.product.images[0] && (
-          <ImageMedia
-            resource={
-              typeof item.product.images[0] === 'string'
-                ? item.product.images[0]
-                : item.product.images[0].url || ''
-            }
-            size="25vw"
-          />
+        {item.images && item.images.length > 0 ? (
+          <Media resource={item.images[0]} size="33vw" />
+        ) : (
+          <div className="flex items-center justify-center h-48 bg-gray-100 text-gray-500">
+            No image
+          </div>
         )}
       </div>
       <div className="w-3/4 pl-4">

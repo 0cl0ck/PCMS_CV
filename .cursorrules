@@ -1,0 +1,57 @@
+{
+  "typescript": {
+    "use": "for all code",
+    "prefer_interfaces_over_types": true,
+    "avoid_enums": "use maps instead",
+    "omit_semicolons": true
+  },
+  "react_nextjs": {
+    "components": "use functional components and TypeScript interfaces",
+    "jsx": "use declarative",
+    "dynamic_loading": "for non-critical components",
+    "error_handling": {
+      "use_actionstate": "with react-hook-form for form validation",
+      "safe_actions": "use next-safe-action for all server actions",
+      "early_returns": "to handle edge cases",
+      "error_messages": "log errors properly and show user-friendly messages"
+    },
+    "optimization": {
+      "component_wrapping": "wrap client components in Suspense with fallback",
+      "image_optimization": {
+        "format": "WebP",
+        "lazy_loading": true
+      },
+      "code_splitting": "optimize with lazy loading"
+    },
+    "design": {
+      "styling": "use Tailwind CSS for utility-based styling",
+      "responsive_design": "implement with a mobile-first approach"
+    }
+  },
+  "file_structure": {
+    "structure": "exported component, subcomponents, helpers, static content, types",
+    "naming_convention": "use lowercase with dashes for directories (e.g., components/auth-wizard)"
+  },
+  "performance": {
+    "minimize_use_client": true,
+    "prefer_server_components": true,
+    "prioritize_web_vitals": [
+      "LCP",
+      "CLS",
+      "FID"
+    ]
+  },
+  "security": {
+    "sanitize_inputs": "against XSS",
+    "avoid_dangerous_methods": "do not use dangerouslySetInnerHTML unless sanitized"
+  },
+  "accessibility": {
+    "semantic_html": "ensure semantic HTML for better accessibility",
+    "aria_attributes": "use ARIA attributes where necessary",
+    "keyboard_navigation": "ensure full support for keyboard navigation"
+  },
+  "testing": {
+    "unit_tests": "use Jest",
+    "integration_tests": "use React Testing Library"
+  }
+}

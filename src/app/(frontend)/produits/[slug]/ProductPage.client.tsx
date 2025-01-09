@@ -3,7 +3,7 @@
 import { Media } from '@/components/Media';
 import { Button } from '@/components/ui/button';
 import { Product } from '@/payload-types';
-import { CartContext } from '@/providers/Cart/CartContext';
+import { CartContext, Variation } from '@/providers/Cart/CartContext';
 import { useTheme } from '@payloadcms/ui';
 import React from 'react';
 type Props = {
@@ -13,15 +13,21 @@ type Props = {
 export const ProductPage: React.FC<Props> = ({ product }) => {
   const cartContext = React.useContext(CartContext);
   const { theme } = useTheme();
+  const [selectedVariation, setSelectedVariation] = React.useState<Variation | null>(null);
+
   if (!cartContext) {
-    console.error('CartContext is not provided. Ensure CartProvider wraps this component.');
+    console.error('CartContext is not provided');
     return null;
   }
 
   const { addToCart } = cartContext;
 
   const handleAddToCart = () => {
-    addToCart(product, null, 1);
+    if (product.productType === 'variable' && !selectedVariation) {
+      alert('Veuillez sélectionner une variation');
+      return;
+    }
+    addToCart(product, selectedVariation, 1);
   };
 
   return (
@@ -50,12 +56,14 @@ export const ProductPage: React.FC<Props> = ({ product }) => {
             <div className="mt-4">
               <h3 className="text-lg font-bold mb-2">Variations disponibles :</h3>
               <select
-                className={`w-full p-2  border rounded ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}
+                className={`w-full p-2 border rounded ${
+                  theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'
+                }`}
                 onChange={(e) => {
-                  const selectedVariation = product.variations?.find(
+                  const selected = product.variations?.find(
                     (variation) => variation.name === e.target.value,
                   );
-                  console.log('Selected Variation:', selectedVariation);
+                  setSelectedVariation(selected || null);
                 }}
                 defaultValue=""
               >
@@ -68,6 +76,9 @@ export const ProductPage: React.FC<Props> = ({ product }) => {
                   </option>
                 ))}
               </select>
+              {selectedVariation && (
+                <p className="text-lg font-bold mt-4">{selectedVariation.price} €</p>
+              )}
             </div>
           ) : (
             <p className="text-lg font-bold mb-4">{product.price} €</p>

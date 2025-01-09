@@ -1,0 +1,52 @@
+{
+  "copilot": {
+    "typescript": {
+      "use": "prioritize TypeScript suggestions",
+      "prefer_interfaces": true,
+      "avoid_enums": "use maps instead",
+      "omit_semicolons": true
+    },
+    "react_nextjs": {
+      "components": "prefer functional components and TypeScript interfaces",
+      "dynamic_loading": "suggest lazy loading for non-critical components",
+      "hooks": {
+        "minimize": [
+          "useEffect",
+          "useState"
+        ],
+        "prefer": "server components"
+      },
+      "design": {
+        "responsive": "follow mobile-first approach with Tailwind CSS",
+        "accessibility": "recommend semantic HTML and ARIA attributes"
+      }
+    },
+    "file_structure": {
+      "naming": "use lowercase with dashes for directories (e.g., components/auth-wizard)",
+      "structure": "suggest component-specific subdirectories"
+    },
+    "performance": {
+      "prioritize": [
+        "LCP",
+        "CLS",
+        "FID"
+      ],
+      "image_optimization": {
+        "format": "WebP",
+        "lazy_loading": true
+      }
+    },
+    "error_handling": {
+      "early_returns": true,
+      "avoid_try_catch": "for predictable errors, use return values"
+    },
+    "security": {
+      "sanitize_inputs": "warn against XSS vulnerabilities",
+      "avoid_dangerous_methods": "highlight issues with dangerouslySetInnerHTML"
+    },
+    "testing": {
+      "unit": "suggest Jest for unit tests",
+      "integration": "use React Testing Library"
+    }
+  }
+}
