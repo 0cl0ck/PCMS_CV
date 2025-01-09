@@ -2,7 +2,7 @@
 
 import { ImageMedia } from '@/components/Media/ImageMedia';
 import { Button } from '@/components/ui/button';
-import { CartContext, CartItem as CartItemType } from '@/providers/Cart/CartContext';
+import { CartContext, CartItem } from '@/providers/Cart/CartContext';
 import React, { useContext } from 'react';
 
 const PanierPage: React.FC = () => {
@@ -11,18 +11,6 @@ const PanierPage: React.FC = () => {
   if (!cartContext) return null;
 
   const { cart, updateQuantity, removeFromCart } = cartContext;
-
-  const handleQuantityChange = (
-    productId: string,
-    variationId: string | undefined,
-    quantity: number,
-  ) => {
-    updateQuantity(productId, variationId, quantity);
-  };
-
-  const handleRemove = (productId: string, variationId: string | undefined) => {
-    removeFromCart(productId, variationId);
-  };
 
   const total = cart.reduce(
     (acc, item) => acc + item.quantity * (item.variation?.price || item.product.price),
@@ -37,11 +25,11 @@ const PanierPage: React.FC = () => {
       ) : (
         <div>
           {cart.map((item) => (
-            <CartItem
+            <CartItemComponent
               key={`${item.product.id}-${item.variation?.id}`}
               item={item}
-              onQuantityChange={handleQuantityChange}
-              onRemove={handleRemove}
+              onQuantityChange={updateQuantity}
+              onRemove={removeFromCart}
             />
           ))}
           <div className="mt-8">
@@ -57,16 +45,16 @@ const PanierPage: React.FC = () => {
 };
 
 type CartItemProps = {
-  item: CartItemType;
+  item: CartItem;
   onQuantityChange: (productId: string, variationId: string | undefined, quantity: number) => void;
   onRemove: (productId: string, variationId: string | undefined) => void;
 };
 
-const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove }) => {
+const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove }) => {
   return (
     <div className="flex items-center mb-4">
       <div className="w-1/4">
-        {item.product.images && item.product.images.length > 0 ? (
+        {item.product.images?.[0] ? (
           <ImageMedia resource={item.product.images[0].url} size="25vw" />
         ) : (
           <div className="flex items-center justify-center h-24 bg-gray-100 text-gray-500">
@@ -81,21 +69,25 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove })
         <div className="flex items-center mt-2">
           <button
             className="border rounded px-4 py-2"
-            onClick={() => onQuantityChange(item.product.id, item.variation?.id, item.quantity - 1)}
+            onClick={() =>
+              onQuantityChange(item.product.id, item.variation?.id || undefined, item.quantity - 1)
+            }
           >
             -
           </button>
           <span className="mx-4">{item.quantity}</span>
           <button
             className="border rounded px-4 py-2"
-            onClick={() => onQuantityChange(item.product.id, item.variation?.id, item.quantity + 1)}
+            onClick={() =>
+              onQuantityChange(item.product.id, item.variation?.id || undefined, item.quantity + 1)
+            }
           >
             +
           </button>
         </div>
         <button
           className="mt-2 text-red-500"
-          onClick={() => onRemove(item.product.id, item.variation?.id)}
+          onClick={() => onRemove(item.product.id, item.variation?.id || undefined)}
         >
           Supprimer
         </button>
@@ -105,4 +97,3 @@ const CartItem: React.FC<CartItemProps> = ({ item, onQuantityChange, onRemove })
 };
 
 export default PanierPage;
-
