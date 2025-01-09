@@ -1,6 +1,6 @@
 'use client';
 
-import type { Product } from '@/payload-types'; // Import du type Product généré par Payload
+import type { Media, Product } from '@/payload-types'; // Import du type Product généré par Payload
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
 // Définition du type Variation basé sur le champ `variations` de `Product`
@@ -10,6 +10,7 @@ export type CartItem = {
   product: Product;
   variation?: Variation | null;
   quantity: number;
+  images: Media[];
 };
 
 type CartContextType = {
@@ -51,7 +52,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return updatedCart;
       }
 
-      return [...prevCart, { product, variation, quantity }];
+      // Conversion des images en type `Media[]`
+      const images: Media[] = product.images.map((img) => {
+        if (typeof img === 'string') {
+          return {
+            id: `temp-${Math.random()}`, // Génération temporaire d'un ID
+            url: img,
+            updatedAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+          } as Media;
+        }
+        return img;
+      });
+
+      return [...prevCart, { product, variation, quantity, images }];
     });
   };
 

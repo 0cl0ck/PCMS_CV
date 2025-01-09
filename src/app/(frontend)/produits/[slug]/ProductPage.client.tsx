@@ -1,83 +1,81 @@
 'use client';
 
-import { ImageMedia } from '@/components/Media/ImageMedia';
+import { Media } from '@/components/Media';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/payload-types';
+import { Product } from '@/payload-types';
 import { CartContext } from '@/providers/Cart/CartContext';
-import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
-
-type ProductPageProps = {
+import { useTheme } from '@payloadcms/ui';
+import React from 'react';
+type Props = {
   product: Product;
 };
 
-const ProductPageClient: React.FC<ProductPageProps> = ({ product }) => {
-  const [selectedVariation, setSelectedVariation] = useState<Product['variations'][0] | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const cartContext = useContext(CartContext);
-  const router = useRouter();
-
-  if (!cartContext) return null;
+export const ProductPage: React.FC<Props> = ({ product }) => {
+  const cartContext = React.useContext(CartContext);
+  const { theme } = useTheme();
+  if (!cartContext) {
+    console.error('CartContext is not provided. Ensure CartProvider wraps this component.');
+    return null;
+  }
 
   const { addToCart } = cartContext;
 
+  const handleAddToCart = () => {
+    addToCart(product, null, 1);
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="relative">
-          {product.images?.[0] && (
-            <ImageMedia
-              resource={product.images[0].url}
-              className="w-full h-auto rounded-lg"
-              size="(max-width: 768px) 100vw, 50vw"
-            />
+    <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold mb-4">{product.name}</h1>
+      <div className="flex">
+        <div className="relative w-1/3">
+          {product.images && product.images.length > 0 ? (
+            <Media resource={product.images[0]} size="33vw" />
+          ) : (
+            <div className="flex items-center justify-center h-48 bg-gray-100 text-gray-500">
+              No image
+            </div>
           )}
         </div>
-        <div>
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          {product.productType === 'simple' && <p className="text-2xl mb-4">{product.price}€</p>}
 
-          {product.productType === 'variable' && product.variations && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Sélectionnez une variation:</label>
+        <div className="w-1/2 pl-4">
+          {product.meta?.description && (
+            <p>
+              {typeof product.meta.description === 'string'
+                ? product.meta.description
+                : 'No description'}
+            </p>
+          )}
+          {product.variations && product.variations.length > 0 ? (
+            <div className="mt-4">
+              <h3 className="text-lg font-bold mb-2">Variations disponibles :</h3>
               <select
-                className="w-full p-2 border rounded"
+                className={`w-full p-2  border rounded ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'}`}
                 onChange={(e) => {
-                  const variation = product.variations?.find((v) => v.id === e.target.value);
-                  setSelectedVariation(variation || null);
+                  const selectedVariation = product.variations?.find(
+                    (variation) => variation.name === e.target.value,
+                  );
+                  console.log('Selected Variation:', selectedVariation);
                 }}
-                value={selectedVariation?.id || ''}
+                defaultValue=""
               >
-                <option value="">Choisir une option</option>
-                {product.variations.map((variation) => (
-                  <option key={variation.id || ''} value={variation.id || ''}>
-                    {variation.name} - {variation.price}€
+                <option value="" disabled>
+                  Choisissez une variation
+                </option>
+                {product.variations.map((variation, index) => (
+                  <option key={index} value={variation.name}>
+                    {variation.name} - {variation.price} €
                   </option>
                 ))}
               </select>
             </div>
+          ) : (
+            <p className="text-lg font-bold mb-4">{product.price} €</p>
           )}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Quantité:</label>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value))}
-              className="w-32 p-2 border rounded"
-            />
-          </div>
-
           <Button
-            onClick={() => {
-              if (product.productType === 'variable' && !selectedVariation) {
-                alert('Veuillez sélectionner une variation');
-                return;
-              }
-              addToCart(product, selectedVariation, quantity);
-              router.push('/panier');
-            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded my-4"
+            onClick={handleAddToCart}
           >
             Ajouter au panier
           </Button>
@@ -86,5 +84,3 @@ const ProductPageClient: React.FC<ProductPageProps> = ({ product }) => {
     </div>
   );
 };
-
-export default ProductPageClient;

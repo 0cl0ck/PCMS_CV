@@ -1,47 +1,29 @@
-import configPromise from '@/payload-config';
-import type { Product } from '@/payload-types';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import configPromise from '@/payload.config';
 import { getPayload } from 'payload';
-import ProductPageClient from './ProductPage.client';
+import { ProductPage } from './ProductPage.client';
 
-export const dynamic = 'force-static';
-export const revalidate = 600;
-
-type ProductPageProps = {
-  params: {
-    slug: string;
-  };
+type Props = {
+  params: { slug: string };
 };
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function Page({ params }: Props) {
   const payload = await getPayload({ config: configPromise });
+
+  const { slug } = await params; // Assurez-vous que params est correctement extrait.
 
   const product = await payload.find({
     collection: 'products',
     where: {
       slug: {
-        equals: params.slug,
+        equals: slug,
       },
     },
     depth: 1,
-    limit: 1,
-    overrideAccess: false,
-    select: {
-      id: true,
-      name: true,
-      price: true,
-      productType: true,
-      variations: true,
-      images: true,
-    },
   });
 
-  if (!product.docs.length) {
-    return notFound();
+  if (!product.docs || product.docs.length === 0) {
+    return <h1>Produit introuvable</h1>;
   }
 
-  return <ProductPageClient product={product.docs[0] as Product} />;
+  return <ProductPage product={product.docs[0]} />;
 }
-
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {

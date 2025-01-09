@@ -13,7 +13,8 @@ const PanierPage: React.FC = () => {
   const { cart, updateQuantity, removeFromCart } = cartContext;
 
   const total = cart.reduce(
-    (acc, item) => acc + item.quantity * (item.variation?.price || item.product.price),
+    (acc, item) =>
+      acc + item.quantity * ((item.variation?.price ?? 0) || (item.product?.price ?? 0)),
     0,
   );
 
@@ -54,12 +55,15 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, on
   return (
     <div className="flex items-center mb-4">
       <div className="w-1/4">
-        {item.product.images?.[0] ? (
-          <ImageMedia resource={item.product.images[0].url} size="25vw" />
-        ) : (
-          <div className="flex items-center justify-center h-24 bg-gray-100 text-gray-500">
-            No image
-          </div>
+        {item.product.images[0] && (
+          <ImageMedia
+            resource={
+              typeof item.product.images[0] === 'string'
+                ? item.product.images[0]
+                : item.product.images[0].url || ''
+            }
+            size="25vw"
+          />
         )}
       </div>
       <div className="w-3/4 pl-4">
