@@ -1,8 +1,9 @@
-import type { CollectionConfig } from 'payload';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import type { CollectionConfig } from 'payload';
 import { authenticated } from '../access/authenticated';
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished';
 
+import { slugField } from '@/fields/slug';
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -10,7 +11,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields';
-import { slugField } from '@/fields/slug';
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -35,6 +35,13 @@ export const Products: CollectionConfig = {
       name: 'description',
       type: 'richText',
       editor: lexicalEditor({}),
+      required: true,
+    },
+    {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'product-categories',
+      hasMany: true,
       required: true,
     },
     {

@@ -454,18 +454,109 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
+  relationTo?: ('posts' | 'products') | null;
   categories?: (string | Category)[] | null;
+  productCategories?: (string | ProductCategory)[] | null;
   limit?: number | null;
   selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: string | Post;
-      }[]
+    | (
+        | {
+            relationTo: 'posts';
+            value: string | Post;
+          }
+        | {
+            relationTo: 'products';
+            value: string | Product;
+          }
+      )[]
     | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-categories".
+ */
+export interface ProductCategory {
+  id: string;
+  name: string;
+  description?: string | null;
+  image: string | Media;
+  /**
+   * Identifiant unique pour la catégorie (ex: fleurs, huiles, etc.)
+   */
+  value: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  name: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: (string | ProductCategory)[];
+  productType: 'simple' | 'variable';
+  /**
+   * Prix pour un produit simple
+   */
+  price?: number | null;
+  /**
+   * Stock pour un produit simple
+   */
+  stock?: number | null;
+  /**
+   * Ajoutez les différentes variantes du produit
+   */
+  variations?:
+    | {
+        /**
+         * Ex: 1g, 3g, 5g, etc.
+         */
+        name: string;
+        price: number;
+        stock?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  thcContent: number;
+  images: (string | Media)[];
+  featured?: boolean | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  /**
+   * Statut du produit
+   */
+  _status: 'draft' | 'published' | 'products_draft' | 'products_published';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -663,89 +754,6 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: string;
-  name: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  productType: 'simple' | 'variable';
-  /**
-   * Prix pour un produit simple
-   */
-  price?: number | null;
-  /**
-   * Stock pour un produit simple
-   */
-  stock?: number | null;
-  /**
-   * Ajoutez les différentes variantes du produit
-   */
-  variations?:
-    | {
-        /**
-         * Ex: 1g, 3g, 5g, etc.
-         */
-        name: string;
-        price: number;
-        stock?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  thcContent: number;
-  images: (string | Media)[];
-  featured?: boolean | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  /**
-   * Statut du produit
-   */
-  _status: 'draft' | 'published' | 'products_draft' | 'products_published';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-categories".
- */
-export interface ProductCategory {
-  id: string;
-  name: string;
-  description?: string | null;
-  image: string | Media;
-  /**
-   * Identifiant unique pour la catégorie (ex: fleurs, huiles, etc.)
-   */
-  value: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1057,6 +1065,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   populateBy?: T;
   relationTo?: T;
   categories?: T;
+  productCategories?: T;
   limit?: T;
   selectedDocs?: T;
   id?: T;
@@ -1238,6 +1247,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  category?: T;
   productType?: T;
   price?: T;
   stock?: T;

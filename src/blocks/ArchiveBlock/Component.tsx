@@ -1,4 +1,5 @@
-import type { ArchiveBlock as ArchiveBlockProps, Post } from '@/payload-types';
+import type { Post, Product } from '@/payload-types';
+import type { ArchiveBlockSelectedDoc, ArchiveBlock as ArchiveBlockType } from './types';
 
 import RichText from '@/components/RichText';
 import configPromise from '@payload-config';
@@ -6,50 +7,82 @@ import { getPayload } from 'payload';
 import React from 'react';
 
 import { CollectionArchive } from '@/components/CollectionArchive';
+import { ProductGrid } from '@/components/ProductGrid';
 
-export const ArchiveBlock: React.FC<
-  ArchiveBlockProps & {
-    id?: string;
-  }
-> = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props;
+export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
+  const {
+    id,
+    categories,
+    productCategories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo = 'posts',
+  } = props;
 
   const limit = limitFromProps || 3;
+  const payload = await getPayload({ config: configPromise });
 
   let posts: Post[] = [];
+  let products: Product[] = [];
 
   if (populateBy === 'collection') {
-    const payload = await getPayload({ config: configPromise });
+    if (relationTo === 'posts') {
+      const flattenedCategories = categories?.map((category) => {
+        if (typeof category === 'object') return category.id;
+        return category;
+      });
 
-    const flattenedCategories = categories?.map((category) => {
-      if (typeof category === 'object') return category.id;
-      else return category;
-    });
-
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
-      depth: 1,
-      limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
+      const fetchedPosts = await payload.find({
+        collection: 'posts',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
               },
-            },
-          }
-        : {}),
-    });
+            }
+          : {}),
+      });
 
-    posts = fetchedPosts.docs;
-  } else {
-    if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value;
-      }) as Post[];
+      posts = fetchedPosts.docs;
+    } else if (relationTo === 'products') {
+      const flattenedCategories = productCategories?.map((category) => {
+        if (typeof category === 'object') return category.id;
+        return category;
+      });
 
-      posts = filteredSelectedPosts;
+      const fetchedProducts = await payload.find({
+        collection: 'products',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                category: {
+                  in: flattenedCategories,
+                },
+              },
+            }
+          : {}),
+      });
+
+      products = fetchedProducts.docs;
     }
+  } else if (selectedDocs?.length) {
+    selectedDocs.forEach((doc: ArchiveBlockSelectedDoc) => {
+      if (typeof doc.value === 'object') {
+        if (doc.relationTo === 'posts') {
+          posts.push(doc.value as Post);
+        } else if (doc.relationTo === 'products') {
+          products.push(doc.value as Product);
+        }
+      }
+    });
   }
 
   return (
@@ -59,7 +92,11 @@ export const ArchiveBlock: React.FC<
           <RichText className="ml-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+      {relationTo === 'posts' ? (
+        <CollectionArchive posts={posts} />
+      ) : (
+        <ProductGrid products={products} />
+      )}
     </div>
   );
 };
