@@ -20,8 +20,8 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
                   {product.images && product.images.length > 0 ? (
                     <Media
                       resource={product.images[0]}
-                      className="rounded-xl object-cover w-full h-full"
-                      size="(max-width: 768px) 100vw, 33vw"
+                      className="rounded-xl object-cover w-full h-full 	"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full bg-gray-100 text-gray-500 rounded-xl">

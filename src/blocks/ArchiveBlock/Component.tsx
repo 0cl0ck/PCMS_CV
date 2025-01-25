@@ -1,4 +1,4 @@
-import type { Post, Product } from '@/payload-types';
+import type { Post, Product, ProductCategory } from '@/payload-types';
 import type { ArchiveBlockSelectedDoc, ArchiveBlock as ArchiveBlockType } from './types';
 
 import RichText from '@/components/RichText';
@@ -7,13 +7,13 @@ import { getPayload } from 'payload';
 import React from 'react';
 
 import { CollectionArchive } from '@/components/CollectionArchive';
+import { ProductCategoryGrid } from '@/components/ProductCategoryGrid';
 import { ProductGrid } from '@/components/ProductGrid';
 
 export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
   const {
     id,
     categories,
-    productCategories,
     introContent,
     limit: limitFromProps,
     populateBy,
@@ -26,6 +26,7 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
 
   let posts: Post[] = [];
   let products: Product[] = [];
+  let categories_list: ProductCategory[] = [];
 
   if (populateBy === 'collection') {
     if (relationTo === 'posts') {
@@ -51,7 +52,7 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
 
       posts = fetchedPosts.docs;
     } else if (relationTo === 'products') {
-      const flattenedCategories = productCategories?.map((category) => {
+      const flattenedCategories = categories?.map((category) => {
         if (typeof category === 'object') return category.id;
         return category;
       });
@@ -72,6 +73,15 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
       });
 
       products = fetchedProducts.docs;
+    } else if (relationTo === 'product-categories') {
+      const fetchedCategories = await payload.find({
+        collection: 'product-categories',
+        depth: 1,
+        limit,
+        sort: 'sort',
+      });
+
+      categories_list = fetchedCategories.docs as ProductCategory[];
     }
   } else if (selectedDocs?.length) {
     selectedDocs.forEach((doc: ArchiveBlockSelectedDoc) => {
@@ -80,6 +90,8 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
           posts.push(doc.value as Post);
         } else if (doc.relationTo === 'products') {
           products.push(doc.value as Product);
+        } else if (doc.relationTo === 'product-categories') {
+          categories_list.push(doc.value as ProductCategory);
         }
       }
     });
@@ -98,8 +110,10 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
       )}
       {relationTo === 'posts' ? (
         <CollectionArchive posts={posts} />
-      ) : (
+      ) : relationTo === 'products' ? (
         <ProductGrid products={products} />
+      ) : (
+        <ProductCategoryGrid categories={categories_list} />
       )}
     </div>
   );

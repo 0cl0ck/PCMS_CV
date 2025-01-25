@@ -454,7 +454,7 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('posts' | 'products') | null;
+  relationTo?: ('posts' | 'products' | 'product-categories') | null;
   categories?: (string | Category)[] | null;
   productCategories?: (string | ProductCategory)[] | null;
   limit?: number | null;
@@ -467,6 +467,10 @@ export interface ArchiveBlock {
         | {
             relationTo: 'products';
             value: string | Product;
+          }
+        | {
+            relationTo: 'product-categories';
+            value: string | ProductCategory;
           }
       )[]
     | null;
@@ -487,6 +491,10 @@ export interface ProductCategory {
    * Identifiant unique pour la catégorie (ex: fleurs, huiles, etc.)
    */
   value: string;
+  /**
+   * Ordre d'affichage (plus petit nombre = apparaît en premier)
+   */
+  sort?: number | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1284,6 +1292,7 @@ export interface ProductCategoriesSelect<T extends boolean = true> {
   description?: T;
   image?: T;
   value?: T;
+  sort?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

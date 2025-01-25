@@ -1,8 +1,8 @@
-import type { Post, Product } from '@/payload-types';
+import type { Post, Product, ProductCategory } from '@/payload-types';
 
 export interface ArchiveBlockSelectedDoc {
-  relationTo: 'posts' | 'products';
-  value: Post | Product;
+  relationTo: 'posts' | 'products' | 'product-categories';
+  value: Post | Product | ProductCategory;
 }
 
 export interface ArchiveBlock {
@@ -10,7 +10,7 @@ export interface ArchiveBlock {
   blockType: 'archive';
   introContent?: any;
   populateBy: 'collection' | 'selection';
-  relationTo?: 'posts' | 'products';
+  relationTo?: 'posts' | 'products' | 'product-categories';
   categories?: Array<{
     id: string;
     [key: string]: any;

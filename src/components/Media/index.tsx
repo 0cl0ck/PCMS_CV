@@ -1,25 +1,30 @@
-import React, { Fragment } from 'react';
+import { Media as MediaType } from '@/payload-types';
+import Image from 'next/image';
+import React from 'react';
 
-import type { Props } from './types';
+export const Media: React.FC<{
+  resource: MediaType | string;
+  sizes?: string;
+  className?: string;
+}> = ({ resource, sizes, className }) => {
+  if (typeof resource === 'string') {
+    return null;
+  }
 
-import { ImageMedia } from './ImageMedia';
-import { VideoMedia } from './VideoMedia';
+  const { width, height, filename, alt } = resource;
 
-export const Media: React.FC<Props> = (props) => {
-  const { className, htmlElement = 'div', resource } = props;
-
-  const isVideo = typeof resource === 'object' && resource?.mimeType?.includes('video');
-  const Tag = (htmlElement as any) || Fragment;
+  // Vérification et construction de l'URL
+  const baseUrl = process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+  const imageUrl = `${baseUrl}/media/${filename}`;
 
   return (
-    <Tag
-      {...(htmlElement !== null
-        ? {
-            className,
-          }
-        : {})}
-    >
-      {isVideo ? <VideoMedia {...props} /> : <ImageMedia {...props} />}
-    </Tag>
+    <Image
+      src={imageUrl}
+      alt={alt || ''}
+      className={className}
+      width={width || 3500}
+      height={height || 2000}
+      sizes={sizes}
+    />
   );
 };

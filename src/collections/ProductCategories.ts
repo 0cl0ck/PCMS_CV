@@ -6,6 +6,7 @@ export const ProductCategories: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'E-commerce',
+    defaultColumns: ['name', 'sort', 'value'],
   },
   access: {
     create: ({ req: { user } }) => Boolean(user),
@@ -38,6 +39,15 @@ export const ProductCategories: CollectionConfig = {
       required: true,
       admin: {
         description: 'Identifiant unique pour la catégorie (ex: fleurs, huiles, etc.)',
+      },
+    },
+    {
+      name: 'sort',
+      type: 'number',
+      defaultValue: 99,
+      admin: {
+        description: "Ordre d'affichage (plus petit nombre = apparaît en premier)",
+        position: 'sidebar',
       },
     },
     ...slugField(),

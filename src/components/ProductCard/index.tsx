@@ -1,7 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
 import { Media } from '@/components/Media';
 import type { Media as MediaType } from '@/payload-types';
+import Link from 'next/link';
+import React from 'react';
 
 interface Variation {
   name: string;
@@ -35,7 +35,7 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     <Link href={`/produits/${slug}`}>
       <div className="relative w-full">
         {images && images.length > 0 ? (
-          <Media resource={images[0]} size="33vw" />
+          <Media resource={images[0]} sizes="33vw" />
         ) : (
           <div className="flex items-center justify-center h-48 bg-gray-100 text-gray-500">
             No image
