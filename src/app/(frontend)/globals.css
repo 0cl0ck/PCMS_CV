@@ -93,6 +93,27 @@
   }
 }
 
+/* FAQ RichText Styles */
+.rich-text {
+  @apply mt-4 space-y-4;
+}
+
+.rich-text p {
+  @apply text-base leading-relaxed;
+}
+
+.rich-text ul {
+  @apply list-disc pl-4;
+}
+
+.rich-text ol {
+  @apply list-decimal pl-4;
+}
+
+.rich-text a {
+  @apply text-blue-500 hover:underline;
+}
+
 html {
   opacity: 0;
 }

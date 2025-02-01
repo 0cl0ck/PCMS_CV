@@ -43,5 +43,6 @@
     "source.fixAll.eslint": "explicit"
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "javascript.updateImportsOnFileMove.enabled": "always"
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
