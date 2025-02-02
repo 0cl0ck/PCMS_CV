@@ -3,10 +3,11 @@
 import { Media } from '@/components/Media';
 import { Button } from '@/components/ui/button';
 import { CartContext, CartItem } from '@/providers/Cart/CartContext';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 const PanierPage: React.FC = () => {
   const cartContext = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!cartContext) return null;
 
@@ -17,6 +18,36 @@ const PanierPage: React.FC = () => {
       acc + item.quantity * ((item.variation?.price ?? 0) || (item.product?.price ?? 0)),
     0,
   );
+
+  const handleCheckout = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: total,
+          customerEmail: 'customer@example.com', // À remplacer par l'email du client
+          customerName: 'John Doe', // À remplacer par le nom du client
+          customerPhone: '+33600000000', // À remplacer par le téléphone du client
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Payment initialization failed');
+      }
+
+      const { smartCheckoutUrl } = await response.json();
+      window.location.href = smartCheckoutUrl;
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      alert('Une erreur est survenue lors de l\'initialisation du paiement');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -35,8 +66,12 @@ const PanierPage: React.FC = () => {
           ))}
           <div className="mt-8">
             <h2 className="text-xl font-bold">Total: {total} €</h2>
-            <Button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-              Passer à la caisse
+            <Button 
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={handleCheckout}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Chargement...' : 'Passer à la caisse'}
             </Button>
           </div>
         </div>
@@ -56,7 +91,7 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, on
     <div className="flex items-center mb-4">
       <div className="w-1/4">
         {item.images && item.images.length > 0 ? (
-          <Media resource={item.images[0]} size="33vw" />
+          <Media resource={item.images[0]} sizes="33vw" />
         ) : (
           <div className="flex items-center justify-center h-48 bg-gray-100 text-gray-500">
             No image
