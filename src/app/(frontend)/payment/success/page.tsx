@@ -17,12 +17,7 @@ export default function PaymentSuccessPage() {
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <h1 className="text-2xl font-bold mb-4">Paiement réussi !</h1>
@@ -33,9 +28,10 @@ export default function PaymentSuccessPage() {
           onClick={() => router.push('/')}
           className="bg-blue-500 text-white px-6 py-2 rounded-lg"
         >
-          Retour à l'accueil
+          Retour à l&apos;accueil
         </Button>
       </div>
     </div>
   );
 }
+

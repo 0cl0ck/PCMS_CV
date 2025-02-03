@@ -27,7 +27,8 @@ export default function PaymentErrorPage() {
         </div>
         <h1 className="text-2xl font-bold mb-4">Erreur de paiement</h1>
         <p className="text-gray-600 mb-8">
-          Une erreur est survenue lors du traitement de votre paiement. Veuillez réessayer ou contacter notre service client si le problème persiste.
+          Une erreur est survenue lors du traitement de votre paiement. Veuillez réessayer ou
+          contacter notre service client si le problème persiste.
         </p>
         <div className="space-y-4">
           <Button
@@ -40,10 +41,11 @@ export default function PaymentErrorPage() {
             onClick={() => router.push('/')}
             className="bg-gray-500 text-white px-6 py-2 rounded-lg w-full"
           >
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
