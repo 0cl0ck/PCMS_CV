@@ -36,7 +36,7 @@ export const ProductPage: React.FC<Props> = ({ product }) => {
       <div className="flex">
         <div className="relative w-1/3">
           {product.images && product.images.length > 0 ? (
-            <Media resource={product.images[0]} size="33vw" />
+            <Media resource={product.images[0]} sizes="33vw" />
           ) : (
             <div className="flex items-center justify-center h-48 bg-gray-100 text-gray-500">
               No image
