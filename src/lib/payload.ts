@@ -1,10 +1,26 @@
-import configPromise from '@payload-config';
-import { getPayloadHMR } from '@payloadcms/next/utilities';
+import configPromise from '@/payload.config';
+import payload from 'payload';
 
-// Vérifie que ce fichier exporte bien `getPayload`
+let payloadInstance: typeof payload | null = null;
+
+// ✅ Fonction pour récupérer une instance Payload correctement
 export const getPayload = async () => {
-  return await getPayloadHMR({ config: configPromise });
+  if (!payloadInstance) {
+    try {
+      await payload.init({
+        config: await configPromise, // Charge la config Payload
+      });
+      payloadInstance = payload;
+    } catch (error) {
+      // Si l'erreur est due à une réinitialisation, on retourne l'instance existante
+      if (error.message?.includes('Cannot overwrite')) {
+        payloadInstance = payload;
+      } else {
+        throw error;
+      }
+    }
+  }
+  return payloadInstance;
 };
 
-// Ajoute cette ligne pour s'assurer que le module est bien reconnu
 export default getPayload;

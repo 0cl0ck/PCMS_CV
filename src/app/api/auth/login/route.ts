@@ -1,6 +1,6 @@
+import { getPayload } from '@/lib/payload';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getPayload } from '../../../lib/payload';
 
 export async function POST(req: Request) {
   try {
@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
     const payload = await getPayload();
 
+    // ✅ Correction : Vérifie si `token` est bien défini
     const { token, user } = await payload.login({
       collection: 'users',
       data: {
@@ -24,8 +25,10 @@ export async function POST(req: Request) {
       },
     });
 
+    // Créer la réponse avec l'utilisateur
     const response = NextResponse.json({ user });
 
+    // ✅ Ajoute un contrôle avant de définir le cookie
     if (token) {
       response.cookies.set('payload-token', token, {
         httpOnly: true,

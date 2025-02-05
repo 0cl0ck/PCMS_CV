@@ -53,7 +53,7 @@ export const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
           Nom
         </label>
         <input
@@ -62,12 +62,12 @@ export const RegisterForm: React.FC = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
           Email
         </label>
         <input
@@ -76,12 +76,12 @@ export const RegisterForm: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
           Mot de passe
         </label>
         <input
@@ -91,7 +91,7 @@ export const RegisterForm: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+          className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
         />
       </div>
 
