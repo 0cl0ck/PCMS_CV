@@ -62,18 +62,18 @@ export default buildConfig({
   }),
 
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_USER || '', // ✅ Remplace `fromAddress`
-    defaultFromName: 'Chanvre Vert', // ✅ Remplace `fromName`
+    defaultFromAddress: process.env.SMTP_USER || '',
+    defaultFromName: 'Chanvre Vert',
     transportOptions: {
-      host: 'smtp.gmail.com',
-      port: 465,
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: Number(process.env.SMTP_PORT) || 465,
       secure: true,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_APP_PASS,
       },
-      debug: true,
-      logger: true,
+      debug: process.env.NODE_ENV === 'development',
+      logger: process.env.NODE_ENV === 'development',
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, ProductCategories, Orders],
@@ -86,4 +86,3 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 });
-

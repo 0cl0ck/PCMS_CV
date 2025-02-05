@@ -6,18 +6,20 @@ export async function POST(req: Request) {
     const { email } = await req.json();
 
     if (!email) {
-      return NextResponse.json(
-        { message: 'Email requis' },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'Email requis' }, { status: 400 });
     }
 
-    console.log('⌛ Vérification de l\'existence de l\'utilisateur:', email);
-    
+    console.log("⌛ Vérification de l'existence de l'utilisateur:", email);
+
+    // ✅ S'assurer que l'instance est initialisée
     const payload = await getPayload();
 
+    if (!payload) {
+      throw new Error("Impossible d'initialiser Payload");
+    }
+
     // Vérifie si l'utilisateur existe
-    const user = await payload.find({
+    const users = await payload.find({
       collection: 'users',
       where: {
         email: {
@@ -26,15 +28,15 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!user?.docs?.length) {
+    if (!users?.docs?.length) {
       console.log('❌ Utilisateur non trouvé:', email);
       return NextResponse.json({
         message: 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.',
       });
     }
 
-    console.log('⌛ Envoi de l\'email de réinitialisation à:', email);
-    
+    console.log("⌛ Envoi de l'email de réinitialisation à:", email);
+
     await payload.forgotPassword({
       collection: 'users',
       data: {
@@ -48,9 +50,12 @@ export async function POST(req: Request) {
       message: 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.',
     });
   } catch (error) {
-    console.error('❌ Erreur lors de l\'envoi de l\'email de réinitialisation:', error);
-    return NextResponse.json({
-      message: 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.',
-    });
+    console.error("❌ Erreur lors de l'envoi de l'email de réinitialisation:", error);
+    return NextResponse.json(
+      {
+        message: 'Une erreur est survenue. Veuillez réessayer plus tard.',
+      },
+      { status: 500 }
+    );
   }
 }

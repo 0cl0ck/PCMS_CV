@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from './AuthProvider';
+import { PasswordInput } from './PasswordInput';
 
 export const RegisterForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -37,12 +38,8 @@ export const RegisterForm: React.FC = () => {
         throw new Error(data.message || 'Une erreur est survenue');
       }
 
-      setSuccessMessage('Compte créé avec succès ! Vous allez être redirigé...');
-      setUser(data.user);
-      
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 2000);
+      setSuccessMessage(data.message || 'Compte créé avec succès ! Veuillez vérifier votre email.');
+      // Ne pas rediriger, attendre que l'utilisateur vérifie son email
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
     } finally {
@@ -84,14 +81,10 @@ export const RegisterForm: React.FC = () => {
         <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
           Mot de passe
         </label>
-        <input
-          type="password"
-          id="password"
+        <PasswordInput
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-green-500 focus:ring-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+          onChange={setPassword}
+          minLength={8}
         />
       </div>
 

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         token,
         password,
       },
-      overrideAccess: false,
+      overrideAccess: true,
     });
 
     return NextResponse.json({
@@ -31,4 +31,3 @@ export async function POST(req: Request) {
     );
   }
 }
-

@@ -43,43 +43,21 @@ export async function POST(req: Request) {
       );
     }
 
-    // Connecter l'utilisateur
-    try {
-      const { token, user: loggedInUser } = await payload.login({
-        collection: 'users',
-        data: {
-          email,
-          password,
-        },
-      });
-
-      // Créer la réponse avec le cookie d'authentification
-      const response = NextResponse.json({ user: loggedInUser });
-      if (token) {
-        response.cookies.set('payload-token', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-        });
-      }
-
-      return response;
-    } catch (loginError) {
-      console.error('Error logging in after registration:', loginError);
-      // Si la connexion échoue, on renvoie quand même l'utilisateur créé
-      return NextResponse.json({
-        user: newUser,
-        message:
-          'Compte créé avec succès, mais erreur lors de la connexion automatique. Veuillez vous connecter manuellement.',
-      });
-    }
+    // ✅ Ne pas essayer de se connecter, demander à l'utilisateur de vérifier son email
+    return NextResponse.json({
+      message: 'Compte créé avec succès ! Veuillez vérifier votre email pour activer votre compte.',
+      user: {
+        email: newUser.email,
+        name: newUser.name,
+      },
+    });
   } catch (error) {
     console.error('Error in register route:', error);
     return NextResponse.json(
-      { message: "Une erreur est survenue lors de l'inscription" },
+      {
+        message: error instanceof Error ? error.message : 'Une erreur est survenue',
+      },
       { status: 500 },
     );
   }
 }
-

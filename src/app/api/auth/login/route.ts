@@ -13,6 +13,18 @@ export async function POST(req: Request) {
 
     const payload = await getPayload();
 
+    // ✅ Vérifier l'état de l'utilisateur
+    const userCheck = await payload.find({
+      collection: 'users',
+      where: {
+        email: {
+          equals: email
+        }
+      }
+    });
+
+    console.log('⌛ État de l\'utilisateur:', userCheck.docs[0]);
+
     // ✅ Correction : Vérifie si `token` est bien défini
     const { token, user } = await payload.login({
       collection: 'users',
@@ -24,6 +36,8 @@ export async function POST(req: Request) {
         headers: headersList,
       },
     });
+
+    console.log('🔑 Token généré:', token);
 
     // Créer la réponse avec l'utilisateur
     const response = NextResponse.json({ user });
@@ -44,4 +58,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Email ou mot de passe incorrect' }, { status: 401 });
   }
 }
-
