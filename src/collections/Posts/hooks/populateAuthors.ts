@@ -10,22 +10,25 @@ export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: 
     const authorDocs: User[] = [];
 
     for (const author of doc.authors) {
-      const authorDoc = await payload.findByID({
-        id: typeof author === 'object' ? author?.id : author,
-        collection: 'users',
-        depth: 0,
-        req,
-      });
+      try {
+        const authorDoc = await payload.findByID({
+          id: typeof author === 'object' ? author?.id : author,
+          collection: 'users',
+          depth: 0,
+          req,
+        });
 
-      if (authorDoc) {
-        authorDocs.push(authorDoc);
+        if (authorDoc) {
+          authorDocs.push(authorDoc);
+        }
+      } catch (error) {
+        // Si l'auteur n'existe pas, on le skip silencieusement
+        console.warn(`Author with ID ${typeof author === 'object' ? author?.id : author} not found`);
       }
     }
 
-    doc.populatedAuthors = authorDocs.map((authorDoc) => ({
-      id: authorDoc.id,
-      name: authorDoc.name,
-    }));
+    // Mettre à jour le document avec les auteurs trouvés
+    doc.authors = authorDocs;
   }
 
   return doc;
