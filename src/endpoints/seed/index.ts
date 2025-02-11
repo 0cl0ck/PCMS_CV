@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload';
+import type { CollectionSlug, File, GlobalSlug, Payload, PayloadRequest } from 'payload';
 
 import { contactForm as contactFormData } from './contact-form';
 import { contact as contactPageData } from './contact-page';
@@ -115,6 +115,7 @@ export const seed = async ({
         name: 'Demo Author',
         email: 'demo-author@example.com',
         password: 'password',
+        role: 'admin',
       },
     }),
     payload.create({
@@ -383,3 +384,4 @@ async function fetchFileByURL(url: string): Promise<File> {
     size: data.byteLength,
   };
 }
+

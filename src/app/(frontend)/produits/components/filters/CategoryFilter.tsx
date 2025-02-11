@@ -1,8 +1,9 @@
 'use client';
 
-import type { ProductCategory } from '@/payload-types';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { ProductCategory } from '@/payload-types';
+import { IconCategory } from '@tabler/icons-react';
 import { useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
   categories: ProductCategory[];
@@ -28,25 +29,34 @@ export const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories
         params.append('category', categoryValue);
       }
 
-      router.push(`/produits?${params.toString()}`);
+      // Preserve other query parameters
+      const newUrl = `/produits${params.toString() ? `?${params.toString()}` : ''}`;
+      router.push(newUrl);
     },
     [router, searchParams],
   );
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Catégories</h2>
       <div className="space-y-2">
         {categories.map((category) => (
-          <div key={category.id} className="flex items-center">
+          <div
+            key={category.id}
+            className="flex items-center rounded-lg px-3 py-2 text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          >
             <input
               type="checkbox"
-              id={category.value}
-              checked={selectedCategories.includes(category.value)}
-              onChange={() => handleCategoryChange(category.value)}
-              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              id={category.id}
+              name="category"
+              value={category.id}
+              checked={selectedCategories.includes(category.id)}
+              onChange={() => handleCategoryChange(category.id)}
+              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary dark:border-neutral-600"
             />
-            <label htmlFor={category.value} className="ml-2 text-sm">
+            <label
+              htmlFor={category.id}
+              className="ml-2 flex-1 cursor-pointer text-sm"
+            >
               {category.name}
             </label>
           </div>

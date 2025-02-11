@@ -72,8 +72,8 @@ export default buildConfig({
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_APP_PASS,
       },
-      debug: process.env.NODE_ENV === 'development',
-      logger: process.env.NODE_ENV === 'development',
+      logger: false, // Désactive les logs de debug
+      debug: false, // Désactive les logs de debug
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, ProductCategories, Orders],
@@ -86,4 +86,3 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 });
-

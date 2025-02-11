@@ -1,99 +1,124 @@
-import type { Metadata } from 'next/types';
-import { headers } from 'next/headers';
-import { getPayload } from 'payload';
-import React from 'react';
-import { ProductCard } from '@/components/ProductCard';
-import { CategoryFilter } from '@/components/CategoryFilter';
+import { ProductGrid } from '@/components/ProductGrid';
 import configPromise from '@payload-config';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getPayload } from 'payload'; // Utilisation recommandée
+import { ProductFilters } from './components/filters';
+import { ProductSort } from './components/ProductSort';
+import { ResetFiltersButton } from './components/ResetFiltersButton';
 
-export default async function Page({
-  searchParams,
-}: {
+export const metadata: Metadata = {
+  title: 'Produits | Chanvre Vert',
+  description: 'Découvrez notre gamme de produits au chanvre.',
+};
+
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
+interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  // Use headers to make the page dynamic
-  headers();
-  
+}
+
+// 🔹 Fonction pour récupérer les catégories
+async function getCategories() {
   const payload = await getPayload({ config: configPromise });
 
-  // Get selected categories from URL
-  const categoryParam = searchParams.category;
-  const selectedCategories = categoryParam
-    ? Array.isArray(categoryParam)
-      ? categoryParam
-      : [categoryParam]
-    : [];
+  try {
+    const categories = await payload.find({
+      collection: 'product-categories',
+      depth: 0, // Pas besoin de profondeur ici
+    });
 
-  console.log('Selected categories:', selectedCategories);
+    return categories.docs;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
 
-  // Fetch categories
-  const categories = await payload.find({
-    collection: 'product-categories',
-    sort: 'sort',
-    limit: 100,
-  });
+// 🔹 Fonction pour récupérer les produits en fonction des catégories sélectionnées
+async function getProducts(selectedCategories: string[]) {
+  const payload = await getPayload({ config: configPromise });
 
-  console.log('Available categories:', categories.docs);
+  try {
+    const where: any = {
+      _status: {
+        equals: 'published', // Valide uniquement pour les collections avec drafts activés
+      },
+    };
 
-  // Fetch products with category filter if selected
-  const products = await payload.find({
-    collection: 'products',
-    depth: 2,
-    limit: 100,
-    where: selectedCategories.length > 0
-      ? {
-          and: [
-            {
-              'category.value': {
-                in: selectedCategories,
-              },
-            },
-            {
-              _status: {
-                equals: 'published',
-              },
-            },
-          ],
-        }
-      : {
-          _status: {
-            equals: 'published',
-          },
-        },
-  });
+    if (selectedCategories.length > 0) {
+      where.category = {
+        in: selectedCategories,
+      };
+    }
 
-  console.log('Found products:', products.docs);
+    const products = await payload.find({
+      collection: 'products',
+      depth: 2,
+      limit: 100,
+      where,
+    });
+
+    return products.docs;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
+}
+
+export default async function ProductsPage({ searchParams }: PageProps) {
+  const categoryParam = (await searchParams)?.category ?? [];
+  const selectedCategories: string[] = Array.isArray(categoryParam)
+    ? categoryParam
+    : categoryParam ? [categoryParam] : [];
+
+  // 🔹 Récupération des catégories et produits en parallèle
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(selectedCategories),
+  ]);
+
+  // 🔹 Calcul de la fourchette de prix pour les filtres
+  const prices = products.map((product) => product.price || 0);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
 
   return (
-    <div className="pt-24 pb-24">
-      <div className="container mb-16">
-        <div className="prose dark:prose-invert max-w-none">
-          <h1>Produits</h1>
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-24">
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="prose dark:prose-invert">
+              <h1 className="mb-0">Produits</h1>
+            </div>
+            <ProductSort />
+          </div>
         </div>
-      </div>
 
-      <div className="container">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar */}
-          <div className="w-full md:w-64 flex-shrink-0">
+        <div className="flex flex-col md:flex-row md:gap-8">
+          {/* Sidebar avec les filtres - position fixe sur desktop */}
+          <div className="w-full md:w-64 md:flex-shrink-0">
             <div className="sticky top-24">
-              <CategoryFilter
-                categories={categories.docs}
+              <ProductFilters
+                categories={categories}
                 selectedCategories={selectedCategories}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
               />
             </div>
           </div>
 
-          {/* Products Grid */}
-          <div className="flex-grow">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.docs.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            {products.docs.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-gray-500">Aucun produit trouvé pour cette sélection.</p>
+          {/* Grille des produits */}
+          <div className="flex-1">
+            {products.length > 0 ? (
+              <ProductGrid products={products} />
+            ) : (
+              <div className="rounded-lg border bg-background p-6 text-center">
+                <p className="text-muted-foreground">
+                  Aucun produit ne correspond à votre sélection.
+                </p>
+                <ResetFiltersButton />
               </div>
             )}
           </div>
@@ -101,10 +126,4 @@ export default async function Page({
       </div>
     </div>
   );
-}
-
-export function generateMetadata(): Metadata {
-  return {
-    title: `Payload Website Template Produits`,
-  };
 }
