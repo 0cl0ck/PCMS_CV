@@ -2,6 +2,7 @@
 
 import { IconArrowsSort } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 const sortOptions = [
   { value: 'newest', label: 'Plus récents' },
@@ -12,7 +13,7 @@ const sortOptions = [
   { value: 'name-desc', label: 'Nom Z-A' },
 ];
 
-export const ProductSort: React.FC = () => {
+const ProductSort: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentSort = searchParams.get('sort') || 'newest';
@@ -40,3 +41,12 @@ export const ProductSort: React.FC = () => {
     </div>
   );
 };
+
+export default function ProductSortWrapper() {
+  return (
+    <Suspense fallback={<div>Chargement du tri...</div>}>
+      <ProductSort />
+    </Suspense>
+  );
+}
+

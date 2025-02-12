@@ -1,9 +1,9 @@
 'use client';
 
 import { Media } from '@/payload-types';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 type Props = {
   images: Media[];
@@ -37,7 +37,7 @@ export const ProductGallery: React.FC<Props> = ({ images, title = 'Produit' }) =
             className="relative h-full w-full"
           >
             <Image
-              src={images[selectedImage].url}
+              src={images[selectedImage].url || ''}
               alt={`${title} - Image ${selectedImage + 1}`}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
@@ -62,7 +62,7 @@ export const ProductGallery: React.FC<Props> = ({ images, title = 'Produit' }) =
               }`}
             >
               <Image
-                src={image.url}
+                src={image.url || ''}
                 alt={`${title} - Miniature ${index + 1}`}
                 fill
                 sizes="(min-width: 1024px) 15vw, 25vw"
@@ -75,3 +75,4 @@ export const ProductGallery: React.FC<Props> = ({ images, title = 'Produit' }) =
     </div>
   );
 };
+

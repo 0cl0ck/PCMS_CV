@@ -1,7 +1,7 @@
 import { ProductGrid } from '@/components/ProductGrid';
 import configPromise from '@payload-config';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import type { Where } from 'payload';
 import { getPayload } from 'payload'; // Utilisation recommandée
 import { ProductFilters } from './components/filters';
 import { ProductSort } from './components/ProductSort';
@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // 🔹 Fonction pour récupérer les catégories
@@ -41,7 +41,7 @@ async function getProducts(selectedCategories: string[]) {
   const payload = await getPayload({ config: configPromise });
 
   try {
-    const where: any = {
+    const where: Where = {
       _status: {
         equals: 'published', // Valide uniquement pour les collections avec drafts activés
       },
@@ -68,10 +68,13 @@ async function getProducts(selectedCategories: string[]) {
 }
 
 export default async function ProductsPage({ searchParams }: PageProps) {
-  const categoryParam = (await searchParams)?.category ?? [];
+  const resolvedSearchParams = await searchParams;
+  const categoryParam = resolvedSearchParams?.category ?? [];
   const selectedCategories: string[] = Array.isArray(categoryParam)
     ? categoryParam
-    : categoryParam ? [categoryParam] : [];
+    : categoryParam
+      ? [categoryParam]
+      : [];
 
   // 🔹 Récupération des catégories et produits en parallèle
   const [categories, products] = await Promise.all([
@@ -127,3 +130,4 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     </div>
   );
 }
+

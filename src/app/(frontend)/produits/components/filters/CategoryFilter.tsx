@@ -1,9 +1,8 @@
 'use client';
 
 import { ProductCategory } from '@/payload-types';
-import { IconCategory } from '@tabler/icons-react';
-import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 
 type Props = {
   categories: ProductCategory[];
@@ -53,10 +52,7 @@ export const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories
               onChange={() => handleCategoryChange(category.id)}
               className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary dark:border-neutral-600"
             />
-            <label
-              htmlFor={category.id}
-              className="ml-2 flex-1 cursor-pointer text-sm"
-            >
+            <label htmlFor={category.id} className="ml-2 flex-1 cursor-pointer text-sm">
               {category.name}
             </label>
           </div>
@@ -65,3 +61,4 @@ export const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories
     </div>
   );
 };
+
