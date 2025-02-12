@@ -1,22 +1,23 @@
 'use client';
 
 import { IconCurrencyEuro } from '@tabler/icons-react';
-import { useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Suspense, useCallback } from 'react';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 type Props = {
   minPrice: number;
   maxPrice: number;
 };
 
-export const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
+const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSafeSearchParams();
 
   const handlePriceChange = useCallback(
     (min: number, max: number) => {
-      const params = new URLSearchParams(searchParams.toString());
-      
+      const params = new URLSearchParams(searchParams?.toString() || '');
+
       if (min === minPrice && max === maxPrice) {
         params.delete('minPrice');
         params.delete('maxPrice');
@@ -66,3 +67,11 @@ export const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
     </div>
   );
 };
+
+export default function PriceFilterWrapper(props: Props) {
+  return (
+    <Suspense fallback={<div>Chargement des filtres de prix...</div>}>
+      <PriceFilter {...props} />
+    </Suspense>
+  );
+}

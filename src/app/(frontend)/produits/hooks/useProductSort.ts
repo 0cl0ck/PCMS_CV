@@ -1,12 +1,12 @@
 import type { Product } from '@/payload-types';
-import { useSearchParams } from 'next/navigation';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import { useMemo } from 'react';
 
 type SortOption = 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' | 'newest' | 'oldest';
 
 export const useProductSort = (products: Product[]) => {
-  const searchParams = useSearchParams();
-  const sortBy = (searchParams.get('sort') as SortOption) || 'newest';
+  const searchParams = useSafeSearchParams();
+  const sortBy = (searchParams?.get('sort') as SortOption) || 'newest';
 
   return useMemo(() => {
     const sortedProducts = [...products];
@@ -39,8 +39,7 @@ export const useProductSort = (products: Product[]) => {
 
     return {
       sortedProducts,
-      currentSort: sortBy,
+      sortBy,
     };
   }, [products, sortBy]);
 };
-

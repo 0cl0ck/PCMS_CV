@@ -1,13 +1,14 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { SearchParamsProvider, useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSafeSearchParams();
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -50,29 +51,30 @@ export default function VerifyEmailPage() {
   }, [searchParams, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8">
-        {status === 'loading' && (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Vérification de votre email...</h2>
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-          </div>
-        )}
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Vérification de l&apos;email
+        </h2>
+      </div>
 
-        {status === 'success' && (
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-green-600 mb-4">✓ Vérification réussie</h2>
-            <p className="text-gray-600">{message}</p>
+            {status === 'loading' && <p>Vérification en cours...</p>}
+            {status === 'success' && <p className="text-green-600">{message}</p>}
+            {status === 'error' && <p className="text-red-600">{message}</p>}
           </div>
-        )}
-
-        {status === 'error' && (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">✗ Erreur</h2>
-            <p className="text-gray-600">{message}</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <SearchParamsProvider>
+      <VerifyEmailContent />
+    </SearchParamsProvider>
   );
 }

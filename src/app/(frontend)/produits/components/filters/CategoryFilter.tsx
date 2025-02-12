@@ -1,21 +1,22 @@
 'use client';
 
 import { ProductCategory } from '@/payload-types';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useCallback } from 'react';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 type Props = {
   categories: ProductCategory[];
   selectedCategories: string[];
 };
 
-export const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories }) => {
+const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSafeSearchParams();
 
   const handleCategoryChange = useCallback(
     (categoryValue: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams?.toString() || '');
       const currentCategories = params.getAll('category');
 
       if (currentCategories.includes(categoryValue)) {
@@ -28,37 +29,37 @@ export const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories
         params.append('category', categoryValue);
       }
 
-      // Preserve other query parameters
-      const newUrl = `/produits${params.toString() ? `?${params.toString()}` : ''}`;
-      router.push(newUrl);
+      router.push(`/produits?${params.toString()}`);
     },
     [router, searchParams],
   );
 
   return (
     <div className="space-y-4">
+      <h3 className="text-lg font-medium">Catégories</h3>
       <div className="space-y-2">
         {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex items-center rounded-lg px-3 py-2 text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
-          >
+          <label key={category.id} className="flex items-center space-x-2">
             <input
               type="checkbox"
-              id={category.id}
-              name="category"
-              value={category.id}
               checked={selectedCategories.includes(category.id)}
               onChange={() => handleCategoryChange(category.id)}
-              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary dark:border-neutral-600"
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <label htmlFor={category.id} className="ml-2 flex-1 cursor-pointer text-sm">
-              {category.name}
-            </label>
-          </div>
+            <span className="text-sm">{category.name}</span>
+          </label>
         ))}
       </div>
     </div>
   );
 };
 
+const CategoryFilterWrapper = ({ categories, selectedCategories }: Props) => {
+  return (
+    <Suspense fallback={<div>Chargement des catégories...</div>}>
+      <CategoryFilter categories={categories} selectedCategories={selectedCategories} />
+    </Suspense>
+  );
+};
+
+export default CategoryFilterWrapper;

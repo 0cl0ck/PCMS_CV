@@ -1,11 +1,27 @@
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import type { Product } from '@/payload-types';
-import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 
-export const useProductFilters = (products: Product[]) => {
-  const searchParams = useSearchParams();
+interface ProductFilters {
+  categories?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  search?: string | null;
+}
+
+interface UseProductFiltersReturn {
+  filteredProducts: Product[];
+  totalProducts: number;
+  filters: ProductFilters;
+}
+
+export const useProductFilters = (products: Product[]): UseProductFiltersReturn => {
+  const searchParams = useSafeSearchParams();
 
   return useMemo(() => {
+    if (!searchParams)
+      return { filteredProducts: products, totalProducts: products.length, filters: {} };
+
     let filteredProducts = [...products];
 
     // Filtre par catégories

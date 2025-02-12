@@ -1,18 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 export const ResetPasswordForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const searchParams = useSearchParams();
+  const searchParams = useSafeSearchParams();
   const token = searchParams.get('token');
   const [password, setPassword] = useState('');
-  
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,13 +23,9 @@ export const ResetPasswordForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const endpoint = token
-        ? '/api/auth/reset-password'
-        : '/api/auth/forgot-password';
+      const endpoint = token ? '/api/auth/reset-password' : '/api/auth/forgot-password';
 
-      const body = token
-        ? { token, password }
-        : { email };
+      const body = token ? { token, password } : { email };
 
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -44,9 +41,10 @@ export const ResetPasswordForm: React.FC = () => {
         throw new Error(data.message || 'Une erreur est survenue');
       }
 
-      setSuccessMessage(token
-        ? 'Mot de passe réinitialisé avec succès ! Vous allez être redirigé...'
-        : 'Un email de réinitialisation a été envoyé à votre adresse email.'
+      setSuccessMessage(
+        token
+          ? 'Mot de passe réinitialisé avec succès ! Vous allez être redirigé...'
+          : 'Un email de réinitialisation a été envoyé à votre adresse email.',
       );
 
       if (token) {
@@ -94,23 +92,12 @@ export const ResetPasswordForm: React.FC = () => {
         </div>
       )}
 
-      {error && (
-        <div className="text-red-500 text-sm">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-red-500 text-sm">{error}</div>}
 
-      {successMessage && (
-        <div className="text-green-500 text-sm">
-          {successMessage}
-        </div>
-      )}
+      {successMessage && <div className="text-green-500 text-sm">{successMessage}</div>}
 
       <div className="flex items-center justify-between">
-        <Link
-          href="/login"
-          className="text-sm text-green-600 hover:text-green-500"
-        >
+        <Link href="/login" className="text-sm text-green-600 hover:text-green-500">
           Retour à la connexion
         </Link>
       </div>
@@ -120,12 +107,11 @@ export const ResetPasswordForm: React.FC = () => {
         disabled={loading}
         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
       >
-        {loading 
-          ? 'Envoi en cours...' 
-          : token 
+        {loading
+          ? 'Envoi en cours...'
+          : token
             ? 'Réinitialiser le mot de passe'
-            : 'Envoyer le lien de réinitialisation'
-        }
+            : 'Envoyer le lien de réinitialisation'}
       </button>
     </form>
   );

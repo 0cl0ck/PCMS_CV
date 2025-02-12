@@ -1,21 +1,22 @@
 'use client';
 
-import { IconSearch } from '@tabler/icons-react';
-import { useCallback, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
+import { IconSearch } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 
-export const SearchFilter: React.FC = () => {
+const SearchFilter: React.FC = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const searchParams = useSafeSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams?.get('search') || '');
 
   const debouncedSearch = useDebounce(searchTerm, 300);
 
   const handleSearch = useCallback(
     (value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      
+      const params = new URLSearchParams(searchParams?.toString() || '');
+
       if (!value) {
         params.delete('search');
       } else {
@@ -27,8 +28,7 @@ export const SearchFilter: React.FC = () => {
     [router, searchParams],
   );
 
-  // Mettre à jour l'URL lorsque la recherche debounced change
-  useCallback(() => {
+  useEffect(() => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
 
@@ -51,3 +51,13 @@ export const SearchFilter: React.FC = () => {
     </div>
   );
 };
+
+const SearchFilterWrapper = () => {
+  return (
+    <Suspense fallback={<div>Chargement du champ de recherche...</div>}>
+      <SearchFilter />
+    </Suspense>
+  );
+};
+
+export default SearchFilterWrapper;

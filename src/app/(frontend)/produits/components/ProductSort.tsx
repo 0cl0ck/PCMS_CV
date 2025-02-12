@@ -1,8 +1,9 @@
 'use client';
 
 import { IconArrowsSort } from '@tabler/icons-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 const sortOptions = [
   { value: 'newest', label: 'Plus récents' },
@@ -15,11 +16,11 @@ const sortOptions = [
 
 const ProductSort: React.FC = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentSort = searchParams.get('sort') || 'newest';
+  const searchParams = useSafeSearchParams();
+  const currentSort = searchParams?.get('sort') || 'newest';
 
   const handleSortChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
     params.set('sort', value);
     router.push(`/produits?${params.toString()}`);
   };
@@ -30,7 +31,7 @@ const ProductSort: React.FC = () => {
       <select
         value={currentSort}
         onChange={(e) => handleSortChange(e.target.value)}
-        className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-neutral-700 dark:bg-neutral-800"
+        className="rounded-md border-none bg-transparent text-sm text-neutral-700 focus:ring-0 dark:text-neutral-200"
       >
         {sortOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -42,11 +43,13 @@ const ProductSort: React.FC = () => {
   );
 };
 
-export default function ProductSortWrapper() {
+const ProductSortWrapper = () => {
   return (
-    <Suspense fallback={<div>Chargement du tri...</div>}>
+    <Suspense>
       <ProductSort />
     </Suspense>
   );
-}
+};
 
+export default ProductSortWrapper;
+export { ProductSort };
