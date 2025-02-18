@@ -105,4 +105,3 @@ export const ProductCard: React.FC<Props> = ({ product, index }) => {
     </motion.div>
   );
 };
-

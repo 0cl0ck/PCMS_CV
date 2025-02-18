@@ -5,6 +5,7 @@ import { CartProvider } from './Cart/CartContext';
 import { HeaderThemeProvider } from './HeaderTheme';
 import { ThemeProvider } from './Theme';
 import { AuthProvider } from '@/components/auth/AuthProvider';
+import { SearchParamsProvider } from '@/hooks/useSearchParamsProvider';
 
 export const Providers: React.FC<{
   children: React.ReactNode;
@@ -13,7 +14,11 @@ export const Providers: React.FC<{
     <ThemeProvider>
       <HeaderThemeProvider>
         <AuthProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <SearchParamsProvider>
+              {children}
+            </SearchParamsProvider>
+          </CartProvider>
         </AuthProvider>
       </HeaderThemeProvider>
     </ThemeProvider>

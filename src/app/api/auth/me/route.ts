@@ -5,26 +5,33 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const payload = await getPayload();
-    if (!payload) return NextResponse.json(null);
+    if (!payload) {
+      console.error('Payload initialization failed');
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
 
     const headersList = await headers();
 
-    const users = await payload.find({
-      collection: 'users',
-      depth: 2,
-      req: {
-        headers: headersList,
-      },
-    });
+    try {
+      const users = await payload.find({
+        collection: 'users',
+        depth: 2,
+        req: {
+          headers: headersList,
+        },
+      });
 
-    if (!users || !users.docs.length) {
-      return NextResponse.json(null);
+      if (!users || !users.docs.length) {
+        return NextResponse.json(null);
+      }
+
+      return NextResponse.json(users.docs[0]);
+    } catch (error) {
+      console.error('Error querying users:', error);
+      return NextResponse.json({ error: 'Error querying users' }, { status: 500 });
     }
-
-    return NextResponse.json({ user: users.docs[0] });
   } catch (error) {
     console.error('Error in me route:', error);
-    return NextResponse.json(null);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-

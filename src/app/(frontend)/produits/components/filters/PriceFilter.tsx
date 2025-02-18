@@ -1,9 +1,9 @@
 'use client';
 
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import { IconCurrencyEuro } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { Suspense, useCallback } from 'react';
-import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 type Props = {
   minPrice: number;

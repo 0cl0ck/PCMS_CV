@@ -43,7 +43,7 @@ const PanierPage: React.FC = () => {
       window.location.href = smartCheckoutUrl;
     } catch (error) {
       console.error('Checkout failed:', error);
-      alert('Une erreur est survenue lors de l\'initialisation du paiement');
+      alert("Une erreur est survenue lors de l'initialisation du paiement");
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +66,7 @@ const PanierPage: React.FC = () => {
           ))}
           <div className="mt-8">
             <h2 className="text-xl font-bold">Total: {total} €</h2>
-            <Button 
+            <Button
               className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
               onClick={handleCheckout}
               disabled={isLoading}
@@ -133,3 +133,4 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, on
 };
 
 export default PanierPage;
+

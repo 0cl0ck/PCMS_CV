@@ -22,21 +22,17 @@ export const ProductFilters: React.FC<Props> = ({
     <div className="w-full rounded-lg border bg-background p-6">
       <div className="space-y-6">
         <div>
-          <h2 className="mb-2 text-lg font-semibold tracking-tight">Rechercher</h2>
           <SearchFilter />
         </div>
 
         <div>
-          <h2 className="mb-2 text-lg font-semibold tracking-tight">Catégories</h2>
           <CategoryFilter categories={categories} selectedCategories={selectedCategories} />
         </div>
 
         <div>
-          <h2 className="mb-2 text-lg font-semibold tracking-tight">Prix</h2>
           <PriceFilter minPrice={minPrice} maxPrice={maxPrice} />
         </div>
       </div>
     </div>
   );
 };
-

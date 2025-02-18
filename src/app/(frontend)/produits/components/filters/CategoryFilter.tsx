@@ -1,9 +1,9 @@
 'use client';
 
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import { ProductCategory } from '@/payload-types';
 import { useRouter } from 'next/navigation';
 import { Suspense, useCallback } from 'react';
-import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 type Props = {
   categories: ProductCategory[];

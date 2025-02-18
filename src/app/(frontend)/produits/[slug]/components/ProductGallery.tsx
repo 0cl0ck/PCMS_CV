@@ -75,4 +75,3 @@ export const ProductGallery: React.FC<Props> = ({ images, title = 'Produit' }) =
     </div>
   );
 };
-

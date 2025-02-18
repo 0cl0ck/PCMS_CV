@@ -1,18 +1,40 @@
 'use client';
 
-import { Product } from '@/payload-types';
+import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/utils';
+import { Product } from '@/payload-types';
+import { CartContext } from '@/providers/Cart/CartContext';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 type Props = {
   product: Product;
 };
 
 export const ProductDetails: React.FC<Props> = ({ product }) => {
+  const cartContext = useContext(CartContext);
   const [selectedVariation, setSelectedVariation] = useState<number | null>(
-    product.productType === 'variable' && product.variations ? 0 : null
+    product.productType === 'variable' && product.variations ? 0 : null,
   );
+
+  if (!cartContext) {
+    console.error('CartContext is not provided');
+    return null;
+  }
+
+  const { addToCart } = cartContext;
+
+  const handleAddToCart = () => {
+    if (product.productType === 'variable' && product.variations) {
+      if (selectedVariation === null) {
+        alert('Veuillez sélectionner une variation');
+        return;
+      }
+      addToCart(product, product.variations[selectedVariation], 1);
+    } else {
+      addToCart(product, null, 1);
+    }
+  };
 
   const renderRichText = (content: any) => {
     if (!content?.root?.children) return '';
@@ -39,7 +61,10 @@ export const ProductDetails: React.FC<Props> = ({ product }) => {
           </Link>
           <span>/</span>
           {product.category?.map((category, index) => (
-            <div key={typeof category === 'string' ? category : category.id} className="flex items-center gap-2">
+            <div
+              key={typeof category === 'string' ? category : category.id}
+              className="flex items-center gap-2"
+            >
               <Link
                 href={`/produits?category=${typeof category === 'string' ? category : category.value}`}
                 className="hover:text-primary"
@@ -59,11 +84,7 @@ export const ProductDetails: React.FC<Props> = ({ product }) => {
               {product.price ? formatPrice(product.price) : 'Prix sur demande'}
             </span>
             {typeof product.stock === 'number' && (
-              <span
-                className={`text-sm ${
-                  product.stock > 0 ? 'text-green-600' : 'text-red-500'
-                }`}
-              >
+              <span className={`text-sm ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
                 {product.stock > 0 ? `${product.stock} en stock` : 'Rupture de stock'}
               </span>
             )}
@@ -95,9 +116,7 @@ export const ProductDetails: React.FC<Props> = ({ product }) => {
                             : 'text-red-500'
                         }`}
                       >
-                        {variation.stock > 0
-                          ? `${variation.stock} en stock`
-                          : 'Rupture de stock'}
+                        {variation.stock > 0 ? `${variation.stock} en stock` : 'Rupture de stock'}
                       </div>
                     )}
                   </button>
@@ -134,6 +153,22 @@ export const ProductDetails: React.FC<Props> = ({ product }) => {
           </div>
         )}
       </div>
+
+      {/* Bouton Ajouter au panier */}
+      <Button
+        onClick={handleAddToCart}
+        className="mt-6 w-full bg-primary text-white hover:bg-primary/90"
+        disabled={
+          product.productType === 'variable'
+            ? selectedVariation === null
+            : product.stock !== undefined ||
+              null ||
+              (typeof product.stock === 'number' && product.stock <= 0)
+        }
+      >
+        Ajouter au panier
+      </Button>
     </div>
   );
 };
+

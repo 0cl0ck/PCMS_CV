@@ -1,9 +1,9 @@
 'use client';
 
+import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import { IconArrowsSort } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 
 const sortOptions = [
   { value: 'newest', label: 'Plus récents' },

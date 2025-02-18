@@ -1,27 +1,13 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { ReactNode, Suspense, createContext, useContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
 
 const SearchParamsContext = createContext<URLSearchParams | null>(null);
 
-const SearchParamsProviderComponent = ({ children }: { children: ReactNode }) => {
-  const searchParams = useSearchParams();
-  const [params, setParams] = useState<URLSearchParams | null>(null);
-
-  useEffect(() => {
-    setParams(searchParams);
-  }, [searchParams]);
-
-  return <SearchParamsContext.Provider value={params}>{children}</SearchParamsContext.Provider>;
-};
-
 export const SearchParamsProvider = ({ children }: { children: ReactNode }) => {
-  return (
-    <Suspense fallback={null}>
-      <SearchParamsProviderComponent>{children}</SearchParamsProviderComponent>
-    </Suspense>
-  );
+  const searchParams = useSearchParams();
+  return <SearchParamsContext.Provider value={searchParams}>{children}</SearchParamsContext.Provider>;
 };
 
 export const useSafeSearchParams = () => {
