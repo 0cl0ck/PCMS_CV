@@ -5,13 +5,16 @@ import { Media, Product } from '@/payload-types';
 import { formatPrice } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 interface Props {
   product: Product;
+  index?: number;
 }
 
-export const ProductCard: React.FC<Props> = ({ product }) => {
+export const ProductCard: React.FC<Props> = ({ product, index = 0 }) => {
   const mainImage = product.images?.[0];
+  const hoverImage = product.images?.[1];
 
   const getImageUrl = (image: Media | string | undefined): string => {
     if (!image) return '';
@@ -20,17 +23,33 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   };
 
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-white shadow transition-shadow hover:shadow-lg dark:bg-neutral-900">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.1 }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg dark:bg-neutral-900"
+    >
       <Link href={`/produits/${product.slug}`} className="relative aspect-square overflow-hidden">
         {mainImage && (
-          <Image
-            src={getImageUrl(mainImage)}
-            alt={product.name}
-            fill
-            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            priority={false}
-          />
+          <>
+            <Image
+              src={getImageUrl(mainImage)}
+              alt={product.name}
+              fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              priority={index < 4}
+            />
+            {hoverImage && (
+              <Image
+                src={getImageUrl(hoverImage)}
+                alt={`${product.name} - Image secondaire`}
+                fill
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                className="absolute inset-0 object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              />
+            )}
+          </>
         )}
         {product.featured && (
           <span className="absolute left-2 top-2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-white">
@@ -57,16 +76,32 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         </Link>
 
         <div className="mt-2">
-          <div className="flex items-center justify-between">
-            <span className="text-lg font-bold text-primary">
-              {product.price ? formatPrice(product.price) : 'Prix sur demande'}
-            </span>
-            {typeof product.stock === 'number' && product.stock <= 0 && (
-              <span className="text-sm text-red-500">Rupture de stock</span>
-            )}
-          </div>
+          {product.productType === 'simple' ? (
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-bold text-primary">
+                {product.price ? formatPrice(product.price) : 'Prix sur demande'}
+              </span>
+              {typeof product.stock === 'number' && product.stock <= 0 && (
+                <span className="text-sm text-red-500">Rupture de stock</span>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-bold text-primary">
+                {product.variations && product.variations.length > 0
+                  ? `À partir de ${formatPrice(
+                      Math.min(...product.variations.map((v) => v.price)),
+                    )}`
+                  : 'Prix sur demande'}
+              </span>
+              {product.variations &&
+                product.variations.every((v) => typeof v.stock === 'number' && v.stock <= 0) && (
+                  <span className="text-sm text-red-500">Rupture de stock</span>
+                )}
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
