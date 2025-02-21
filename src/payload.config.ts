@@ -1,8 +1,9 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
-import path from 'path';
 import { buildConfig } from 'payload';
+import { s3Storage } from '@payloadcms/storage-s3';
+import path from 'path';
 import sharp from 'sharp'; // sharp-import
 import { fileURLToPath } from 'url';
 
@@ -76,13 +77,46 @@ export default buildConfig({
       debug: false, // Désactive les logs de debug
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Products, ProductCategories, Orders],
+  upload: {
+    limits: {
+      fileSize: 5000000, // 5MB
+    },
+    useTempFiles: true,
+  },
+  collections: [
+    Media,
+    Products,
+    ProductCategories,
+    Categories,
+    Posts,
+    Pages,
+    Orders,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
+  plugins: [
+    ...plugins,
+    s3Storage({
+      collections: {
+        media: true, // Enable S3 for the media collection
+      },
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.S3_REGION || '',
+      },
+    }),
+  ],
   globals: [Header, Footer],
-  plugins: [...plugins],
-  secret: process.env.PAYLOAD_SECRET,
-  sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  graphQL: {
+    schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),
+  },
+  secret: process.env.PAYLOAD_SECRET,
+  sharp,
 });
