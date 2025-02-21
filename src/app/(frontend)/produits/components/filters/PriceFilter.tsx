@@ -1,38 +1,68 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { useSafeSearchParams } from '@/hooks/useSearchParamsProvider';
 import { IconCurrencyEuro } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 
 type Props = {
   minPrice: number;
   maxPrice: number;
 };
 
+// Définir des plages de prix prédéfinies
+const PRICE_RANGES = [
+  { label: 'Moins de 20€', min: 0, max: 20 },
+  { label: '20€ - 25€', min: 20, max: 25 },
+  { label: '25€ - 30€', min: 25, max: 30 },
+  { label: '30€ et plus', min: 30, max: null },
+];
+
 const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
   const router = useRouter();
   const searchParams = useSafeSearchParams();
+  const [selectedRange, setSelectedRange] = useState<number | null>(null);
 
-  const handlePriceChange = useCallback(
-    (min: number, max: number) => {
-      const params = new URLSearchParams(searchParams?.toString() || '');
+  // Initialiser la sélection en fonction des paramètres d'URL
+  useEffect(() => {
+    const urlMinPrice = searchParams?.get('minPrice');
+    const urlMaxPrice = searchParams?.get('maxPrice');
+    
+    if (urlMinPrice || urlMaxPrice) {
+      const min = urlMinPrice ? Number(urlMinPrice) : 0;
+      const max = urlMaxPrice ? Number(urlMaxPrice) : Infinity;
+      
+      const rangeIndex = PRICE_RANGES.findIndex(
+        range => range.min === min && (range.max === max || (range.max === null && max === Infinity))
+      );
+      
+      setSelectedRange(rangeIndex !== -1 ? rangeIndex : null);
+    } else {
+      setSelectedRange(null);
+    }
+  }, [searchParams]);
 
-      if (min === minPrice && max === maxPrice) {
-        params.delete('minPrice');
-        params.delete('maxPrice');
+  // Appliquer le filtre de prix
+  const applyPriceRange = useCallback((index: number | null) => {
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    
+    if (index === null) {
+      params.delete('minPrice');
+      params.delete('maxPrice');
+    } else {
+      const range = PRICE_RANGES[index];
+      params.set('minPrice', range.min.toString());
+      if (range.max !== null) {
+        params.set('maxPrice', range.max.toString());
       } else {
-        params.set('minPrice', min.toString());
-        params.set('maxPrice', max.toString());
+        params.delete('maxPrice');
       }
+    }
 
-      router.push(`/produits?${params.toString()}`);
-    },
-    [router, searchParams, minPrice, maxPrice],
-  );
-
-  const currentMinPrice = Number(searchParams.get('minPrice')) || minPrice;
-  const currentMaxPrice = Number(searchParams.get('maxPrice')) || maxPrice;
+    router.push(`/produits?${params.toString()}`);
+    setSelectedRange(index);
+  }, [router, searchParams]);
 
   return (
     <div className="space-y-4 p-4">
@@ -40,29 +70,28 @@ const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
         <IconCurrencyEuro className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
         <h2 className="text-lg font-semibold">Prix</h2>
       </div>
-      <div className="space-y-4">
-        <div className="flex items-center gap-4">
-          <input
-            type="range"
-            min={minPrice}
-            max={maxPrice}
-            value={currentMinPrice}
-            onChange={(e) => handlePriceChange(Number(e.target.value), currentMaxPrice)}
-            className="w-full"
-          />
-          <span className="w-16 text-sm">{currentMinPrice}€</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <input
-            type="range"
-            min={minPrice}
-            max={maxPrice}
-            value={currentMaxPrice}
-            onChange={(e) => handlePriceChange(currentMinPrice, Number(e.target.value))}
-            className="w-full"
-          />
-          <span className="w-16 text-sm">{currentMaxPrice}€</span>
-        </div>
+
+      <div className="space-y-2">
+        {/* Option "Tous les prix" */}
+        <Button
+          variant={selectedRange === null ? "default" : "outline"}
+          className="w-full justify-start"
+          onClick={() => applyPriceRange(null)}
+        >
+          Tous les prix
+        </Button>
+
+        {/* Plages de prix prédéfinies */}
+        {PRICE_RANGES.map((range, index) => (
+          <Button
+            key={index}
+            variant={selectedRange === index ? "default" : "outline"}
+            className="w-full justify-start"
+            onClick={() => applyPriceRange(index)}
+          >
+            {range.label}
+          </Button>
+        ))}
       </div>
     </div>
   );

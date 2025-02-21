@@ -15,24 +15,26 @@ const CategoryFilter: React.FC<Props> = ({ categories, selectedCategories }) => 
   const searchParams = useSafeSearchParams();
 
   const handleCategoryChange = useCallback(
-    (categoryValue: string) => {
+    (categoryId: string) => {
       const params = new URLSearchParams(searchParams?.toString() || '');
       const currentCategories = params.getAll('category');
 
-      if (currentCategories.includes(categoryValue)) {
+      if (currentCategories.includes(categoryId)) {
         // Remove category
-        const newCategories = currentCategories.filter((cat) => cat !== categoryValue);
+        const newCategories = currentCategories.filter((cat) => cat !== categoryId);
         params.delete('category');
         newCategories.forEach((cat) => params.append('category', cat));
       } else {
         // Add category
-        params.append('category', categoryValue);
+        params.append('category', categoryId);
       }
 
       router.push(`/produits?${params.toString()}`);
     },
     [router, searchParams],
   );
+
+  console.log(selectedCategories);
 
   return (
     <div className="space-y-4">
@@ -63,3 +65,4 @@ const CategoryFilterWrapper = ({ categories, selectedCategories }: Props) => {
 };
 
 export default CategoryFilterWrapper;
+

@@ -30,7 +30,7 @@ async function getCategories() {
 }
 
 // 🔹 Fonction pour récupérer les produits en fonction des catégories sélectionnées
-async function getProducts(selectedCategories: string[]) {
+async function getProducts(selectedCategories: string[], minPrice?: number, maxPrice?: number) {
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -45,6 +45,42 @@ async function getProducts(selectedCategories: string[]) {
         in: selectedCategories,
       };
     }
+
+    // Construire la requête pour prendre en compte les prix des variations
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      where.or = [
+        // Vérifier le prix direct du produit (pour les produits simples)
+        minPrice !== undefined && maxPrice !== undefined
+          ? { 
+              and: [
+                { price: { greater_than_equal: minPrice } },
+                { price: { less_than_equal: maxPrice } }
+              ]
+            }
+          : minPrice !== undefined
+          ? { price: { greater_than_equal: minPrice } }
+          : { price: { less_than_equal: maxPrice } },
+        
+        // Vérifier les prix des variations
+        {
+          and: [
+            { productType: { equals: 'variable' } },
+            {
+              'variations.price': minPrice !== undefined
+                ? { greater_than_equal: minPrice }
+                : { exists: true }
+            },
+            {
+              'variations.price': maxPrice !== undefined
+                ? { less_than_equal: maxPrice }
+                : { exists: true }
+            }
+          ]
+        }
+      ];
+    }
+
+    console.log('Query where clause:', JSON.stringify(where, null, 2));
 
     const products = await payload.find({
       collection: 'products',
@@ -64,7 +100,11 @@ type PageProps = {
 };
 
 export default async function ProductsPage({ searchParams }: PageProps) {
-  const categoryParam = (await searchParams)?.category;
+  const params = await searchParams;
+  const categoryParam = params?.category;
+  const minPriceParam = params?.minPrice ? Number(params.minPrice) : undefined;
+  const maxPriceParam = params?.maxPrice ? Number(params.maxPrice) : undefined;
+  
   const selectedCategories: string[] = Array.isArray(categoryParam)
     ? categoryParam
     : categoryParam
@@ -74,13 +114,45 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   // 🔹 Récupération des catégories et produits en parallèle
   const [categories, products] = await Promise.all([
     getCategories(),
-    getProducts(selectedCategories),
+    getProducts(selectedCategories, minPriceParam, maxPriceParam),
   ]);
 
   // 🔹 Calcul de la fourchette de prix pour les filtres
-  const prices = products.map((product) => product.price || 0);
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
+  console.log('Products received:', products);
+  
+  // Log des variations pour debug
+  products.forEach(product => {
+    if (product.productType === 'variable') {
+      console.log(`Variations for ${product.name}:`, product.variations);
+    }
+  });
+
+  const validPrices = products.flatMap(product => {
+    const prices: number[] = [];
+    
+    // Prix direct du produit (pour les produits simples)
+    if (product.price && typeof product.price === 'number') {
+      prices.push(product.price);
+    }
+    
+    // Prix des variations (pour les produits variables)
+    if (product.productType === 'variable' && Array.isArray(product.variations)) {
+      product.variations.forEach(variation => {
+        if (variation.price && typeof variation.price === 'number') {
+          prices.push(variation.price);
+        }
+      });
+    }
+    
+    return prices;
+  }).filter(price => !isNaN(price));
+
+  console.log('Valid prices found:', validPrices);
+
+  const minPrice = validPrices.length > 0 ? Math.min(...validPrices) : 0;
+  const maxPrice = validPrices.length > 0 ? Math.max(...validPrices) : 100;
+
+  console.log('Calculated price range:', { minPrice, maxPrice });
 
   return (
     <ProductsContent
