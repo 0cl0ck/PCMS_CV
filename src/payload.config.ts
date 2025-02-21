@@ -24,14 +24,7 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// Protection contre la double initialisation des modèles
-let cached = (global as any).payload;
-
-if (!cached) {
-  cached = (global as any).payload = { config: null };
-}
-
-const config = {
+export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -74,25 +67,9 @@ const config = {
     },
     useTempFiles: true,
   },
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_USER || '',
-    defaultFromName: 'Chanvre Vert',
-    transportOptions: {
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_APP_PASS,
-      },
-      logger: false,
-      debug: false,
-    },
-  }),
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
-    ...plugins,
     s3Storage({
       collections: {
         media: true,
@@ -106,6 +83,7 @@ const config = {
         region: process.env.S3_REGION || '',
       },
     }),
+    ...plugins,
   ],
   globals: [Header, Footer],
   typescript: {
@@ -116,40 +94,4 @@ const config = {
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
-};
-
-if (!cached.config) {
-  cached.config = config;
-}
-
-// Log la configuration pour le débogage
-console.log('PayloadCMS Config Details:', {
-  hasS3Config: config.plugins.some(p => {
-    const plugin = p as any;
-    return plugin?.collections?.media === true;
-  }),
-  collections: config.collections.map(c => ({
-    slug: c.slug,
-    hasUploadField: c.fields?.some((f: any) => f.type === 'upload' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'upload'))),
-    hasRelationField: c.fields?.some((f: any) => f.type === 'relationship' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'relationship'))),
-  })),
-  corsOrigins: config.cors,
-  uploadConfig: config.upload,
-  s3Plugin: config.plugins.find(p => (p as any)?.collections?.media === true),
 });
-
-// Vérifier spécifiquement les collections Products et ProductCategories
-const productsConfig = config.collections.find(c => c.slug === 'products');
-const productCategoriesConfig = config.collections.find(c => c.slug === 'product-categories');
-
-console.log('Products Collection Config:', {
-  uploadFields: productsConfig?.fields?.filter((f: any) => f.type === 'upload' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'upload'))),
-  relationFields: productsConfig?.fields?.filter((f: any) => f.type === 'relationship' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'relationship'))),
-});
-
-console.log('Product Categories Collection Config:', {
-  uploadFields: productCategoriesConfig?.fields?.filter((f: any) => f.type === 'upload'),
-  relationFields: productCategoriesConfig?.fields?.filter((f: any) => f.type === 'relationship'),
-});
-
-export default buildConfig(cached.config);
