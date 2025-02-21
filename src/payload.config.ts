@@ -24,6 +24,13 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+// Protection contre la double initialisation des modèles
+let cached = (global as any).payload;
+
+if (!cached) {
+  cached = (global as any).payload = { config: null };
+}
+
 const config = {
   admin: {
     components: {
@@ -111,6 +118,10 @@ const config = {
   sharp,
 };
 
+if (!cached.config) {
+  cached.config = config;
+}
+
 // Log la configuration pour le débogage
 console.log('PayloadCMS Config:', {
   hasS3Config: config.plugins.some(p => {
@@ -122,4 +133,4 @@ console.log('PayloadCMS Config:', {
   uploadConfig: config.upload,
 });
 
-export default buildConfig(config);
+export default buildConfig(cached.config);
