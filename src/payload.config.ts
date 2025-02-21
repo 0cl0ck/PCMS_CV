@@ -123,14 +123,33 @@ if (!cached.config) {
 }
 
 // Log la configuration pour le débogage
-console.log('PayloadCMS Config:', {
+console.log('PayloadCMS Config Details:', {
   hasS3Config: config.plugins.some(p => {
     const plugin = p as any;
     return plugin?.collections?.media === true;
   }),
-  collections: config.collections.map(c => c.slug),
+  collections: config.collections.map(c => ({
+    slug: c.slug,
+    hasUploadField: c.fields?.some((f: any) => f.type === 'upload' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'upload'))),
+    hasRelationField: c.fields?.some((f: any) => f.type === 'relationship' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'relationship'))),
+  })),
   corsOrigins: config.cors,
   uploadConfig: config.upload,
+  s3Plugin: config.plugins.find(p => (p as any)?.collections?.media === true),
+});
+
+// Vérifier spécifiquement les collections Products et ProductCategories
+const productsConfig = config.collections.find(c => c.slug === 'products');
+const productCategoriesConfig = config.collections.find(c => c.slug === 'product-categories');
+
+console.log('Products Collection Config:', {
+  uploadFields: productsConfig?.fields?.filter((f: any) => f.type === 'upload' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'upload'))),
+  relationFields: productsConfig?.fields?.filter((f: any) => f.type === 'relationship' || (f.type === 'array' && f.fields?.some((sf: any) => sf.type === 'relationship'))),
+});
+
+console.log('Product Categories Collection Config:', {
+  uploadFields: productCategoriesConfig?.fields?.filter((f: any) => f.type === 'upload'),
+  relationFields: productCategoriesConfig?.fields?.filter((f: any) => f.type === 'relationship'),
 });
 
 export default buildConfig(cached.config);
