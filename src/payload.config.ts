@@ -135,3 +135,4 @@ class PayloadConfig {
 }
 
 export default buildConfig(PayloadConfig.getInstance());
+

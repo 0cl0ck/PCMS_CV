@@ -1,29 +1,48 @@
-import configPromise from '@/payload.config';
-import payload from 'payload';
+import config from '@/payload.config';
+import payload, { Payload } from 'payload';
 
-let payloadInstance: typeof payload | null = null;
+// Déclaration globale pour TypeScript
+declare global {
+  var __payload: Payload | null;
+}
 
-// ✅ Fonction pour récupérer une instance Payload correctement
-export const getPayload = async () => {
-  if (payloadInstance) return payloadInstance;
+// Initialisation de la variable globale si nécessaire
+if (!global.__payload) {
+  global.__payload = null;
+}
+
+export const getPayload = async (): Promise<Payload> => {
+  if (global.__payload) {
+    return global.__payload;
+  }
 
   try {
     if (!process.env.PAYLOAD_SECRET) {
       throw new Error('PAYLOAD_SECRET is required');
     }
 
+    // Log pour le debug
+    console.log('[Payload] Initializing new instance');
+
     await payload.init({
-      config: await configPromise,
+      config,
+      // Options pour éviter les problèmes de connexion
+      local: process.env.NEXT_PUBLIC_SERVER_URL ? false : true,
     });
 
-    payloadInstance = payload;
-    return payloadInstance;
-  } catch (error) {
-    if (error.message?.includes('Cannot overwrite `payload` instance')) {
-      payloadInstance = payload;
-      return payloadInstance;
+    // Stockage dans la variable globale
+    global.__payload = payload;
+    
+    return global.__payload;
+  } catch (error: any) {
+    // Si l'erreur est due à une double initialisation, on retourne l'instance existante
+    if (error.message?.includes('Cannot overwrite') || error.message?.includes('already initialized')) {
+      console.log('[Payload] Using existing instance');
+      global.__payload = payload;
+      return global.__payload;
     }
-    console.error('Error initializing Payload:', error);
+
+    console.error('[Payload] Error initializing:', error);
     throw error;
   }
 };
