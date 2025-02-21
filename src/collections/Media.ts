@@ -39,7 +39,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // staticURL is not needed when using S3
+    // S3 est configuré dans payload.config.ts
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     mimeTypes: ['image/*', 'video/*'],

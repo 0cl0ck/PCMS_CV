@@ -1,9 +1,9 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
-import { buildConfig } from 'payload';
 import { s3Storage } from '@payloadcms/storage-s3';
 import path from 'path';
+import { buildConfig } from 'payload';
 import sharp from 'sharp'; // sharp-import
 import { fileURLToPath } from 'url';
 
@@ -61,7 +61,12 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || '',
   }),
-
+  upload: {
+    limits: {
+      fileSize: 5000000, // 5MB
+    },
+    useTempFiles: true,
+  },
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER || '',
     defaultFromName: 'Chanvre Vert',
@@ -77,22 +82,7 @@ export default buildConfig({
       debug: false, // Désactive les logs de debug
     },
   }),
-  upload: {
-    limits: {
-      fileSize: 5000000, // 5MB
-    },
-    useTempFiles: true,
-  },
-  collections: [
-    Media,
-    Products,
-    ProductCategories,
-    Categories,
-    Posts,
-    Pages,
-    Orders,
-    Users,
-  ],
+  collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
