@@ -30,7 +30,7 @@ export const ProductFilters: React.FC<Props> = ({
         </div>
 
         <div>
-          <PriceFilter minPrice={minPrice} maxPrice={maxPrice} />
+          <PriceFilter _minPrice={minPrice} _maxPrice={maxPrice} />
         </div>
       </div>
     </div>

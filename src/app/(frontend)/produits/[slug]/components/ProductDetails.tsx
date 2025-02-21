@@ -1,17 +1,24 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { formatPrice } from '@/lib/utils';
-import { Product } from '@/payload-types';
 import { CartContext } from '@/providers/Cart/CartContext';
+import { formatPrice } from '@/lib/utils';
+import type { Product } from '@/payload-types';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 
-type Props = {
-  product: Product;
-};
+interface ProductVariation {
+  id: string | null;
+  price: number;
+  weight?: number | null;
+  stock: number | null;
+}
 
-export const ProductDetails: React.FC<Props> = ({ product }) => {
+interface ProductDetailsProps {
+  product: Product;
+}
+
+export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const cartContext = useContext(CartContext);
   const [selectedVariation, setSelectedVariation] = useState<number | null>(
     product.productType === 'variable' && product.variations ? 0 : null,
@@ -171,4 +178,3 @@ export const ProductDetails: React.FC<Props> = ({ product }) => {
     </div>
   );
 };
-

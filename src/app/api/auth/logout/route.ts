@@ -1,30 +1,43 @@
-import { getPayload } from '@/lib/payload';
+'use server';
+
 import { headers } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import configPromise from '@/payload.config';
+import { cookies } from 'next/headers';
+
+const payloadToken = 'payload-token';
 
 export async function POST() {
   try {
-    const payload = await getPayload();
-    const headersList = await headers();
+    const _payload = await getPayload({ config: configPromise });
+    const _headersList = headers();
 
-    // 🔴 Correction : `logout()` n'existe pas dans Payload 3.15.1
-    // ✅ Solution : Supprimer simplement le cookie d'authentification
+    // Supprimer le cookie d'authentification
+    (await cookies()).delete(payloadToken);
 
-    // Créer une réponse et supprimer le cookie d'authentification
-    const response = NextResponse.json({ success: true });
-
-    // 🔴 Correction de `response.cookies.delete()`
-    // ❌ Mauvais : response.cookies.delete('payload-token', { path: '/' })
-    // ✅ Correct :
-    response.cookies.delete('payload-token'); // On ne met qu'un seul argument
-
-    return response;
+    return new Response(
+      JSON.stringify({
+        success: true,
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
   } catch (error) {
-    console.error('Error in logout route:', error);
-    return NextResponse.json(
-      { message: 'Une erreur est survenue lors de la déconnexion' },
-      { status: 500 },
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: 'Failed to logout',
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     );
   }
 }
-

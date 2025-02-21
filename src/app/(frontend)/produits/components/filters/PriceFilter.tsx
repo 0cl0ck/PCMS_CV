@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
 type Props = {
-  minPrice: number;
-  maxPrice: number;
+  _minPrice: number;
+  _maxPrice: number;
 };
 
 // Définir des plages de prix prédéfinies
@@ -19,7 +19,7 @@ const PRICE_RANGES = [
   { label: '30€ et plus', min: 30, max: null },
 ];
 
-const PriceFilter: React.FC<Props> = ({ minPrice, maxPrice }) => {
+const PriceFilter: React.FC<Props> = ({ _minPrice, _maxPrice }) => {
   const router = useRouter();
   const searchParams = useSafeSearchParams();
   const [selectedRange, setSelectedRange] = useState<number | null>(null);
