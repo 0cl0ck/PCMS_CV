@@ -24,11 +24,11 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// Création du plugin S3 avant tout
+// Création du plugin S3
 const s3Plugin = s3Storage({
   collections: {
     media: {
-      disableLocalStorage: true, // Désactiver explicitement le stockage local
+      disableLocalStorage: true,
     },
   },
   bucket: process.env.S3_BUCKET || '',
@@ -41,23 +41,8 @@ const s3Plugin = s3Storage({
   },
 });
 
-console.log('[S3 Plugin Config]', {
-  bucket: process.env.S3_BUCKET ? 'configured' : 'missing',
-  credentials: process.env.S3_ACCESS_KEY_ID ? 'configured' : 'missing',
-  region: process.env.S3_REGION ? 'configured' : 'missing',
-});
-
-// Protection contre la double initialisation
-let payloadInstance = (global as any).payloadInstance;
-
-if (!payloadInstance) {
-  console.log('[Payload Config] Creating new Payload instance');
-  payloadInstance = (global as any).payloadInstance = { config: null, initialized: false };
-} else {
-  console.log('[Payload Config] Using existing Payload instance');
-}
-
-const config = {
+// Configuration de base de Payload
+const baseConfig = {
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -117,10 +102,7 @@ const config = {
   }),
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  plugins: [
-    s3Plugin, // Utiliser l'instance pré-configurée
-    ...plugins,
-  ],
+  plugins: [s3Plugin, ...plugins],
   globals: [Header, Footer],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -132,21 +114,24 @@ const config = {
   sharp,
 };
 
-if (!payloadInstance.initialized) {
-  console.log('[Payload Config] Initializing configuration');
-  payloadInstance.config = config;
-  payloadInstance.initialized = true;
-} else {
-  console.log('[Payload Config] Using existing configuration');
+// Pattern singleton pour Next.js
+class PayloadConfig {
+  private static instance: any = null;
+
+  public static getInstance(): any {
+    if (process.env.NODE_ENV === 'production') {
+      return baseConfig;
+    }
+
+    if (!this.instance) {
+      console.log('[PayloadConfig] Creating new instance');
+      this.instance = baseConfig;
+    } else {
+      console.log('[PayloadConfig] Reusing existing instance');
+    }
+
+    return this.instance;
+  }
 }
 
-// Log des informations de diagnostic
-console.log('[Payload Diagnostic]', {
-  hasExistingInstance: Boolean(payloadInstance),
-  isInitialized: payloadInstance?.initialized,
-  collectionCount: config.collections.length,
-  mediaConfig: Boolean(s3Plugin),
-  mediaCollectionConfig: Media.upload ? 'configured' : 'missing',
-});
-
-export default buildConfig(payloadInstance.config);
+export default buildConfig(PayloadConfig.getInstance());
