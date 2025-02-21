@@ -1,8 +1,9 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
-import path from 'path';
 import { buildConfig } from 'payload';
+import { s3Storage } from '@payloadcms/storage-s3';
+import path from 'path';
 import sharp from 'sharp'; // sharp-import
 import { fileURLToPath } from 'url';
 
@@ -60,7 +61,11 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.MONGODB_URI || '',
   }),
-
+  upload: {
+    limits: {
+      fileSize: 5000000, // 5MB, written in bytes
+    },
+  },
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_USER || '',
     defaultFromName: 'Chanvre Vert',
@@ -79,7 +84,22 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users, Products, ProductCategories, Orders],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
-  plugins: [...plugins],
+  plugins: [
+    ...plugins,
+    s3Storage({
+      collections: {
+        media: true, // Enable S3 for the media collection
+      },
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.S3_REGION || '',
+      },
+    }),
+  ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
