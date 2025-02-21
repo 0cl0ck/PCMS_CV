@@ -24,6 +24,29 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+// Création du plugin S3 avant tout
+const s3Plugin = s3Storage({
+  collections: {
+    media: {
+      disableLocalStorage: true, // Désactiver explicitement le stockage local
+    },
+  },
+  bucket: process.env.S3_BUCKET || '',
+  config: {
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+    },
+    region: process.env.S3_REGION || '',
+  },
+});
+
+console.log('[S3 Plugin Config]', {
+  bucket: process.env.S3_BUCKET ? 'configured' : 'missing',
+  credentials: process.env.S3_ACCESS_KEY_ID ? 'configured' : 'missing',
+  region: process.env.S3_REGION ? 'configured' : 'missing',
+});
+
 // Protection contre la double initialisation
 let payloadInstance = (global as any).payloadInstance;
 
@@ -95,19 +118,7 @@ const config = {
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      bucket: process.env.S3_BUCKET || '',
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-        },
-        region: process.env.S3_REGION || '',
-      },
-    }),
+    s3Plugin, // Utiliser l'instance pré-configurée
     ...plugins,
   ],
   globals: [Header, Footer],
@@ -134,7 +145,8 @@ console.log('[Payload Diagnostic]', {
   hasExistingInstance: Boolean(payloadInstance),
   isInitialized: payloadInstance?.initialized,
   collectionCount: config.collections.length,
-  mediaConfig: Boolean(config.plugins.find(p => (p as any)?.collections?.media === true)),
+  mediaConfig: Boolean(s3Plugin),
+  mediaCollectionConfig: Media.upload ? 'configured' : 'missing',
 });
 
 export default buildConfig(payloadInstance.config);
