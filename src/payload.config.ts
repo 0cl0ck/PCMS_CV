@@ -24,7 +24,17 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-export default buildConfig({
+// Protection contre la double initialisation
+let payloadInstance = (global as any).payloadInstance;
+
+if (!payloadInstance) {
+  console.log('[Payload Config] Creating new Payload instance');
+  payloadInstance = (global as any).payloadInstance = { config: null, initialized: false };
+} else {
+  console.log('[Payload Config] Using existing Payload instance');
+}
+
+const config = {
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -67,6 +77,21 @@ export default buildConfig({
     },
     useTempFiles: true,
   },
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_USER || '',
+    defaultFromName: 'Chanvre Vert',
+    transportOptions: {
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: Number(process.env.SMTP_PORT) || 465,
+      secure: true,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_APP_PASS,
+      },
+      logger: false,
+      debug: false,
+    },
+  }),
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
@@ -94,4 +119,22 @@ export default buildConfig({
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+};
+
+if (!payloadInstance.initialized) {
+  console.log('[Payload Config] Initializing configuration');
+  payloadInstance.config = config;
+  payloadInstance.initialized = true;
+} else {
+  console.log('[Payload Config] Using existing configuration');
+}
+
+// Log des informations de diagnostic
+console.log('[Payload Diagnostic]', {
+  hasExistingInstance: Boolean(payloadInstance),
+  isInitialized: payloadInstance?.initialized,
+  collectionCount: config.collections.length,
+  mediaConfig: Boolean(config.plugins.find(p => (p as any)?.collections?.media === true)),
 });
+
+export default buildConfig(payloadInstance.config);
