@@ -24,7 +24,7 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-export default buildConfig({
+const config = {
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -78,8 +78,8 @@ export default buildConfig({
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_APP_PASS,
       },
-      logger: false, // Désactive les logs de debug
-      debug: false, // Désactive les logs de debug
+      logger: false,
+      debug: false,
     },
   }),
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
@@ -88,7 +88,7 @@ export default buildConfig({
     ...plugins,
     s3Storage({
       collections: {
-        media: true, // Enable S3 for the media collection
+        media: true,
       },
       bucket: process.env.S3_BUCKET || '',
       config: {
@@ -109,4 +109,17 @@ export default buildConfig({
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+};
+
+// Log la configuration pour le débogage
+console.log('PayloadCMS Config:', {
+  hasS3Config: config.plugins.some(p => {
+    const plugin = p as any;
+    return plugin?.collections?.media === true;
+  }),
+  collections: config.collections.map(c => c.slug),
+  corsOrigins: config.cors,
+  uploadConfig: config.upload,
 });
+
+export default buildConfig(config);
