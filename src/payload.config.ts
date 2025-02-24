@@ -24,25 +24,7 @@ import { getServerSideURL } from './utilities/getURL';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// Création du plugin S3
-const s3Plugin = s3Storage({
-  collections: {
-    media: {
-      disableLocalStorage: true,
-    },
-  },
-  bucket: process.env.S3_BUCKET || '',
-  config: {
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-    },
-    region: process.env.S3_REGION || '',
-  },
-});
-
-// Configuration de base de Payload
-const baseConfig = {
+export default buildConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -102,7 +84,22 @@ const baseConfig = {
   }),
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  plugins: [s3Plugin, ...plugins],
+  plugins: [
+    s3Storage({
+      collections: {
+        media: true,
+      },
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.S3_REGION || '',
+      },
+    }),
+    ...plugins,
+  ],
   globals: [Header, Footer],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -112,27 +109,4 @@ const baseConfig = {
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
-};
-
-// Pattern singleton pour Next.js
-class PayloadConfig {
-  private static instance: any = null;
-
-  public static getInstance(): any {
-    if (process.env.NODE_ENV === 'production') {
-      return baseConfig;
-    }
-
-    if (!this.instance) {
-      console.log('[PayloadConfig] Creating new instance');
-      this.instance = baseConfig;
-    } else {
-      console.log('[PayloadConfig] Reusing existing instance');
-    }
-
-    return this.instance;
-  }
-}
-
-export default buildConfig(PayloadConfig.getInstance());
-
+});
