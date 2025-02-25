@@ -27,13 +27,6 @@ interface PaymentResponse {
   smartCheckoutUrl: string;
 }
 
-interface TokenResponse {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-  scope: string;
-}
-
 export class VivaWalletService {
   private static readonly BASE_URL =
     process.env.VIVA_WALLET_BASE_URL || 'https://demo-api.vivapayments.com';
@@ -42,7 +35,7 @@ export class VivaWalletService {
   private static readonly CLIENT_SECRET = process.env.VIVA_WALLET_CLIENT_SECRET;
   private static readonly SOURCE_CODE = process.env.VIVA_WALLET_SOURCE_CODE;
 
-  private static async getAccessToken(): Promise<string> {
+  private static async getAccessToken(): Promise<{ access_token: string; expires_in: number; token_type: string; scope: string }> {
     console.log('Getting access token with credentials:', {
       clientId: this.CLIENT_ID ? '***' : 'missing',
       clientSecret: this.CLIENT_SECRET ? '***' : 'missing',
@@ -72,7 +65,7 @@ export class VivaWalletService {
       }
 
       console.log('Successfully obtained access token');
-      return data.access_token;
+      return data;
     } catch (error) {
       console.error('Error getting access token:', error);
       throw error;
@@ -120,7 +113,7 @@ export class VivaWalletService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken.access_token}`,
           Accept: 'application/json',
         },
         body: JSON.stringify(payload),
