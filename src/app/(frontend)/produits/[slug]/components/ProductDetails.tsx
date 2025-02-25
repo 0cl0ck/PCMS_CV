@@ -37,7 +37,15 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   };
 
   const renderRichText = (content: unknown) => {
-    if (!content || typeof content !== 'object' || !('root' in content) || !content.root?.children) return '';
+    if (
+      !content || 
+      typeof content !== 'object' || 
+      !('root' in content) || 
+      !content.root || 
+      typeof content.root !== 'object' || 
+      !('children' in content.root) || 
+      !Array.isArray(content.root.children)
+    ) return '';
 
     return content.root.children
       .map((child: Record<string, unknown>) => {
