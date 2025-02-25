@@ -59,7 +59,7 @@ export default buildConfig({
   },
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI || '',
+    url: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/chanvre-vert',
   }),
   upload: {
     limits: {
@@ -85,19 +85,23 @@ export default buildConfig({
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      bucket: process.env.S3_BUCKET || '',
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-        },
-        region: process.env.S3_REGION || '',
-      },
-    }),
+    ...(process.env.S3_BUCKET && process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY && process.env.S3_REGION
+      ? [
+          s3Storage({
+            collections: {
+              media: true,
+            },
+            bucket: process.env.S3_BUCKET,
+            config: {
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+              },
+              region: process.env.S3_REGION,
+            },
+          }),
+        ]
+      : []),
     ...plugins,
   ],
   globals: [Header, Footer],
