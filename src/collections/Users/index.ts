@@ -29,7 +29,7 @@ export const Users: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      async ({ data, operation, req }) => {
+      async ({ data, operation }) => {
         if (operation === 'create') {
           // Les admins sont automatiquement vérifiés
           if (data.role === 'admin') {

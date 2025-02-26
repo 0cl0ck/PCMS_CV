@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     // Créer le nouvel utilisateur
-    const user = await payload.create({
+    const _user = await payload.create({
       collection: 'users',
       data: {
         email,

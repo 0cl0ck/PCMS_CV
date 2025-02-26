@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { useAuth } from './AuthProvider';
+// import { useAuth } from './AuthProvider';
 import { PasswordInput } from './PasswordInput';
 
 export const RegisterForm: React.FC = () => {
@@ -14,8 +14,8 @@ export const RegisterForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const router = useRouter();
-  const { setUser } = useAuth();
+  const _router = useRouter();
+  // const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,3 +113,4 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+
