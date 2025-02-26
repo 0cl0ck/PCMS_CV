@@ -24,7 +24,7 @@ export const GlareCard = ({
       y: 0,
     },
   });
-  const containerStyle = {
+  const containerStyle: React.CSSProperties & { [key: string]: string | number } = {
     '--m-x': '50%',
     '--m-y': '50%',
     '--r-x': '0deg',
@@ -37,7 +37,7 @@ export const GlareCard = ({
     '--radius': '48px',
     '--easing': 'ease',
     '--transition': 'var(--duration) var(--easing)',
-  } as any;
+  };
 
   const backgroundStyle = {
     '--step': '5%',
