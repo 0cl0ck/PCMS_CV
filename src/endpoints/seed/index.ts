@@ -105,9 +105,6 @@ export const seed = async ({
     technologyCategory,
     newsCategory,
     financeCategory,
-    designCategory,
-    softwareCategory,
-    engineeringCategory,
   ] = await Promise.all([
     payload.create({
       collection: 'users',
@@ -384,4 +381,3 @@ async function fetchFileByURL(url: string): Promise<File> {
     size: data.byteLength,
   };
 }
-
