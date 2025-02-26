@@ -1,25 +1,20 @@
 'use client';
-import type { Form as FormType } from '@payloadcms/plugin-form-builder/types';
-
 import RichText from '@/components/RichText';
 import { Button } from '@/components/ui/button';
+import type { Form as FormType } from '@payloadcms/plugin-form-builder/types';
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Control, FieldErrors, FormProvider, useForm, UseFormRegister } from 'react-hook-form';
 
 import { getClientSideURL } from '@/utilities/getURL';
 import { buildInitialFormState } from './buildInitialFormState';
 import { fields } from './fields';
 
-export type Value = unknown;
-
-export interface Property {
-  [key: string]: Value;
-}
+export type FormValues = Record<string, unknown>;
 
 export interface Data {
-  [key: string]: Property | Property[];
+  [key: string]: unknown;
 }
 
 export type FormBlockType = {
@@ -30,11 +25,14 @@ export type FormBlockType = {
   introContent?: SerializedEditorState;
 };
 
-export const FormBlock: React.FC<
-  {
-    id?: string;
-  } & FormBlockType
-> = (props) => {
+type FieldComponentProps = {
+  form: FormType;
+  control: Control<FormValues>;
+  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<FormValues>;
+} & { blockType: string; name?: string }; // `name` devient optionnel
+
+export const FormBlock: React.FC<{ id?: string } & FormBlockType> = (props) => {
   const {
     enableIntro,
     form: formFromProps,
@@ -42,9 +40,10 @@ export const FormBlock: React.FC<
     introContent,
   } = props;
 
-  const formMethods = useForm({
+  const formMethods = useForm<FormValues>({
     defaultValues: buildInitialFormState(formFromProps.fields),
   });
+
   const {
     control,
     formState: { errors },
@@ -58,68 +57,56 @@ export const FormBlock: React.FC<
   const router = useRouter();
 
   const onSubmit = useCallback(
-    (data: Data) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>;
-      const submitForm = async () => {
-        setError(undefined);
+    async (data: Data) => {
+      setError(undefined);
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }));
+      const dataToSend = Object.entries(data).map(([name, value]) => ({
+        field: name,
+        value,
+      }));
 
-        // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true);
-        }, 1000);
+      // delay loading indicator by 1s
+      const loadingTimerID = setTimeout(() => {
+        setIsLoading(true);
+      }, 1000);
 
-        try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          });
+      try {
+        const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+          body: JSON.stringify({
+            form: formID,
+            submissionData: dataToSend,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        });
 
-          const res = await req.json();
+        const res = await req.json();
 
-          clearTimeout(loadingTimerID);
+        clearTimeout(loadingTimerID);
 
-          if (req.status >= 400) {
-            setIsLoading(false);
-
-            setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status,
-            });
-
-            return;
-          }
-
-          setIsLoading(false);
-          setHasSubmitted(true);
-
-          if (confirmationType === 'redirect' && redirect) {
-            const { url } = redirect;
-
-            const redirectUrl = url;
-
-            if (redirectUrl) router.push(redirectUrl);
-          }
-        } catch (err) {
-          console.warn(err);
+        if (req.status >= 400) {
           setIsLoading(false);
           setError({
-            message: 'Something went wrong.',
+            message: res.errors?.[0]?.message || 'Internal Server Error',
+            status: res.status,
           });
+          return;
         }
-      };
 
-      void submitForm();
+        setIsLoading(false);
+        setHasSubmitted(true);
+
+        if (confirmationType === 'redirect' && redirect) {
+          const { url } = redirect;
+          if (url) router.push(url);
+        }
+      } catch (err) {
+        console.warn(err);
+        setIsLoading(false);
+        setError({ message: 'Something went wrong.' });
+      }
     },
     [router, formID, redirect, confirmationType],
   );
@@ -139,26 +126,26 @@ export const FormBlock: React.FC<
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    const Field: React.FC<any> = fields?.[field.blockType];
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
+                {formFromProps?.fields?.map((field, index) => {
+                  const FieldComponent = fields[field.blockType] as React.FC<
+                    Partial<FieldComponentProps>
+                  >;
+
+                  if (FieldComponent) {
+                    return (
+                      <div className="mb-6 last:mb-0" key={index}>
+                        <FieldComponent
+                          form={formFromProps}
+                          {...field}
+                          control={control}
+                          errors={errors}
+                          register={register}
+                        />
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
               </div>
 
               <Button form={formID} type="submit" variant="default">
@@ -171,3 +158,4 @@ export const FormBlock: React.FC<
     </div>
   );
 };
+
