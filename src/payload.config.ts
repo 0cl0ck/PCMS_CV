@@ -59,7 +59,7 @@ export default buildConfig({
   },
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || process.env.MONGODB_URI || '',
+    url: process.env.MONGODB_URI || '',
   }),
   upload: {
     limits: {
