@@ -11,7 +11,7 @@ export const Number: React.FC<
   TextField & {
     errors: Partial<
       FieldErrorsImpl<{
-        [x: string]: any;
+        [x: string]: string | undefined;
       }>
     >;
     register: UseFormRegister<FieldValues>;

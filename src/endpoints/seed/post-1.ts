@@ -3,9 +3,8 @@ import type { Post } from '@/payload-types';
 export const post1: Partial<Post> = {
   slug: 'digital-horizons',
   _status: 'published',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  authors: ['{{AUTHOR}}'],
+  // Utiliser un type correct pour la référence aux auteurs
+  authors: ['{{AUTHOR}}'] as unknown as string[],
   content: {
     root: {
       type: 'root',
@@ -240,7 +239,7 @@ export const post1: Partial<Post> = {
           fields: {
             blockName: '',
             blockType: 'mediaBlock',
-            media: '{{IMAGE_2}}',
+            media: '{{IMAGE_2}}' as unknown as string,
           },
           format: '',
           version: 2,
@@ -292,15 +291,13 @@ export const post1: Partial<Post> = {
       version: 1,
     },
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  heroImage: '{{IMAGE_1}}',
+  // Utiliser un type correct pour la référence à heroImage
+  heroImage: '{{IMAGE_1}}' as unknown as string,
   meta: {
     description:
       'Dive into the marvels of modern innovation, where the only constant is change. A journey where pixels and data converge to craft the future.',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    image: '{{IMAGE_1}}',
+    // Utiliser un type correct pour la référence à l'image
+    image: '{{IMAGE_1}}' as unknown as string,
     title: 'Digital Horizons: A Glimpse into Tomorrow',
   },
   relatedPosts: [], // this is populated by the seed script

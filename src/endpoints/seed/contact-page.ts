@@ -10,8 +10,8 @@ export const contact: Partial<Page> = {
     {
       blockType: 'formBlock',
       enableIntro: true,
-      // @ts-ignore
-      form: '{{CONTACT_FORM_ID}}',
+      // Utiliser un type correct pour la référence à form
+      form: '{{CONTACT_FORM_ID}}' as unknown as string,
       introContent: {
         root: {
           type: 'root',

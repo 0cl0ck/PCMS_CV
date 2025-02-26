@@ -23,8 +23,7 @@ export const home: RequiredDataFromCollectionSlug<'pages'> = {
         },
       },
     ],
-    // @ts-ignore
-    media: '{{IMAGE_1}}',
+    media: '{{IMAGE_1}}' as unknown as string,
     richText: {
       root: {
         type: 'root',
@@ -502,8 +501,7 @@ export const home: RequiredDataFromCollectionSlug<'pages'> = {
     {
       blockName: 'Media Block',
       blockType: 'mediaBlock',
-      // @ts-ignore
-      media: '{{IMAGE_2}}',
+      media: '{{IMAGE_2}}' as unknown as string,
     },
     {
       blockName: 'Archive Block',
@@ -659,8 +657,7 @@ export const home: RequiredDataFromCollectionSlug<'pages'> = {
   ],
   meta: {
     description: 'An open-source website built with Payload and Next.js.',
-    // @ts-ignore
-    image: '{{IMAGE_1}}',
+    image: '{{IMAGE_1}}' as unknown as string,
     title: 'Payload Website Template',
   },
   title: 'Home',

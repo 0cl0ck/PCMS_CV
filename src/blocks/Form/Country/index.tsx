@@ -1,5 +1,5 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types';
-import type { Control, FieldErrorsImpl, FieldValues } from 'react-hook-form';
+import type { Control, FieldErrorsImpl } from 'react-hook-form';
 
 import { Label } from '@/components/ui/label';
 import {
@@ -16,14 +16,14 @@ import { Error } from '../Error';
 import { Width } from '../Width';
 import { countryOptions } from './options';
 
+// Définition d'un type spécifique pour les valeurs du formulaire
+type FormValues = Record<string, string>; // Ici, chaque champ est une string (peut être ajusté)
+
+// Correction des types `control` et `errors`
 export const Country: React.FC<
   CountryField & {
-    control: Control<FieldValues, any>;
-    errors: Partial<
-      FieldErrorsImpl<{
-        [x: string]: any;
-      }>
-    >;
+    control: Control<FormValues>; // Remplace `FieldValues` par `FormValues`
+    errors: Partial<FieldErrorsImpl<FormValues>>; // Remplace `[x: string]: any`
   }
 > = ({ name, control, errors, label, required, width }) => {
   return (

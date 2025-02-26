@@ -1,5 +1,5 @@
 import type { SelectField } from '@payloadcms/plugin-form-builder/types';
-import type { Control, FieldErrorsImpl, FieldValues } from 'react-hook-form';
+import type { Control, FieldErrorsImpl } from 'react-hook-form';
 
 import { Label } from '@/components/ui/label';
 import {
@@ -15,14 +15,19 @@ import { Controller } from 'react-hook-form';
 import { Error } from '../Error';
 import { Width } from '../Width';
 
+// Type spécifique pour les options du select
+type SelectFieldOption = {
+  label: string;
+  value: string;
+};
+
+// Définition stricte des valeurs du formulaire
+type FormValues = Record<string, string>;
+
 export const Select: React.FC<
   SelectField & {
-    control: Control<FieldValues, any>;
-    errors: Partial<
-      FieldErrorsImpl<{
-        [x: string]: any;
-      }>
-    >;
+    control: Control<FormValues>; // ✅ Remplace `FieldValues, any`
+    errors: Partial<FieldErrorsImpl<FormValues>>; // ✅ Remplace `[x: string]: any;`
   }
 > = ({ name, control, errors, label, options, required, width }) => {
   return (
@@ -33,21 +38,19 @@ export const Select: React.FC<
         defaultValue=""
         name={name}
         render={({ field: { onChange, value } }) => {
-          const controlledValue = options.find((t) => t.value === value);
+          const controlledValue = options.find((t: SelectFieldOption) => t.value === value);
 
           return (
-            <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
+            <SelectComponent onValueChange={onChange} value={controlledValue?.value}>
               <SelectTrigger className="w-full" id={name}>
                 <SelectValue placeholder={label} />
               </SelectTrigger>
               <SelectContent>
-                {options.map(({ label, value }) => {
-                  return (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  );
-                })}
+                {options.map(({ label, value }: SelectFieldOption) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </SelectComponent>
           );

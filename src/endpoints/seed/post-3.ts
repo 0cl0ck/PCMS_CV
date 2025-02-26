@@ -3,9 +3,7 @@ import type { Post } from '@/payload-types';
 export const post3: Partial<Post> = {
   slug: 'dollar-and-sense-the-financial-forecast',
   _status: 'published',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  authors: ['{{AUTHOR}}'],
+  authors: ['{{AUTHOR}}'] as unknown as string[],
   content: {
     root: {
       type: 'root',
@@ -143,7 +141,7 @@ export const post3: Partial<Post> = {
           fields: {
             blockName: '',
             blockType: 'mediaBlock',
-            media: '{{IMAGE_2}}',
+            media: '{{IMAGE_2}}' as unknown as string,
           },
           format: '',
           version: 2,
@@ -252,14 +250,10 @@ export const post3: Partial<Post> = {
       version: 1,
     },
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  heroImage: '{{IMAGE_1}}',
+  heroImage: '{{IMAGE_1}}' as unknown as string,
   meta: {
     description: `Money isn't just currency; it's a language. Dive deep into its nuances, where strategy meets intuition in the vast sea of finance.`,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    image: '{{IMAGE_1}}',
+    image: '{{IMAGE_1}}' as unknown as string,
     title: 'Dollar and Sense: The Financial Forecast',
   },
   relatedPosts: [], // this is populated by the seed script

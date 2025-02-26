@@ -7,13 +7,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 
-interface ProductVariation {
-  id: string | null;
-  price: number;
-  weight?: number | null;
-  stock: number | null;
-}
-
 interface ProductDetailsProps {
   product: Product;
 }
@@ -43,14 +36,22 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     }
   };
 
-  const renderRichText = (content: any) => {
-    if (!content?.root?.children) return '';
+  const renderRichText = (content: unknown) => {
+    if (
+      !content || 
+      typeof content !== 'object' || 
+      !('root' in content) || 
+      !content.root || 
+      typeof content.root !== 'object' || 
+      !('children' in content.root) || 
+      !Array.isArray(content.root.children)
+    ) return '';
 
     return content.root.children
-      .map((child: any) => {
+      .map((child: Record<string, unknown>) => {
         if (child.type === 'paragraph') {
-          return `<p>${child.children
-            .map((c: any) => (c.type === 'text' ? c.text : ''))
+          return `<p>${(child.children as Array<Record<string, unknown>>)
+            .map((c) => (c.type === 'text' ? c.text : ''))
             .join('')}</p>`;
         }
         return '';

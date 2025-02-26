@@ -2,9 +2,9 @@
 
 import type { StaticImageData } from 'next/image';
 
-import { cn } from 'src/utilities/cn';
 import NextImage from 'next/image';
 import React from 'react';
+import { cn } from 'src/utilities/cn';
 
 import type { Props as MediaProps } from '../types';
 
@@ -37,7 +37,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   if (!src && resource && typeof resource === 'object') {
     const {
       alt: altFromResource,
-      filename: fullFilename,
+      filename: _fullFilename,
       height: fullHeight,
       url,
       width: fullWidth,
@@ -78,3 +78,4 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     </picture>
   );
 };
+

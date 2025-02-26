@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from './AuthProvider';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+// import { useAuth } from './AuthProvider';
 import { PasswordInput } from './PasswordInput';
 
 export const RegisterForm: React.FC = () => {
@@ -13,9 +13,9 @@ export const RegisterForm: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  
-  const router = useRouter();
-  const { setUser } = useAuth();
+
+  const _router = useRouter();
+  // const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +50,10 @@ export const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Nom
         </label>
         <input
@@ -64,7 +67,10 @@ export const RegisterForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Email
         </label>
         <input
@@ -78,33 +84,21 @@ export const RegisterForm: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+        >
           Mot de passe
         </label>
-        <PasswordInput
-          value={password}
-          onChange={setPassword}
-          minLength={8}
-        />
+        <PasswordInput value={password} onChange={setPassword} minLength={8} />
       </div>
 
-      {error && (
-        <div className="text-red-500 text-sm">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-red-500 text-sm">{error}</div>}
 
-      {successMessage && (
-        <div className="text-green-500 text-sm">
-          {successMessage}
-        </div>
-      )}
+      {successMessage && <div className="text-green-500 text-sm">{successMessage}</div>}
 
       <div className="flex items-center justify-between">
-        <Link
-          href="/login"
-          className="text-sm text-green-600 hover:text-green-500"
-        >
+        <Link href="/login" className="text-sm text-green-600 hover:text-green-500">
           Déjà un compte ? Se connecter
         </Link>
       </div>
@@ -119,3 +113,4 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+

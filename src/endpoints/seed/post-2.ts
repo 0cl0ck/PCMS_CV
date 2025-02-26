@@ -3,9 +3,8 @@ import type { Post } from '@/payload-types';
 export const post2: Partial<Post> = {
   slug: 'global-gaze',
   _status: 'published',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  authors: ['{{AUTHOR}}'],
+  // Utiliser un type correct pour la référence aux auteurs
+  authors: ['{{AUTHOR}}'] as unknown as string[],
   content: {
     root: {
       type: 'root',
@@ -144,7 +143,7 @@ export const post2: Partial<Post> = {
           fields: {
             blockName: '',
             blockType: 'mediaBlock',
-            media: '{{IMAGE_2}}',
+            media: '{{IMAGE_2}}' as unknown as string,
           },
           format: '',
           version: 2,
@@ -215,15 +214,13 @@ export const post2: Partial<Post> = {
       version: 1,
     },
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  heroImage: '{{IMAGE_1}}',
+  // Utiliser un type correct pour la référence à heroImage
+  heroImage: '{{IMAGE_1}}' as unknown as string,
   meta: {
     description:
       'Explore the untold and overlooked. A magnified view into the corners of the world, where every story deserves its spotlight.',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    image: '{{IMAGE_1}}',
+    // Utiliser un type correct pour la référence à l'image
+    image: '{{IMAGE_1}}' as unknown as string,
     title: 'Global Gaze: Beyond the Headlines',
   },
   relatedPosts: [], // this is populated by the seed script
