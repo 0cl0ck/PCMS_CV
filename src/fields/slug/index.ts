@@ -23,8 +23,7 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
     ...checkboxOverrides,
   };
 
-  // Expect ts error here because of typescript mismatching Partial<TextField> with TextField
-  // @ts-expect-error
+  // @ts-expect-error: TypeScript ne peut pas correctement fusionner `Partial<TextField>` avec `TextField`, mais cela fonctionne en runtime
   const slugField: TextField = {
     name: 'slug',
     type: 'text',
@@ -32,7 +31,6 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
     label: 'Slug',
     ...(slugOverrides || {}),
     hooks: {
-      // Kept this in for hook or API based updates
       beforeValidate: [formatSlugHook(fieldToUse)],
     },
     admin: {
