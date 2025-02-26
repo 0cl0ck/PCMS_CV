@@ -1,43 +1,37 @@
 /**
- * Simple object check.
- * @param item
- * @returns {boolean}
+ * Vérifie si une valeur est un objet (exclut les tableaux et `null`).
  */
-export function isObject(item: unknown): boolean {
+export function isObject(item: unknown): item is Record<string, unknown> {
   return Boolean(item && typeof item === 'object' && !Array.isArray(item));
 }
 
 /**
- * Deep merge two objects.
- * @param target - The target object to merge into
- * @param source - The source object to merge from
- * @returns - The merged object
+ * Deep merge de deux objets avec des types génériques bien définis.
  */
-export default function deepMerge<T extends Record<string, any>, S extends Record<string, any>>(
-  target: T,
-  source: S
-): T & S {
-  const output = { ...target } as T & S;
+export default function deepMerge<
+  T extends Record<string, unknown>,
+  S extends Record<string, unknown>,
+>(target: T, source: S): T & S {
+  const output: Record<string, unknown> = { ...target }; // Création d'un nouvel objet pour éviter la mutation directe
 
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
-      const sourceKey = key as keyof S;
-      const targetKey = key as keyof T;
-      
-      if (isObject(source[sourceKey])) {
-        if (!(key in target)) {
-          Object.assign(output, { [key]: source[sourceKey] });
-        } else {
-          output[sourceKey as keyof (T & S)] = deepMerge(
-            target[targetKey] as Record<string, any>,
-            source[sourceKey] as Record<string, any>
-          ) as any;
-        }
+      const sourceValue = source[key];
+      const targetValue = target[key];
+
+      if (isObject(sourceValue) && isObject(targetValue)) {
+        // On fusionne récursivement si les deux valeurs sont des objets
+        output[key] = deepMerge(
+          targetValue as Record<string, unknown>,
+          sourceValue as Record<string, unknown>,
+        );
       } else {
-        Object.assign(output, { [key]: source[sourceKey] });
+        // Sinon, on assigne directement la valeur de `source`
+        output[key] = sourceValue;
       }
     });
   }
 
-  return output;
+  return output as T & S; // Cast final propre
 }
+
