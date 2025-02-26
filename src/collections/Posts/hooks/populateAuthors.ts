@@ -22,6 +22,7 @@ export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: 
           authorDocs.push(authorDoc);
         }
       } catch (error) {
+        console.error(error);
         // Si l'auteur n'existe pas, on le skip silencieusement
         console.warn(
           `Author with ID ${typeof author === 'object' ? author?.id : author} not found`,
