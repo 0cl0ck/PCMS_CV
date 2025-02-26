@@ -1,9 +1,8 @@
 'use server';
 
-import { headers } from 'next/headers';
-import { getPayload } from 'payload';
 import configPromise from '@/payload.config';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
+import { getPayload } from 'payload';
 
 const payloadToken = 'payload-token';
 
@@ -41,3 +40,4 @@ export async function POST() {
     );
   }
 }
+

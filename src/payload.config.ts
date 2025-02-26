@@ -1,9 +1,9 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
-import { buildConfig } from 'payload';
 import { s3Storage } from '@payloadcms/storage-s3';
 import path from 'path';
+import { buildConfig } from 'payload';
 import sharp from 'sharp'; // sharp-import
 import { fileURLToPath } from 'url';
 
@@ -59,7 +59,7 @@ export default buildConfig({
   },
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI || '',
+    url: process.env.DATABASE_URI || process.env.MONGODB_URI || '',
   }),
   upload: {
     limits: {
@@ -97,6 +97,8 @@ export default buildConfig({
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
         },
         region: process.env.S3_REGION || '',
+        endpoint: process.env.S3_ENDPOINT_URL,
+        forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
       },
     }),
   ],
