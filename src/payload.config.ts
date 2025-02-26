@@ -85,6 +85,7 @@ export default buildConfig({
   collections: [Media, Products, ProductCategories, Categories, Posts, Pages, Orders, Users],
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
+    // Configuration S3 optimisée et robuste
     ...(process.env.S3_BUCKET &&
     process.env.S3_ACCESS_KEY_ID &&
     process.env.S3_SECRET_ACCESS_KEY &&
@@ -92,7 +93,7 @@ export default buildConfig({
       ? [
           s3Storage({
             collections: {
-              media: true,
+              media: true, // Enable S3 for the media collection
             },
             bucket: process.env.S3_BUCKET,
             config: {
@@ -101,26 +102,13 @@ export default buildConfig({
                 secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
               },
               region: process.env.S3_REGION,
+              endpoint: process.env.S3_ENDPOINT_URL,
+              forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
             },
           }),
         ]
       : []),
     ...plugins,
-    s3Storage({
-      collections: {
-        media: true, // Enable S3 for the media collection
-      },
-      bucket: process.env.S3_BUCKET || '',
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-        },
-        region: process.env.S3_REGION || '',
-        endpoint: process.env.S3_ENDPOINT_URL,
-        forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
-      },
-    }),
   ],
   globals: [Header, Footer],
   typescript: {
