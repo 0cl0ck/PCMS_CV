@@ -2,12 +2,25 @@
 
 import { Media } from '@/components/Media';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { CartContext, CartItem } from '@/providers/Cart/CartContext';
 import React, { useContext, useState } from 'react';
 
 const PanierPage: React.FC = () => {
   const cartContext = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState({
+    email: '',
+    name: '',
+    phone: '',
+  });
+  const [errors, setErrors] = useState<{
+    email?: string;
+    name?: string;
+    phone?: string;
+  }>({});
 
   if (!cartContext) return null;
 
@@ -19,7 +32,58 @@ const PanierPage: React.FC = () => {
     0,
   );
 
-  const handleCheckout = async () => {
+  const validateForm = () => {
+    const newErrors: {
+      email?: string;
+      name?: string;
+      phone?: string;
+    } = {};
+    let isValid = true;
+
+    if (!customerInfo.email) {
+      newErrors.email = 'L\'email est requis';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(customerInfo.email)) {
+      newErrors.email = 'Email invalide';
+      isValid = false;
+    }
+
+    if (!customerInfo.name) {
+      newErrors.name = 'Le nom est requis';
+      isValid = false;
+    }
+
+    if (!customerInfo.phone) {
+      newErrors.phone = 'Le numéro de téléphone est requis';
+      isValid = false;
+    } else if (!/^\+?\d{10,15}$/.test(customerInfo.phone.replace(/\s/g, ''))) {
+      newErrors.phone = 'Numéro de téléphone invalide';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCustomerInfo(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleProceedToCheckout = () => {
+    setShowCheckoutForm(true);
+  };
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       setIsLoading(true);
       const response = await fetch('/api/payment', {
@@ -29,9 +93,9 @@ const PanierPage: React.FC = () => {
         },
         body: JSON.stringify({
           amount: total,
-          customerEmail: 'customer@example.com', // À remplacer par l'email du client
-          customerName: 'John Doe', // À remplacer par le nom du client
-          customerPhone: '+33600000000', // À remplacer par le téléphone du client
+          customerEmail: customerInfo.email,
+          customerName: customerInfo.name,
+          customerPhone: customerInfo.phone,
         }),
       });
 
@@ -66,13 +130,76 @@ const PanierPage: React.FC = () => {
           ))}
           <div className="mt-8">
             <h2 className="text-xl font-bold">Total: {total} €</h2>
-            <Button
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={handleCheckout}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Chargement...' : 'Passer à la caisse'}
-            </Button>
+            
+            {!showCheckoutForm ? (
+              <Button
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={handleProceedToCheckout}
+              >
+                Procéder au paiement
+              </Button>
+            ) : (
+              <form onSubmit={handleCheckout} className="mt-6 space-y-4 max-w-md">
+                <h3 className="text-lg font-semibold">Informations de contact</h3>
+                
+                <div>
+                  <Label htmlFor="name">Nom complet</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={customerInfo.name}
+                    onChange={handleInputChange}
+                    placeholder="Jean Dupont"
+                    className={errors.name ? "border-red-500" : ""}
+                  />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={customerInfo.email}
+                    onChange={handleInputChange}
+                    placeholder="jean.dupont@example.com"
+                    className={errors.email ? "border-red-500" : ""}
+                  />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="phone">Téléphone</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={customerInfo.phone}
+                    onChange={handleInputChange}
+                    placeholder="+33 6 12 34 56 78"
+                    className={errors.phone ? "border-red-500" : ""}
+                  />
+                  {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                </div>
+                
+                <div className="flex space-x-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowCheckoutForm(false)}
+                  >
+                    Retour
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-blue-500 text-white"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Chargement...' : 'Payer'}
+                  </Button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
@@ -133,4 +260,3 @@ const CartItemComponent: React.FC<CartItemProps> = ({ item, onQuantityChange, on
 };
 
 export default PanierPage;
-

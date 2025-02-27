@@ -29,11 +29,12 @@ interface PaymentResponse {
 
 export class VivaWalletService {
   private static readonly BASE_URL =
-    process.env.VIVA_WALLET_BASE_URL || 'https://demo-api.vivapayments.com';
-  private static readonly AUTH_URL = 'https://demo-accounts.vivapayments.com/connect/token';
+    process.env.VIVA_WALLET_BASE_URL || 'https://api.vivapayments.com';
+  private static readonly AUTH_URL = process.env.VIVA_WALLET_AUTH_URL || 'https://accounts.vivapayments.com/connect/token';
   private static readonly CLIENT_ID = process.env.VIVA_WALLET_CLIENT_ID;
   private static readonly CLIENT_SECRET = process.env.VIVA_WALLET_CLIENT_SECRET;
   private static readonly SOURCE_CODE = process.env.VIVA_WALLET_SOURCE_CODE;
+  private static readonly BASE_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://chanvre-vert.vercel.app';
 
   private static async getAccessToken(): Promise<{ access_token: string; expires_in: number; token_type: string; scope: string }> {
     console.log('Getting access token with credentials:', {
@@ -83,9 +84,9 @@ export class VivaWalletService {
     const accessToken = await this.getAccessToken();
 
     // Construire les URLs de redirection absolues
-    const ngrokUrl = 'https://bef7-2a01-cb0c-389-6000-94e6-39be-75fe-358a.ngrok-free.app';
-    const successUrl = `${ngrokUrl}/payment/success`;
-    const cancelUrl = `${ngrokUrl}/payment/cancel`;
+    const baseUrl = this.BASE_APP_URL;
+    const successUrl = `${baseUrl}/payment/success`;
+    const cancelUrl = `${baseUrl}/payment/cancel`;
 
     const payload: CreatePaymentRequest = {
       amount: amount * 100, // Convert to cents
@@ -136,10 +137,51 @@ export class VivaWalletService {
 
       return {
         orderCode: data.orderCode,
-        smartCheckoutUrl: `https://demo.vivapayments.com/web/checkout?ref=${data.orderCode}`,
+        smartCheckoutUrl: `https://www.vivapayments.com/web/checkout?ref=${data.orderCode}`,
       };
     } catch (error) {
       console.error('Error during payment creation:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Vérifie le statut d'une transaction
+   * @param transactionId Identifiant de la transaction
+   * @returns Le statut et les détails de la transaction
+   */
+  public static async verifyTransaction(transactionId: string): Promise<any> {
+    console.log('Vérification de la transaction:', transactionId);
+
+    const accessToken = await this.getAccessToken();
+
+    try {
+      const response = await fetch(`${this.BASE_URL}/checkout/v2/transactions/${transactionId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken.access_token}`,
+          Accept: 'application/json',
+        },
+      });
+
+      const responseText = await response.text();
+      console.log('Transaction raw response:', responseText);
+
+      if (!response.ok) {
+        console.error('Viva Wallet API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText,
+        });
+        throw new Error(`Transaction verification failed: Status ${response.status} - ${responseText}`);
+      }
+
+      const data = JSON.parse(responseText);
+      console.log('Transaction status:', data);
+
+      return data;
+    } catch (error) {
+      console.error('Error during transaction verification:', error);
       throw error;
     }
   }
