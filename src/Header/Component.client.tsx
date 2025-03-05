@@ -60,8 +60,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               priority="high"
               showText={true}
               size="medium"
-              textClassName="invert dark:invert-0"
-              className="invert dark:invert-0"
+              textClassName="text-white"
+              className="text-white"
             />
           </Link>
           <div className="flex items-center gap-6">
@@ -99,6 +99,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             onClick={() => setMenuOpen(!menuOpen)}
             className="p-2 focus:outline-none"
             aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={menuOpen}
           >
             {menuOpen ? <IconX className="w-6 h-6" /> : <IconMenu2 className="w-6 h-6" />}
           </button>
@@ -142,11 +143,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
         {/* Menu mobile dropdown */}
         {menuOpen && (
-          <div className="md:hidden bg-background/90 backdrop-blur-lg border-t border-border shadow-lg">
-            <nav className="flex flex-col py-4 px-6 space-y-4">
+          <div
+            className={`md:hidden bg-background/90 backdrop-blur-lg border-t border-border shadow-lg flex flex-col items-center justify-center transform transition-all duration-300 ${
+              menuOpen
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 -translate-y-10 pointer-events-none'
+            }`}
+          >
+            <nav className="flex flex-col py-4 px-6 space-y-4 justify-center items-center">
               <Link
                 href="/search"
-                className="flex items-center text-base font-medium"
+                className="flex items-center text-base font-medium hover:text-primary transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 <SearchIcon className="w-5 h-5 mr-3" />
