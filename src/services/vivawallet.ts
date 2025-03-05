@@ -30,13 +30,20 @@ interface PaymentResponse {
 export class VivaWalletService {
   private static readonly BASE_URL =
     process.env.VIVA_WALLET_BASE_URL || 'https://api.vivapayments.com';
-  private static readonly AUTH_URL = process.env.VIVA_WALLET_AUTH_URL || 'https://accounts.vivapayments.com/connect/token';
+  private static readonly AUTH_URL =
+    process.env.VIVA_WALLET_AUTH_URL || 'https://accounts.vivapayments.com/connect/token';
   private static readonly CLIENT_ID = process.env.VIVA_WALLET_CLIENT_ID;
   private static readonly CLIENT_SECRET = process.env.VIVA_WALLET_CLIENT_SECRET;
   private static readonly SOURCE_CODE = process.env.VIVA_WALLET_SOURCE_CODE;
-  private static readonly BASE_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://chanvre-vert.vercel.app';
+  private static readonly BASE_APP_URL =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://chanvre-vert.vercel.app';
 
-  private static async getAccessToken(): Promise<{ access_token: string; expires_in: number; token_type: string; scope: string }> {
+  private static async getAccessToken(): Promise<{
+    access_token: string;
+    expires_in: number;
+    token_type: string;
+    scope: string;
+  }> {
     console.log('Getting access token with credentials:', {
       clientId: this.CLIENT_ID ? '***' : 'missing',
       clientSecret: this.CLIENT_SECRET ? '***' : 'missing',
@@ -173,7 +180,9 @@ export class VivaWalletService {
           statusText: response.statusText,
           body: responseText,
         });
-        throw new Error(`Transaction verification failed: Status ${response.status} - ${responseText}`);
+        throw new Error(
+          `Transaction verification failed: Status ${response.status} - ${responseText}`,
+        );
       }
 
       const data = JSON.parse(responseText);

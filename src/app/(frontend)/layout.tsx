@@ -34,7 +34,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header />
-          {children}
+          {/* Ajouter un div avec padding-top pour compenser le header fixe */}
+          <div className="pt-24 md:pt-20">
+            {children}
+          </div>
           <Footer />
         </Providers>
       </body>
