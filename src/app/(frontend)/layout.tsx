@@ -35,9 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <Header />
           {/* Ajouter un div avec padding-top pour compenser le header fixe */}
-          <div className="pt-24 md:pt-20">
-            {children}
-          </div>
+          <div className="pt-24 md:pt-20">{children}</div>
           <Footer />
         </Providers>
       </body>
@@ -53,3 +51,4 @@ export const metadata: Metadata = {
     creator: '@payloadcms',
   },
 };
+

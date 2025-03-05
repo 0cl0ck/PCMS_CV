@@ -141,7 +141,7 @@ export default async function ProductPage({ params }: Props) {
     .filter((image): image is Media => image !== null);
 
   return (
-    <div className="container mx-auto px-4 py-24">
+    <div className="container mx-0 px-4 py-12">
       <div className="grid gap-8 md:grid-cols-2">
         <ProductGallery images={images} title={product.name} />
         <ProductDetails product={product} />
