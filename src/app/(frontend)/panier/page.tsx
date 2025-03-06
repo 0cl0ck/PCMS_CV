@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CartContext, CartItem } from '@/providers/Cart/CartContext';
+import CartPageClient from './page.client';
 import React, { useContext, useState } from 'react';
 
 const PanierPage: React.FC = () => {
@@ -115,6 +116,7 @@ const PanierPage: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8">
+      <CartPageClient />
       <h1 className="text-2xl font-bold mb-4">Panier</h1>
       {cart.length === 0 ? (
         <p>Votre panier est vide.</p>

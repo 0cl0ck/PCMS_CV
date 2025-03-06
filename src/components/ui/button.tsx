@@ -26,6 +26,8 @@ const buttonVariants = cva(
         outline: 'border  bg-background hover:bg-card hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         custom: 'bg-[#002d4c] text-white hover:bg-[#003e6a]',
+        price:
+          'border  bg-background hover:bg-card hover:text-accent-foregrounddark:bg-[#171717] dark:border-0 dark:text-white dark:hover:bg-[#003e6a]',
       },
     },
   },
@@ -48,3 +50,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };
+

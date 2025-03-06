@@ -94,7 +94,7 @@ export function SidebarLayout({
   return (
     <div
       className={cn(
-        'mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-neutral-700 dark:bg-neutral-800 md:flex-row',
+        'mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 dark:border-transparent dark:bg-[#171717] md:flex-row',
         'h-screen',
         className,
       )}
@@ -218,7 +218,7 @@ export const DesktopSidebar = ({
     <>
       <motion.div
         className={cn(
-          'hidden h-full w-[300px] flex-shrink-0 bg-neutral-100 px-4 py-4 dark:bg-neutral-800 md:flex md:flex-col',
+          'hidden h-full w-[300px] flex-shrink-0 bg-neutral-100 px-4 py-4 dark:bg-[#171717] md:flex md:flex-col',
           className,
         )}
         animate={{
@@ -238,7 +238,7 @@ export const MobileSidebar = ({ className, children, ...props }: React.Component
     <>
       <div
         className={cn(
-          'flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 dark:bg-neutral-800 md:hidden',
+          'flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 dark:bg-[#171717] md:hidden',
         )}
         {...props}
       >
@@ -261,7 +261,7 @@ export const MobileSidebar = ({ className, children, ...props }: React.Component
                 ease: 'easeInOut',
               }}
               className={cn(
-                'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-white p-4 dark:bg-neutral-900 sm:p-10',
+                'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-white p-4 dark:bg-[#171717] sm:p-10',
                 className,
               )}
             >
@@ -328,4 +328,3 @@ export const SidebarLink = ({
     </Link>
   );
 };
-

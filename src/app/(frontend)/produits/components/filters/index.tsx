@@ -19,7 +19,7 @@ export const ProductFilters: React.FC<Props> = ({
   maxPrice,
 }) => {
   return (
-    <div className="w-full rounded-lg border bg-background p-6">
+    <div className="w-full rounded-xl border dark:border-0  dark:bg-[#171717] bg-background p-6 ">
       <div className="space-y-6">
         <div>
           <SearchFilter />

@@ -3,6 +3,7 @@ import configPromise from '@payload-config';
 import type { Metadata } from 'next';
 import type { Where } from 'payload';
 import { getPayload } from 'payload';
+import ProductsPageClient from './page.client';
 
 export const metadata: Metadata = {
   title: 'Produits | Chanvre Vert',
@@ -155,12 +156,15 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   console.log('Calculated price range:', { minPrice, maxPrice });
 
   return (
-    <ProductsContent
-      categories={categories}
-      products={products}
-      selectedCategories={selectedCategories}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
-    />
+    <>
+      <ProductsPageClient />
+      <ProductsContent
+        categories={categories}
+        products={products}
+        selectedCategories={selectedCategories}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+      />
+    </>
   );
 }

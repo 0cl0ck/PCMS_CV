@@ -28,15 +28,16 @@ const PriceFilter: React.FC<Props> = ({ _minPrice, _maxPrice }) => {
   useEffect(() => {
     const urlMinPrice = searchParams?.get('minPrice');
     const urlMaxPrice = searchParams?.get('maxPrice');
-    
+
     if (urlMinPrice || urlMaxPrice) {
       const min = urlMinPrice ? Number(urlMinPrice) : 0;
       const max = urlMaxPrice ? Number(urlMaxPrice) : Infinity;
-      
+
       const rangeIndex = PRICE_RANGES.findIndex(
-        range => range.min === min && (range.max === max || (range.max === null && max === Infinity))
+        (range) =>
+          range.min === min && (range.max === max || (range.max === null && max === Infinity)),
       );
-      
+
       setSelectedRange(rangeIndex !== -1 ? rangeIndex : null);
     } else {
       setSelectedRange(null);
@@ -44,37 +45,40 @@ const PriceFilter: React.FC<Props> = ({ _minPrice, _maxPrice }) => {
   }, [searchParams]);
 
   // Appliquer le filtre de prix
-  const applyPriceRange = useCallback((index: number | null) => {
-    const params = new URLSearchParams(searchParams?.toString() || '');
-    
-    if (index === null) {
-      params.delete('minPrice');
-      params.delete('maxPrice');
-    } else {
-      const range = PRICE_RANGES[index];
-      params.set('minPrice', range.min.toString());
-      if (range.max !== null) {
-        params.set('maxPrice', range.max.toString());
-      } else {
-        params.delete('maxPrice');
-      }
-    }
+  const applyPriceRange = useCallback(
+    (index: number | null) => {
+      const params = new URLSearchParams(searchParams?.toString() || '');
 
-    router.push(`/produits?${params.toString()}`);
-    setSelectedRange(index);
-  }, [router, searchParams]);
+      if (index === null) {
+        params.delete('minPrice');
+        params.delete('maxPrice');
+      } else {
+        const range = PRICE_RANGES[index];
+        params.set('minPrice', range.min.toString());
+        if (range.max !== null) {
+          params.set('maxPrice', range.max.toString());
+        } else {
+          params.delete('maxPrice');
+        }
+      }
+
+      router.push(`/produits?${params.toString()}`);
+      setSelectedRange(index);
+    },
+    [router, searchParams],
+  );
 
   return (
     <div className="space-y-4 p-4">
       <div className="flex items-center gap-2">
-        <IconCurrencyEuro className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconCurrencyEuro className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200 dark:bg-[#171717]" />
         <h2 className="text-lg font-semibold">Prix</h2>
       </div>
 
       <div className="space-y-2">
         {/* Option "Tous les prix" */}
         <Button
-          variant={selectedRange === null ? "default" : "outline"}
+          variant={selectedRange === null ? 'default' : 'price'}
           className="w-full justify-start"
           onClick={() => applyPriceRange(null)}
         >
@@ -85,7 +89,7 @@ const PriceFilter: React.FC<Props> = ({ _minPrice, _maxPrice }) => {
         {PRICE_RANGES.map((range, index) => (
           <Button
             key={index}
-            variant={selectedRange === index ? "default" : "outline"}
+            variant={selectedRange === index ? 'default' : 'price'}
             className="w-full justify-start"
             onClick={() => applyPriceRange(index)}
           >
