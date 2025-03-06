@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
 import type { Header as HeaderType } from '@/payload-types';
+import React from 'react';
 
 import { CMSLink } from '@/components/Link';
-import Link from 'next/link';
 import { SearchIcon } from 'lucide-react';
+import Link from 'next/link';
 
 interface HeaderNavProps {
   data: HeaderType;
@@ -26,3 +26,4 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ data }) => {
     </nav>
   );
 };
+

@@ -60,8 +60,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               priority="high"
               showText={true}
               size="medium"
-              textClassName="text-white"
-              className="text-white"
+              textClassName="text-black dark:text-white"
+              className="text-black dark:text-white"
             />
           </Link>
           <div className="flex items-center gap-6">

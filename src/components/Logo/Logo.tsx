@@ -60,6 +60,7 @@ export const Logo = (props: Props) => {
             'ml-2 md:ml-3 font-medium tracking-wide',
             textSizes[size],
             'transition-transform duration-300 hover:scale-105',
+            // Ajout des classes pour gérer la couleur en fonction du mode
             textClassName,
           )}
         >
@@ -69,3 +70,4 @@ export const Logo = (props: Props) => {
     </div>
   );
 };
+
