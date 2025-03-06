@@ -25,6 +25,7 @@ const buttonVariants = cva(
         link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
         outline: 'border  bg-background hover:bg-card hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        custom: 'bg-[#002d4c] text-white hover:bg-[#003e6a]',
       },
     },
   },

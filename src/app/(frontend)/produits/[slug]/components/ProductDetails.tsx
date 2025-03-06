@@ -110,8 +110,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     onClick={() => setSelectedVariation(index)}
                     className={`rounded-lg border px-4 py-2 transition-colors ${
                       selectedVariation === index
-                        ? 'border-primary bg-primary text-white'
-                        : 'border-neutral-200 bg-white hover:border-primary dark:border-neutral-700 dark:bg-neutral-800'
+                        ? 'border-[#002d4c] bg-[#002d4c] text-white'
+                        : 'border-neutral-200 bg-white hover:border-[#002d4c] dark:border-neutral-700 dark:bg-neutral-800'
                     }`}
                   >
                     <div className="font-medium">{variation.name}</div>
@@ -165,7 +165,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       {/* Bouton Ajouter au panier */}
       <Button
         onClick={handleAddToCart}
-        className="mt-6 w-full bg-primary text-white hover:bg-primary/90"
+        variant="custom"
+        className="mt-6 w-full"
         disabled={
           product.productType === 'variable'
             ? selectedVariation === null

@@ -56,9 +56,7 @@ export const ProductPage: React.FC<Props> = ({ product }) => {
             <div className="mt-4">
               <h3 className="text-lg font-bold mb-2">Variations disponibles :</h3>
               <select
-                className={`w-full p-2 border rounded ${
-                  theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-black'
-                }`}
+                className="w-full p-2 border rounded bg-[#002d4c] text-white hover:bg-[#003e6a] focus:bg-[#003e6a] transition-colors"
                 onChange={(e) => {
                   const selected = product.variations?.find(
                     (variation) => variation.name === e.target.value,
@@ -84,10 +82,7 @@ export const ProductPage: React.FC<Props> = ({ product }) => {
             <p className="text-lg font-bold mb-4">{product.price} €</p>
           )}
 
-          <Button
-            className="bg-blue-500 text-white px-4 py-2 rounded my-4"
-            onClick={handleAddToCart}
-          >
+          <Button variant="custom" className="rounded my-4" onClick={handleAddToCart}>
             Ajouter au panier
           </Button>
         </div>
