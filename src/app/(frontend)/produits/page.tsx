@@ -31,7 +31,7 @@ async function getCategories() {
 }
 
 // 🔹 Fonction pour récupérer les produits en fonction des catégories sélectionnées
-async function getProducts(selectedCategories: string[], minPrice?: number, maxPrice?: number) {
+async function getProducts(selectedCategories: string[], minPrice?: number, maxPrice?: number, searchTerm?: string) {
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -44,6 +44,13 @@ async function getProducts(selectedCategories: string[], minPrice?: number, maxP
     if (selectedCategories.length > 0) {
       where.category = {
         in: selectedCategories,
+      };
+    }
+
+    // Ajouter le filtre de recherche
+    if (searchTerm) {
+      where.name = {
+        like: searchTerm,
       };
     }
 
@@ -105,6 +112,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const categoryParam = params?.category;
   const minPriceParam = params?.minPrice ? Number(params.minPrice) : undefined;
   const maxPriceParam = params?.maxPrice ? Number(params.maxPrice) : undefined;
+  const searchTerm = params?.search as string | undefined;
   
   const selectedCategories: string[] = Array.isArray(categoryParam)
     ? categoryParam
@@ -115,7 +123,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   // 🔹 Récupération des catégories et produits en parallèle
   const [categories, products] = await Promise.all([
     getCategories(),
-    getProducts(selectedCategories, minPriceParam, maxPriceParam),
+    getProducts(selectedCategories, minPriceParam, maxPriceParam, searchTerm),
   ]);
 
   // 🔹 Calcul de la fourchette de prix pour les filtres
