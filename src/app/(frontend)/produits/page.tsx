@@ -1,8 +1,8 @@
-import { ProductsContent } from './components/ProductsContent';
 import configPromise from '@payload-config';
 import type { Metadata } from 'next';
 import type { Where } from 'payload';
 import { getPayload } from 'payload';
+import { ProductsContent } from './components/ProductsContent';
 import ProductsPageClient from './page.client';
 
 export const metadata: Metadata = {
@@ -31,7 +31,12 @@ async function getCategories() {
 }
 
 // 🔹 Fonction pour récupérer les produits en fonction des catégories sélectionnées
-async function getProducts(selectedCategories: string[], minPrice?: number, maxPrice?: number, searchTerm?: string) {
+async function getProducts(
+  selectedCategories: string[],
+  minPrice?: number,
+  maxPrice?: number,
+  searchTerm?: string,
+) {
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -59,32 +64,30 @@ async function getProducts(selectedCategories: string[], minPrice?: number, maxP
       where.or = [
         // Vérifier le prix direct du produit (pour les produits simples)
         minPrice !== undefined && maxPrice !== undefined
-          ? { 
+          ? {
               and: [
                 { price: { greater_than_equal: minPrice } },
-                { price: { less_than_equal: maxPrice } }
-              ]
+                { price: { less_than_equal: maxPrice } },
+              ],
             }
           : minPrice !== undefined
-          ? { price: { greater_than_equal: minPrice } }
-          : { price: { less_than_equal: maxPrice } },
-        
+            ? { price: { greater_than_equal: minPrice } }
+            : { price: { less_than_equal: maxPrice } },
+
         // Vérifier les prix des variations
         {
           and: [
             { productType: { equals: 'variable' } },
             {
-              'variations.price': minPrice !== undefined
-                ? { greater_than_equal: minPrice }
-                : { exists: true }
+              'variations.price':
+                minPrice !== undefined ? { greater_than_equal: minPrice } : { exists: true },
             },
             {
-              'variations.price': maxPrice !== undefined
-                ? { less_than_equal: maxPrice }
-                : { exists: true }
-            }
-          ]
-        }
+              'variations.price':
+                maxPrice !== undefined ? { less_than_equal: maxPrice } : { exists: true },
+            },
+          ],
+        },
       ];
     }
 
@@ -113,7 +116,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const minPriceParam = params?.minPrice ? Number(params.minPrice) : undefined;
   const maxPriceParam = params?.maxPrice ? Number(params.maxPrice) : undefined;
   const searchTerm = params?.search as string | undefined;
-  
+
   const selectedCategories: string[] = Array.isArray(categoryParam)
     ? categoryParam
     : categoryParam
@@ -128,33 +131,35 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   // 🔹 Calcul de la fourchette de prix pour les filtres
   console.log('Products received:', products);
-  
+
   // Log des variations pour debug
-  products.forEach(product => {
+  products.forEach((product) => {
     if (product.productType === 'variable') {
       console.log(`Variations for ${product.name}:`, product.variations);
     }
   });
 
-  const validPrices = products.flatMap(product => {
-    const prices: number[] = [];
-    
-    // Prix direct du produit (pour les produits simples)
-    if (product.price && typeof product.price === 'number') {
-      prices.push(product.price);
-    }
-    
-    // Prix des variations (pour les produits variables)
-    if (product.productType === 'variable' && Array.isArray(product.variations)) {
-      product.variations.forEach(variation => {
-        if (variation.price && typeof variation.price === 'number') {
-          prices.push(variation.price);
-        }
-      });
-    }
-    
-    return prices;
-  }).filter(price => !isNaN(price));
+  const validPrices = products
+    .flatMap((product) => {
+      const prices: number[] = [];
+
+      // Prix direct du produit (pour les produits simples)
+      if (product.price && typeof product.price === 'number') {
+        prices.push(product.price);
+      }
+
+      // Prix des variations (pour les produits variables)
+      if (product.productType === 'variable' && Array.isArray(product.variations)) {
+        product.variations.forEach((variation) => {
+          if (variation.price && typeof variation.price === 'number') {
+            prices.push(variation.price);
+          }
+        });
+      }
+
+      return prices;
+    })
+    .filter((price) => !isNaN(price));
 
   console.log('Valid prices found:', validPrices);
 
@@ -176,3 +181,4 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     </>
   );
 }
+

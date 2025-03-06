@@ -31,7 +31,7 @@ const ProductSort: React.FC = () => {
       <select
         value={currentSort}
         onChange={(e) => handleSortChange(e.target.value)}
-        className="rounded-md border-none bg-transparent text-sm text-neutral-700 focus:ring-0 dark:text-neutral-200"
+        className="rounded-md border-none bg-transparent text-sm text-neutral-700 focus:ring-0  dark:text-neutral-200"
       >
         {sortOptions.map((option) => (
           <option key={option.value} value={option.value}>
