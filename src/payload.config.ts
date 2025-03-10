@@ -63,7 +63,7 @@ export default buildConfig({
   }),
   upload: {
     limits: {
-      fileSize: 5000000, // 5MB
+      fileSize: 50000000, // 50MB
     },
     useTempFiles: true,
   },
