@@ -43,6 +43,8 @@ export const Media: CollectionConfig = {
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     mimeTypes: ['image/*', 'video/*'],
+    // Désactiver le stockage local si S3 est configuré
+    disableLocalStorage: Boolean(process.env.S3_BUCKET),
     imageSizes: [
       {
         name: 'thumbnail',
@@ -78,4 +80,3 @@ export const Media: CollectionConfig = {
     ],
   },
 };
-
