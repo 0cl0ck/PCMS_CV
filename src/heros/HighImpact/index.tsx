@@ -37,19 +37,16 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
         </div>
       </div>
       <div className="min-h-[80vh] select-none">
-        {isVideo ? (
-          <BackgroundVideo
-            src="https://chanvre-vert-media.s3.eu-west-3.amazonaws.com/glass-animation-5_2+(1)+(1).mp4"
-            className="-z-10"
-          />
-        ) : (
-          media &&
-          typeof media === 'object' && (
-            <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
-          )
+        {/* Vidéo S3 affichée directement */}
+        <BackgroundVideo
+          src="https://chanvre-vert-media.s3.eu-west-3.amazonaws.com/glass-animation-5_2+(1)+(1).mp4"
+          className="-z-10"
+        />
+        {/* Affichage conditionnel de l'image si ce n'est pas une vidéo et si un média est fourni */}
+        {!isVideo && media && typeof media === 'object' && (
+          <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
         )}
       </div>
     </div>
   );
 };
-
