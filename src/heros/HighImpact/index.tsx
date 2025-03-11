@@ -39,7 +39,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       <div className="min-h-[80vh] select-none">
         {isVideo ? (
           <BackgroundVideo
-            src={media.url ? media.url : `/media/${media.filename}`}
+            src="https://chanvre-vert-media.s3.eu-west-3.amazonaws.com/glass-animation-5_2+(1)+(1).mp4"
             className="-z-10"
           />
         ) : (
@@ -52,3 +52,4 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
     </div>
   );
 };
+
