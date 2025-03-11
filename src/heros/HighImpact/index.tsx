@@ -38,7 +38,10 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       </div>
       <div className="min-h-[80vh] select-none">
         {isVideo ? (
-          <BackgroundVideo src={`/media/${media.filename}`} className="-z-10" />
+          <BackgroundVideo
+            src={media.url ? media.url : `/media/${media.filename}`}
+            className="-z-10"
+          />
         ) : (
           media &&
           typeof media === 'object' && (
