@@ -9,8 +9,8 @@
   h4,
   h5,
   h6 {
-    font-size: auto;
-    font-weight: auto;
+    font-size: unset;
+    font-weight: unset;
   }
 
   :root {
@@ -38,7 +38,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 240 6% 90%;
+    --border: 240 6% 80%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
@@ -74,8 +74,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 15%;
-
+    --border: 0, 0%, 15%, 0.8;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
@@ -86,30 +85,12 @@
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
-}
-
-/* FAQ RichText Styles */
-.rich-text {
-  @apply mt-4 space-y-4;
-}
-
-.rich-text p {
-  @apply text-base leading-relaxed;
-}
-
-.rich-text ul {
-  @apply list-disc pl-4;
-}
-
-.rich-text ol {
-  @apply list-decimal pl-4;
-}
-
-.rich-text a {
-  @apply text-blue-500 hover:underline;
 }
 
 html {
@@ -120,4 +101,3 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
-
