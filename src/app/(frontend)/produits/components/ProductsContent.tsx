@@ -114,7 +114,7 @@ export function ProductsContent({
 
           <div className="flex flex-col md:flex-row md:gap-8">
             {/* Sidebar avec les filtres - position fixe sur desktop */}
-            <div className="w-full md:w-64 md:flex-shrink-0">
+            <div className="w-full md:w-64 md:flex-shrink-0 mb-8 md:mb-0">
               <div className="sticky top-24">
                 <ProductFilters
                   categories={categories}

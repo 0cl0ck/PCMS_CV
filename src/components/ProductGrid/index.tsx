@@ -26,4 +26,3 @@ export const ProductGrid: React.FC<Props> = ({ products }) => {
     </div>
   );
 };
-
