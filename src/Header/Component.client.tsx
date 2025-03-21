@@ -97,11 +97,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           {/* Menu hamburger à gauche */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 focus:outline-none"
+            className="p-2 focus:outline-none text-white"
             aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={menuOpen}
           >
-            {menuOpen ? <IconX className="w-6 h-6" /> : <IconMenu2 className="w-6 h-6" />}
+            {menuOpen ? (
+              <IconX className="w-6 h-6 text-white" />
+            ) : (
+              <IconMenu2 className="w-6 h-6 text-white" />
+            )}
           </button>
 
           {/* Logo au centre */}
@@ -153,7 +157,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             <nav className="flex flex-col py-4 px-6 space-y-4 justify-center items-center">
               <Link
                 href="/search"
-                className="flex items-center text-base font-medium hover:text-primary transition-colors"
+                className="flex items-center text-base font-medium hover:text-primary text-white transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 <SearchIcon className="w-5 h-5 mr-3" />
@@ -167,7 +171,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                   <Link
                     key={i}
                     href={link.url || '#'}
-                    className="flex items-center text-base font-medium"
+                    className="flex text-white items-center text-base font-medium"
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.label}
@@ -177,7 +181,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               {/* Ajouter le panier une seule fois */}
               <Link
                 href="/panier"
-                className="flex items-center text-base font-medium"
+                className="flex text-white  items-center text-base font-medium"
                 onClick={() => setMenuOpen(false)}
               >
                 Panier
