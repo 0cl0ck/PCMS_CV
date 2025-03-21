@@ -9,6 +9,7 @@ import React from 'react';
 import { CollectionArchive } from '@/components/CollectionArchive';
 import { ProductCategoryGrid } from '@/components/ProductCategoryGrid';
 import { ProductGrid } from '@/components/ProductGrid';
+import { ProductPromoGrid } from '@/components/ProductPromoGrid';
 
 export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
   const {
@@ -19,7 +20,18 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
     populateBy,
     selectedDocs,
     relationTo = 'posts',
+    blockName,
+    blockType,
   } = props;
+
+  console.log('ArchiveBlock props:', {
+    id,
+    populateBy,
+    relationTo,
+    categories: categories || [],
+    blockName: blockName || 'unnamed',
+    blockType: blockType || 'unknown',
+  });
 
   const limit = limitFromProps || 3;
   const payload = await getPayload({ config: configPromise });
@@ -27,6 +39,16 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
   let posts: Post[] = [];
   let products: Product[] = [];
   let categories_list: ProductCategory[] = [];
+
+  let usePromoGrid = false;
+
+  const blockNameLower = typeof blockName === 'string' ? blockName.toLowerCase() : '';
+  const blockTypeLower = typeof blockType === 'string' ? blockType.toLowerCase() : '';
+
+  if (blockNameLower.includes('promo') || blockTypeLower.includes('promo')) {
+    console.log('Using PromoGrid because block name/type indicates promotions');
+    usePromoGrid = true;
+  }
 
   if (populateBy === 'collection') {
     if (relationTo === 'posts') {
@@ -57,22 +79,89 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
         return category;
       });
 
+      const allCategories = await payload.find({
+        collection: 'product-categories',
+        depth: 1,
+        limit: 100,
+      });
+
+      const promotionsCategory = allCategories.docs.find(
+        (c) =>
+          typeof c.name === 'string' &&
+          (c.name.toLowerCase() === 'promotions' || c.name.toLowerCase() === 'promotion'),
+      );
+
+      if (promotionsCategory) {
+        console.log('Found promotions category with ID:', promotionsCategory.id);
+      }
+
+      let query = {};
+
+      if (flattenedCategories && flattenedCategories.length > 0) {
+        query = {
+          where: {
+            category: {
+              in: flattenedCategories,
+            },
+          },
+        };
+      }
+
+      if (
+        usePromoGrid &&
+        (!flattenedCategories || flattenedCategories.length === 0) &&
+        promotionsCategory
+      ) {
+        query = {
+          where: {
+            category: {
+              in: [promotionsCategory.id],
+            },
+          },
+        };
+        console.log('Querying for promotion products specifically:', promotionsCategory.id);
+      }
+
       const fetchedProducts = await payload.find({
         collection: 'products',
         depth: 1,
         limit,
-        ...(flattenedCategories && flattenedCategories.length > 0
-          ? {
-              where: {
-                category: {
-                  in: flattenedCategories,
-                },
-              },
-            }
-          : {}),
+        ...query,
       });
 
       products = fetchedProducts.docs;
+
+      if (!usePromoGrid && promotionsCategory && flattenedCategories) {
+        if (
+          flattenedCategories.length === 1 &&
+          (flattenedCategories[0] === promotionsCategory.id ||
+            String(flattenedCategories[0]) === String(promotionsCategory.id))
+        ) {
+          console.log('Using PromoGrid - ONLY the Promotions category is selected');
+          usePromoGrid = true;
+        }
+      }
+
+      if (!usePromoGrid && products.length > 0 && promotionsCategory) {
+        const promoProducts = products.filter((product) => {
+          if (product.category && Array.isArray(product.category)) {
+            return product.category.some((cat) => {
+              const catId = typeof cat === 'object' ? cat.id : cat;
+              return (
+                catId === promotionsCategory.id || String(catId) === String(promotionsCategory.id)
+              );
+            });
+          }
+          return false;
+        });
+
+        if (promoProducts.length === products.length && promoProducts.length > 0) {
+          console.log('Using PromoGrid - ALL products belong to Promotions category');
+          usePromoGrid = true;
+        }
+      }
+
+      console.log('Final usePromoGrid decision:', usePromoGrid);
     } else if (relationTo === 'product-categories') {
       const fetchedCategories = await payload.find({
         collection: 'product-categories',
@@ -84,6 +173,20 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
       categories_list = fetchedCategories.docs as ProductCategory[];
     }
   } else if (selectedDocs?.length) {
+    const hasPromotionProductsOnly = selectedDocs.every((doc) => {
+      if (doc.relationTo === 'products' && typeof doc.value === 'object') {
+        const product = doc.value as Product;
+        const productName = product.name?.toLowerCase() || '';
+        return productName.includes('promo');
+      }
+      return false;
+    });
+
+    if (hasPromotionProductsOnly && selectedDocs.length > 0) {
+      console.log('Using PromoGrid - Selected docs are all promotion products');
+      usePromoGrid = true;
+    }
+
     selectedDocs.forEach((doc: ArchiveBlockSelectedDoc) => {
       if (typeof doc.value === 'object') {
         if (doc.relationTo === 'posts') {
@@ -96,6 +199,8 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
       }
     });
   }
+
+  console.log('Products to display:', products.length);
 
   return (
     <div className="my-16" id={`block-${id}`}>
@@ -111,10 +216,15 @@ export const ArchiveBlock: React.FC<ArchiveBlockType> = async (props) => {
       {relationTo === 'posts' ? (
         <CollectionArchive posts={posts} />
       ) : relationTo === 'products' ? (
-        <ProductGrid products={products} />
+        usePromoGrid ? (
+          <ProductPromoGrid products={products} />
+        ) : (
+          <ProductGrid products={products} />
+        )
       ) : (
         <ProductCategoryGrid categories={categories_list} />
       )}
     </div>
   );
 };
+

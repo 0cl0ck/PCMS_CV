@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
-import { Media, Product } from '@/payload-types';
+import { Media } from '@/components/Media';
 import { formatPrice } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Product } from '@/payload-types';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import React from 'react';
 
 interface Props {
   product: Product;
@@ -15,12 +15,6 @@ interface Props {
 export const ProductCard: React.FC<Props> = ({ product, index = 0 }) => {
   const mainImage = product.images?.[0];
   const hoverImage = product.images?.[1];
-
-  const getImageUrl = (image: Media | string | undefined): string => {
-    if (!image) return '';
-    if (typeof image === 'string') return image;
-    return image.url || '';
-  };
 
   return (
     <motion.div
@@ -32,21 +26,20 @@ export const ProductCard: React.FC<Props> = ({ product, index = 0 }) => {
       <Link href={`/produits/${product.slug}`} className="relative aspect-square overflow-hidden">
         {mainImage && (
           <>
-            <Image
-              src={getImageUrl(mainImage)}
-              alt={product.name}
+            <Media
+              resource={mainImage}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               priority={index < 4}
             />
             {hoverImage && (
-              <Image
-                src={getImageUrl(hoverImage)}
-                alt={`${product.name} - Image secondaire`}
+              <Media
+                resource={hoverImage}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                 className="absolute inset-0 object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                priority={false}
               />
             )}
           </>
@@ -105,3 +98,4 @@ export const ProductCard: React.FC<Props> = ({ product, index = 0 }) => {
     </motion.div>
   );
 };
+
