@@ -70,4 +70,3 @@ export const Logo = (props: Props) => {
     </div>
   );
 };
-
